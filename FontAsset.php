@@ -1,16 +1,16 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 icron.org
- * @license http://yii2metronic.icron.org/license.html
+ * @copyright Copyright (c) 2014 Digital Deals s.r.o.
+ * @license http://www.digitaldeals/license/
  */
 
-namespace icron\metronic;
+namespace dlds\metronic;
 
 use yii\web\AssetBundle;
 
 class FontAsset extends AssetBundle
 {
-    public $sourcePath = '@icron/metronic/assets';
+    public $sourcePath = '@dlds/metronic/assets';
 
     public $css = [
         'css/fonts.css',

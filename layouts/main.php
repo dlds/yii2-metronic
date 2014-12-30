@@ -1,16 +1,16 @@
 <?
 /** @var $this \yii\web\View */
 
-use icron\metronic\helpers\Layout;
-use icron\metronic\widgets\Menu;
-use icron\metronic\widgets\NavBar;
-use icron\metronic\widgets\Nav;
-use icron\metronic\widgets\Breadcrumbs;
+use dlds\metronic\helpers\Layout;
+use dlds\metronic\widgets\Menu;
+use dlds\metronic\widgets\NavBar;
+use dlds\metronic\widgets\Nav;
+use dlds\metronic\widgets\Breadcrumbs;
 use yii\helpers\Html;
-use icron\metronic\widgets\Button;
-use icron\metronic\widgets\HorizontalMenu;
-use icron\metronic\Metronic;
-use icron\metronic\widgets\Badge;
+use dlds\metronic\widgets\Button;
+use dlds\metronic\widgets\HorizontalMenu;
+use dlds\metronic\Metronic;
+use dlds\metronic\widgets\Badge;
 
 $this->beginPage();
 Metronic::registerThemeAsset($this);
@@ -75,7 +75,7 @@ Metronic::registerThemeAsset($this);
                 [
                     'label' => 'Full Mega menu',
                     'type' => HorizontalMenu::ITEM_TYPE_FULL_MEGA,
-                    'text' => \icron\metronic\widgets\Accordion::widget(
+                    'text' => \dlds\metronic\widgets\Accordion::widget(
                             [
                                 'items' => [
                                     [
@@ -83,7 +83,7 @@ Metronic::registerThemeAsset($this);
                                         'content' => 'Content 1...',
                                         // open its content by default
                                         'contentOptions' => ['class' => 'in'],
-                                        'type' => \icron\metronic\widgets\Accordion::ITEM_TYPE_SUCCESS,
+                                        'type' => \dlds\metronic\widgets\Accordion::ITEM_TYPE_SUCCESS,
                                     ],
                                     [
                                         'header' => 'Item 2',

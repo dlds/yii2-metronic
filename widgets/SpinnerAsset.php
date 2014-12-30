@@ -1,10 +1,10 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 icron.org
- * @license http://yii2metronic.icron.org/license.html
+ * @copyright Copyright (c) 2014 Digital Deals s.r.o.
+ * @license http://www.digitaldeals/license/
  */
 
-namespace  icron\metronic\widgets;
+namespace  dlds\metronic\widgets;
 
 use yii\web\AssetBundle;
 
@@ -13,12 +13,12 @@ use yii\web\AssetBundle;
  */
 class SpinnerAsset extends AssetBundle
 {
-    public $sourcePath = '@icron/metronic/assets';
+    public $sourcePath = '@dlds/metronic/assets';
     public $js = [
         'plugins/fuelux/js/spinner.min.js',
     ];
 
     public $depends = [
-        'icron\metronic\CoreAsset',
+        'dlds\metronic\CoreAsset',
     ];
 }

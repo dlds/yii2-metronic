@@ -1,10 +1,10 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 icron.org
- * @license http://yii2metronic.icron.org/license.html
+ * @copyright Copyright (c) 2014 Digital Deals s.r.o.
+ * @license http://www.digitaldeals/license/
  */
 
-namespace icron\metronic\widgets;
+namespace dlds\metronic\widgets;
 
 use yii\helpers\Html;
 
@@ -19,7 +19,7 @@ use yii\helpers\Html;
  *     'round'
  * ]);
  *
- * @package icron\metronic\widgets
+ * @package dlds\metronic\widgets
  */
 class Badge extends  \yii\base\Widget
 {

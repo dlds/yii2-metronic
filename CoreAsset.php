@@ -1,16 +1,16 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 icron.org
- * @license http://yii2metronic.icron.org/license.html
+ * @copyright Copyright (c) 2014 Digital Deals s.r.o.
+ * @license http://www.digitaldeals/license/
  */
 
-namespace icron\metronic;
+namespace dlds\metronic;
 
 use yii\web\AssetBundle;
 
 class CoreAsset extends AssetBundle
 {
-    public $sourcePath = '@icron/metronic/assets';
+    public $sourcePath = '@dlds/metronic/assets';
     public $jsOptions = [
         'conditions' => [
             'plugins/respond.min.js' => 'if lt IE 9',
@@ -39,7 +39,7 @@ class CoreAsset extends AssetBundle
         'css/custom.css',
     ];
     public $depends = [
-        'icron\metronic\FontAsset',
+        'dlds\metronic\FontAsset',
         'yii\bootstrap\BootstrapPluginAsset',
         'yii\web\JqueryAsset',
     ];

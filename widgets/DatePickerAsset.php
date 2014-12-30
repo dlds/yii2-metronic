@@ -1,16 +1,16 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 icron.org
- * @license http://yii2metronic.icron.org/license.html
+ * @copyright Copyright (c) 2014 Digital Deals s.r.o.
+ * @license http://www.digitaldeals/license/
  */
 
-namespace icron\metronic\widgets;
+namespace dlds\metronic\widgets;
 use yii\web\AssetBundle;
 
 
 class DatePickerAsset extends AssetBundle
 {
-    public $sourcePath = '@icron/metronic/assets';
+    public $sourcePath = '@dlds/metronic/assets';
 
     public static $extraJs = [];
 
@@ -23,7 +23,7 @@ class DatePickerAsset extends AssetBundle
         'plugins/bootstrap-datepicker-extended/css/datepicker3.css',
     ];
 	public $depends = [
-        'icron\metronic\CoreAsset',
+        'dlds\metronic\CoreAsset',
 	];
 
     public function init()

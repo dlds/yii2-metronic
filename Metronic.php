@@ -1,10 +1,10 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 icron.org
- * @license http://yii2metronic.icron.org/license.html
+ * @copyright Copyright (c) 2014 Digital Deals s.r.o.
+ * @license http://www.digitaldeals/license/
  */
 
-namespace icron\metronic;
+namespace dlds\metronic;
 
 use Yii;
 use yii\web\AssetBundle;
@@ -111,7 +111,7 @@ class Metronic extends \yii\base\Component
     public static function registerThemeAsset($view)
     {
         /** @var AssetBundle $themeAsset */
-        $themeAsset = 'icron\metronic\Color' . ucfirst(static::getComponent()->color) . 'Asset';
+        $themeAsset = 'dlds\metronic\Color' . ucfirst(static::getComponent()->color) . 'Asset';
         static::$assetsBundle = $themeAsset::register($view);
 
         return static::$assetsBundle;

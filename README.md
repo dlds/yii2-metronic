@@ -16,9 +16,9 @@ Basic configuration:
 ```
     'components' => [ 
         'metronic' => [
-            'class' => 'icron\metronic\Metronic',
+            'class' => 'dlds\metronic\Metronic',
             'color' => 'default',
-            'layoutOption' => \icron\metronic\Metronic::LAYOUT_FLUID,
+            'layoutOption' => \dlds\metronic\Metronic::LAYOUT_FLUID,
             'headerOption' => 'fixed',
         ],
     ],
