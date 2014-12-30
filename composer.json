@@ -1,18 +1,26 @@
 {
-    "name": "icron/yii2-metronic",
-    "description": "Metronic Template for Yii2",
-    "keywords": ["yii", "metronic", "template"],
+    "name": "dlds/yii2-metronic",
+    "description": "Yii2 Metronic theme integration",
+    "keywords": ["yii2", "theme", "metronic"],
     "type": "yii2-extension",
     "license": "BSD",
     "support": {
-        "forum": "",
-        "wiki": ""
+        "issues": "https://github.com/dlds/yii2-metronic/issues",
+        "wiki": "https://github.com/dlds/yii2-metronic/wiki",
+        "source": "https://github.com/dlds/yii2-metronic"
     },
-
+    "authors": [
+        {
+            "name": "Jiri Svoboda",
+            "email": "jiri.svoboda@dlds.cz"
+        }
+    ],
     "require": {
         "yiisoft/yii2": "*"
     },
     "autoload": {
-        "psr-4": { "icron\\metronic\\": "" }
+        "psr-4": {
+            "dlds\\metronic\\": ""
+        }
     }
 }
