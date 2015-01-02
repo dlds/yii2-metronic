@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
  */
-
 
 namespace dlds\metronic\widgets;
 
@@ -92,11 +92,12 @@ use yii\widgets\ActiveForm as CoreActiveForm;
  * ```
  *
  */
-class HorizontalMenu extends Menu
-{
+class HorizontalMenu extends Menu {
+
     const ITEM_TYPE_CLASSIC = 'classic-menu-dropdown';
     const ITEM_TYPE_MEGA = 'mega-menu-dropdown';
     const ITEM_TYPE_FULL_MEGA = 'mega-menu-dropdown mega-menu-full';
+
     /**
      * @var string the template used to render the body of a menu which is a link.
      * In this template, the token `{url}` will be replaced with the corresponding link URL;
@@ -104,11 +105,13 @@ class HorizontalMenu extends Menu
      * This property will be overridden by the `template` option set in individual menu items via [[items]].
      */
     public $linkTemplate = '<a href="{url}">{icon}{label}</a>';
+
     /**
      * @var boolean whether to activate parent menu items when one of the corresponding child menu items is active.
      * The activated parent menu items will also have its CSS classes appended with [[activeCssClass]].
      */
     public $activateParents = true;
+
     /**
      * @var array Search options
      * is an array of the following structure:
@@ -130,17 +133,20 @@ class HorizontalMenu extends Menu
      * ```
      */
     public $search = ['visible' => true];
+
     /**
      * @var string the template used to render a list of sub-menus.
      * In this template, the token `{items}` will be replaced with the renderer sub-menu items.
      */
     public $submenuTemplate = "\n<ul class='{class}'>\n{items}\n</ul>\n";
+
     /**
      * @var string the template used to render the body of a dropdown which is a link.
      * In this template, the token `{label}` will be replaced with the link text;
      * the token `{url}` will be replaced with the corresponding link URL;
      */
     public $dropdownLinkTemplate = '<a data-toggle="dropdown" data-hover="dropdown" data-close-others="true" class="dropdown-toggle" href="{url}">{label}</a>';
+
     /**
      * @var string the template used to render the body of a dropdown which is a link for the Mega Menu.
      * In this template, the token `{label}` will be replaced with the link text;
@@ -154,18 +160,21 @@ class HorizontalMenu extends Menu
     public function run()
     {
         Html::addCssClass($this->options, 'nav navbar-nav');
-        echo Html::beginTag('div', ['class' => 'hor-menu hidden-sm hidden-xs']);
-        if ($this->route === null && Yii::$app->controller !== null) {
+        echo Html::beginTag('div', ['class' => 'page-actions']);
+        if ($this->route === null && Yii::$app->controller !== null)
+        {
             $this->route = Yii::$app->controller->getRoute();
         }
-        if ($this->params === null) {
+        if ($this->params === null)
+        {
             $this->params = $_GET;
         }
         $items = $this->normalizeItems($this->items, $hasActiveChild);
         $options = $this->options;
         $tag = ArrayHelper::remove($options, 'tag', 'ul');
         $data = [$this->renderItems($items)];
-        if (!isset($this->search['visible'])) {
+        if (!isset($this->search['visible']))
+        {
             throw new InvalidConfigException("The 'visible' option of search is required.");
         }
         $data[] = Html::tag('li', $this->renderSearch());
@@ -187,56 +196,76 @@ class HorizontalMenu extends Menu
     {
         $n = count($items);
         $lines = [];
-        foreach ($items as $i => $item) {
+        foreach ($items as $i => $item)
+        {
             $options = array_merge($this->itemOptions, ArrayHelper::getValue($item, 'options', []));
             $tag = ArrayHelper::remove($options, 'tag', 'li');
             $itemType = ($type === null) ? ArrayHelper::getValue($item, 'type', self::ITEM_TYPE_CLASSIC) : $type;
             $class = [];
-            if ($item['active']) {
+            if ($item['active'])
+            {
                 $class[] = $this->activeCssClass;
             }
-            if ($i === 0 && $this->firstItemCssClass !== null) {
+            if ($i === 0 && $this->firstItemCssClass !== null)
+            {
                 $class[] = $this->firstItemCssClass;
             }
-            if ($i === $n - 1 && $this->lastItemCssClass !== null) {
+            if ($i === $n - 1 && $this->lastItemCssClass !== null)
+            {
                 $class[] = $this->lastItemCssClass;
             }
-            if (!empty($class)) {
-                if (empty($options['class'])) {
+            if (!empty($class))
+            {
+                if (empty($options['class']))
+                {
                     $options['class'] = implode(' ', $class);
-                } else {
+                }
+                else
+                {
                     $options['class'] .= ' ' . implode(' ', $class);
                 }
             }
-            if ($level == 1) {
+            if ($level == 1)
+            {
                 Html::addCssClass($options, $itemType);
-                $item['template'] = ($itemType == self::ITEM_TYPE_CLASSIC)
-                    ? $this->dropdownLinkTemplate : $this->dropdownLinkMegaTemplate;
-                if ($item['active']) {
+                $item['template'] = ($itemType == self::ITEM_TYPE_CLASSIC) ? $this->dropdownLinkTemplate : $this->dropdownLinkMegaTemplate;
+                if ($item['active'])
+                {
                     $item['label'] = Html::tag('span', '', ['class' => 'selected']) . $item['label'];
                 }
-                if (!empty($item['items'])) {
-                    $item['label'] .= ' ' . Html::tag('i', '',['class' => 'fa fa-angle-down']);
+                if (!empty($item['items']))
+                {
+                    $item['label'] .= ' ' . Html::tag('i', '', ['class' => 'fa fa-angle-down']);
                 }
-            } else {
-                if (!empty($item['items'])) {
+            }
+            else
+            {
+                if (!empty($item['items']))
+                {
                     Html::addCssClass($options, 'dropdown-submenu');
                 }
             }
-            if ($itemType == self::ITEM_TYPE_CLASSIC) {
+            if ($itemType == self::ITEM_TYPE_CLASSIC)
+            {
                 $menu = $this->renderItem($item);
-                if (!empty($item['items'])) {
+                if (!empty($item['items']))
+                {
                     $menu .= strtr($this->submenuTemplate, [
-                            '{items}' => $this->renderItems($item['items'], $level + 1, $itemType),
-                            '{class}' => 'dropdown-menu',
-                        ]);
+                        '{items}' => $this->renderItems($item['items'], $level + 1, $itemType),
+                        '{class}' => 'dropdown-menu',
+                    ]);
                 }
-            } else {
-                if ($level == 1) {
+            }
+            else
+            {
+                if ($level == 1)
+                {
                     $menu = $this->renderItem($item);
-                    if (!empty($item['items'])) {
+                    if (!empty($item['items']))
+                    {
                         $submenu = $this->renderItems($item['items'], $level + 1, $itemType);
-                        if ($itemType == self::ITEM_TYPE_FULL_MEGA) {
+                        if ($itemType == self::ITEM_TYPE_FULL_MEGA)
+                        {
                             $text = ArrayHelper::getValue($item, 'text', '');
                             $submenu = Html::tag('div', $submenu, ['class' => 'col-md-7']);
                             $submenu .= Html::tag('div', $text, ['class' => 'col-md-5']);
@@ -245,22 +274,27 @@ class HorizontalMenu extends Menu
                         $submenu = Html::tag('div', $submenu, ['class' => 'mega-menu-content']);
                         $submenu = Html::tag('li', $submenu);
                         $menu .= strtr($this->submenuTemplate, [
-                                '{items}' => $submenu,
-                                '{class}' => 'dropdown-menu',
-                            ]);
+                            '{items}' => $submenu,
+                            '{class}' => 'dropdown-menu',
+                        ]);
                     }
-                } else {
-                    if (!empty($item['items'])) {
+                }
+                else
+                {
+                    if (!empty($item['items']))
+                    {
                         $headerItem = $item;
                         unset($headerItem['items']);
                         $headerItem['template'] = '<h3>{label}</h3>';
                         array_unshift($item['items'], $headerItem);
                         $lines[] = strtr($this->submenuTemplate, [
-                                '{items}' => $this->renderItems($item['items'], $level + 1, $itemType),
-                                '{class}' => 'col-md-4 mega-menu-submenu',
-                            ]);
+                            '{items}' => $this->renderItems($item['items'], $level + 1, $itemType),
+                            '{class}' => 'col-md-4 mega-menu-submenu',
+                        ]);
                         continue;
-                    } else {
+                    }
+                    else
+                    {
                         $item['icon'] = 'fa fa-angle-right';
                         $menu = $this->renderItem($item);
                     }
@@ -280,19 +314,20 @@ class HorizontalMenu extends Menu
      */
     protected function renderItem($item)
     {
-        $item['url'] =  ArrayHelper::getValue($item, 'url', '#');
-        $item['label'] =  ArrayHelper::getValue($item, 'badge', '') . $item['label'];
-        $item['icon'] =  ArrayHelper::getValue($item, 'icon', '');
-        if ($item['icon']) {
+        $item['url'] = ArrayHelper::getValue($item, 'url', '#');
+        $item['label'] = ArrayHelper::getValue($item, 'badge', '') . $item['label'];
+        $item['icon'] = ArrayHelper::getValue($item, 'icon', '');
+        if ($item['icon'])
+        {
             $item['icon'] = Html::tag('i', '', ['class' => $item['icon']]);
         }
         $template = ArrayHelper::getValue($item, 'template', $this->linkTemplate);
 
         return strtr($template, [
-                '{url}' => Url::toRoute($item['url']),
-                '{label}' => $item['label'],
-                '{icon}' => $item['icon'],
-            ]);
+            '{url}' => Url::toRoute($item['url']),
+            '{label}' => $item['label'],
+            '{icon}' => $item['icon'],
+        ]);
     }
 
     /**
@@ -318,7 +353,7 @@ class HorizontalMenu extends Menu
         echo '<div class="search-form">';
         CoreActiveForm::begin($formOptions);
         echo '<div class="input-group">';
-        echo Html::input('text', $inputOptions['name'],  $inputOptions['value'], $inputOptions['options']);
+        echo Html::input('text', $inputOptions['name'], $inputOptions['value'], $inputOptions['options']);
         echo '<div class="input-group-btn">';
         echo '<button type="button" class="btn"></button>';
         echo '</div>'; // end .input-group-btn
@@ -328,4 +363,5 @@ class HorizontalMenu extends Menu
 
         return ob_get_clean();
     }
+
 }

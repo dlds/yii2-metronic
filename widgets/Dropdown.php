@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -29,12 +30,13 @@ use yii\helpers\Html;
  * ]);
  *
  */
-class Dropdown extends \yii\bootstrap\Dropdown
-{
+class Dropdown extends \yii\bootstrap\Dropdown {
+
     /**
      * @var string the dropdown title
      */
     public $title;
+
     /**
      * @var array the dropdown last item options
      * with the following structure:
@@ -50,6 +52,7 @@ class Dropdown extends \yii\bootstrap\Dropdown
      * ```
      */
     public $more = [];
+
     /**
      * @var array the dropdown item options
      * is an array of the following structure:
@@ -82,52 +85,60 @@ class Dropdown extends \yii\bootstrap\Dropdown
      * @return string the rendering result.
      * @throws InvalidConfigException if the label option is not specified in one of the items.
      */
-    protected function renderItems($items)
+    protected function renderItems($items, $options = [])
     {
         $lines = [];
-        if ($this->title) {
+        if ($this->title)
+        {
             $lines[] = Html::tag('li', Html::tag('p', $this->title));
         }
 
-        if (!empty($this->scroller)) {
-            if (!isset($this->scroller['height'])) {
+        if (!empty($this->scroller))
+        {
+            if (!isset($this->scroller['height']))
+            {
                 throw new InvalidConfigException("The 'height' option of Scroller is required.");
             }
             $lines[] = Html::beginTag('li');
             $lines[] = Html::beginTag(
-                'ul',
-                [
-                    'style' => 'height: ' . $this->scroller['height'] . 'px;',
-                    'class' => 'dropdown-menu-list scroller'
-                ]
+                            'ul', [
+                        'style' => 'height: ' . $this->scroller['height'] . 'px;',
+                        'class' => 'dropdown-menu-list scroller'
+                            ]
             );
         }
 
-        foreach ($items as $i => $item) {
-            if (isset($item['visible']) && !$item['visible']) {
+        foreach ($items as $i => $item)
+        {
+            if (isset($item['visible']) && !$item['visible'])
+            {
                 unset($items[$i]);
                 continue;
             }
-            if (is_string($item)) {
+            if (is_string($item))
+            {
                 $lines[] = $item;
                 continue;
             }
 
-            if (in_array('divider', $item)) {
+            if (in_array('divider', $item))
+            {
                 $lines[] = Html::tag('li', '', ['class' => 'divider']);
                 continue;
             }
 
-            if (!isset($item['label'])) {
+            if (!isset($item['label']))
+            {
                 throw new InvalidConfigException("The 'label' option is required.");
             }
             $label = $this->encodeLabels ? Html::encode($item['label']) : $item['label'];
 
             $icon = ArrayHelper::getValue($item, 'icon', null);
-            if ($icon) {
+            if ($icon)
+            {
                 $label = Html::tag('i', '', ['alt' => $label, 'class' => $icon]) . ' ' . $label;
             }
-            $label .=  ArrayHelper::getValue($item, 'badge', '');
+            $label .= ArrayHelper::getValue($item, 'badge', '');
             $options = ArrayHelper::getValue($item, 'options', []);
             $linkOptions = ArrayHelper::getValue($item, 'linkOptions', []);
             $linkOptions['tabindex'] = '-1';
@@ -135,16 +146,19 @@ class Dropdown extends \yii\bootstrap\Dropdown
             $lines[] = Html::tag('li', $content, $options);
         }
 
-        if (!empty($this->scroller)) {
+        if (!empty($this->scroller))
+        {
             $lines[] = Html::endTag('ul');
             $lines[] = Html::endTag('li');
         }
 
-        if (!empty($this->more)) {
+        if (!empty($this->more))
+        {
             $url = ArrayHelper::getValue($this->more, 'url', '#');
             $text = ArrayHelper::getValue($this->more, 'label', '');
             $icon = ArrayHelper::getValue($this->more, 'icon', '');
-            if ($icon) {
+            if ($icon)
+            {
                 $icon = Html::tag('i', '', ['class' => $icon]);
             }
             $lines[] = Html::tag('li', Html::tag('a', $text . $icon, ['href' => $url]), ['class' => 'external']);
@@ -152,4 +166,5 @@ class Dropdown extends \yii\bootstrap\Dropdown
 
         return Html::tag('ul', implode("\n", $lines), $this->options);
     }
+
 }

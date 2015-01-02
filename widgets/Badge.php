@@ -24,7 +24,7 @@ use yii\helpers\Html;
 class Badge extends  \yii\base\Widget
 {
     // type
-    const TYPE_DEFAULT = '';
+    const TYPE_DEFAULT = 'default';
     const TYPE_GRAY = 'default';
     const TYPE_SUCCESS = 'success';
     const TYPE_WARNING = 'warning';

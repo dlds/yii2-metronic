@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -27,9 +28,11 @@ use yii\helpers\Html;
  * ]);
  * ```
  */
-class Button extends \yii\bootstrap\Button
-{
-    // Button bootstrap types.
+class Button extends \yii\bootstrap\Button {
+
+    /**
+     *  Button bootstrap types
+     */
     const TYPE_PRIMARY = 'primary';
     const TYPE_INFO = 'info';
     const TYPE_SUCCESS = 'success';
@@ -38,21 +41,29 @@ class Button extends \yii\bootstrap\Button
     const TYPE_INVERSE = 'inverse';
     const TYPE_LINK = 'link';
 
-    // Button metronic types.
+    /**
+     * Button metronic types
+     */
     const TYPE_M_DEFAULT = 'default';
     const TYPE_M_RED = 'red';
+    const TYPE_M_RED_HAZE = 'red-haze';
     const TYPE_M_BLUE = 'blue';
     const TYPE_M_GREEN = 'green';
+    const TYPE_M_GREEN_HAZE = 'green-haze';
     const TYPE_M_YELLOW = 'yellow';
     const TYPE_M_PURPLE = 'purple';
     const TYPE_M_DARK = 'dark';
 
-    // Button sizes.
+    /**
+     * Button sizes
+     */
     const SIZE_MINI = 'xs';
     const SIZE_SMALL = 'sm';
     const SIZE_LARGE = 'lg';
 
-    // Позиция иконки
+    /**
+     * Icon positions
+     */
     const ICON_POSITION_LEFT = 'left';
     const ICON_POSITION_RIGHT = 'right';
 
@@ -61,29 +72,76 @@ class Button extends \yii\bootstrap\Button
      * Valid values are 'xs', 'sm', 'lg'.
      */
     public $size;
+
     /**
      * @var string The button type.
      * Valid values for metronic styles are 'default', 'red', 'blue', 'green', 'yellow', 'purple', 'dark'.
      * Valid values for bootstrap styles are 'primary', 'info', 'success', 'warning', 'danger', 'inverse', 'link'.
      */
     public $type = self::TYPE_M_DEFAULT;
+
     /**
      * @var string The button icon.
      */
     public $icon;
+
     /**
      * @var string Icon position.
      * Valid values are 'left', 'right'.
      */
     public $iconPosition = self::ICON_POSITION_LEFT;
+
     /**
      * @var bool Indicates whether button is disabled or not.
      */
     public $disabled = false;
+
     /**
      * @var bool Indicates whether the button should span the full width of the a parent.
      */
     public $block = false;
+
+    /**
+     * @var bool Indicates whether the dropdown shoud expand on hover.
+     */
+    public $hover = false;
+
+    /**
+     * @var array bootstrap types
+     */
+    private $_bootstrapTypes = [
+        self::TYPE_PRIMARY,
+        self::TYPE_INFO,
+        self::TYPE_SUCCESS,
+        self::TYPE_WARNING,
+        self::TYPE_DANGER,
+        self::TYPE_INVERSE,
+        self::TYPE_LINK,
+    ];
+
+    /**
+     * @var array metronic types
+     */
+    private $_metronicTypes = [
+        self::TYPE_M_DEFAULT,
+        self::TYPE_M_RED,
+        self::TYPE_M_RED_HAZE,
+        self::TYPE_M_BLUE,
+        self::TYPE_M_GREEN,
+        self::TYPE_M_GREEN_HAZE,
+        self::TYPE_M_YELLOW,
+        self::TYPE_M_PURPLE,
+        self::TYPE_M_DARK,
+    ];
+
+    /**
+     * @var array sizes
+     */
+    private $_sizes = [
+        self::SIZE_MINI,
+        self::SIZE_SMALL,
+        self::SIZE_LARGE,
+    ];
 
     /**
      * Initializes the widget.
@@ -91,51 +149,36 @@ class Button extends \yii\bootstrap\Button
     public function init()
     {
         parent::init();
-        $bootstrapTypes = [
-            self::TYPE_PRIMARY,
-            self::TYPE_INFO,
-            self::TYPE_SUCCESS,
-            self::TYPE_WARNING,
-            self::TYPE_DANGER,
-            self::TYPE_INVERSE,
-            self::TYPE_LINK,
-        ];
 
-        $metronicTypes = [
-            self::TYPE_M_DEFAULT,
-            self::TYPE_M_RED,
-            self::TYPE_M_BLUE,
-            self::TYPE_M_GREEN,
-            self::TYPE_M_YELLOW,
-            self::TYPE_M_PURPLE,
-            self::TYPE_M_DARK,
-        ];
-
-        if (in_array($this->type, $bootstrapTypes)) {
+        if (in_array($this->type, $this->_bootstrapTypes))
+        {
             Html::addCssClass($this->options, 'btn-' . $this->type);
-        } elseif (in_array($this->type, $metronicTypes)) {
+        }
+        elseif (in_array($this->type, $this->_metronicTypes))
+        {
             Html::addCssClass($this->options, $this->type);
-        } else {
+        }
+        else
+        {
             throw new InvalidConfigException("The button type is invalid.");
         }
 
-        $sizes = [
-            self::SIZE_MINI,
-            self::SIZE_SMALL,
-            self::SIZE_LARGE,
-        ];
-
-        if (in_array($this->size, $sizes)) {
+        if (in_array($this->size, $this->_sizes))
+        {
             Html::addCssClass($this->options, 'btn-' . $this->size);
         }
 
-        if ($this->disabled === true) {
+        if ($this->disabled === true)
+        {
             Html::addCssClass($this->options, 'disabled');
         }
 
-        if ($this->block === true) {
+        if ($this->block === true)
+        {
             Html::addCssClass($this->options, 'btn-block');
         }
+
+        $this->options['type'] = 'button';
     }
 
     /**
@@ -144,11 +187,16 @@ class Button extends \yii\bootstrap\Button
     public function run()
     {
         $label = $this->encodeLabel ? Html::encode($this->label) : $this->label;
-        if ($this->icon !== null) {
+
+        if ($this->icon !== null)
+        {
             $icon = Html::tag('i', '', ['class' => $this->icon]);
-            $label = strcasecmp($this->iconPosition, self::ICON_POSITION_LEFT) === 0 ? ($icon . ' ' . $label) : $label . ' ' . $icon;
+            $label = strcasecmp($this->iconPosition, self::ICON_POSITION_LEFT) === 0 ? sprintf('%s %s', $icon, $label) : sprintf('%s %s', $label, $icon);
         }
+
         echo Html::tag($this->tagName, $label, $this->options);
+
         $this->registerPlugin('button');
     }
+
 }

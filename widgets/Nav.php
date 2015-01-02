@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -11,6 +12,7 @@ use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use dlds\metronic\Metronic;
 
 /**
  * Nav renders a nav HTML component.
@@ -42,11 +44,22 @@ use yii\helpers\Url;
  *
  * Note: Multilevel dropdowns beyond Level 1 are not supported in Bootstrap 3.
  */
-class Nav extends \yii\bootstrap\Nav
-{
-    // position
+class Nav extends \yii\bootstrap\Nav {
+
+    /**
+     * Positions
+     */
     const POS_LEFT = '';
     const POS_RIGHT = 'pull-right';
+
+    /**
+     * Types
+     */
+    const TYPE_DEFAULT = '';
+    const TYPE_NOTIFICATION = 'notification';
+    const TYPE_INBOX = 'inbox';
+    const TYPE_TASKS = 'tasks';
+    const TYPE_USER = 'user';
 
     /**
      * @var array list of items in the nav widget. Each array element represents a single
@@ -66,10 +79,16 @@ class Nav extends \yii\bootstrap\Nav
      * If a menu item is a string, it will be rendered directly without HTML encoding.
      */
     public $items = [];
+
     /**
      * @var string the nav position
      */
     public $position = self::POS_RIGHT;
+
+    /**
+     * @var string type
+     */
+    public $type = self::TYPE_DEFAULT;
 
     /**
      * Initializes the widget.
@@ -89,60 +108,125 @@ class Nav extends \yii\bootstrap\Nav
      */
     public function renderItem($item)
     {
-        if (is_string($item)) {
+        if (is_string($item))
+        {
             return $item;
         }
-        if (!isset($item['label']) && !isset($item['icon'])) {
+
+        if (!isset($item['label']) && !isset($item['icon']))
+        {
             throw new InvalidConfigException("The 'label' option is required.");
         }
-        $type =  ArrayHelper::getValue($item, 'type', '');
-        $options = ArrayHelper::getValue($item, 'options', []);
-        if ($type === 'user') {
-            $label = $item['label'];
-            Html::addCssClass($options, 'user');
-        } else {
-            $label = $this->encodeLabels ? Html::encode($item['label']) : $item['label'];
-        }
-        $icon = ArrayHelper::getValue($item, 'icon', null);
-        if ($icon) {
-            $label = Html::tag('i', '', ['alt' => $label, 'class' => $icon]);
-        }
-        $label .=  ArrayHelper::getValue($item, 'badge', '');
-        $items = ArrayHelper::getValue($item, 'items');
-        $url = Url::toRoute(ArrayHelper::getValue($item, 'url', '#'));
-        $linkOptions = ArrayHelper::getValue($item, 'linkOptions', []);
 
-        if (isset($item['active'])) {
+        $type = ArrayHelper::getValue($item, 'type', self::TYPE_DEFAULT);
+        $options = ArrayHelper::getValue($item, 'options', []);
+
+        Html::addCssClass($options, 'dropdown');
+
+        if ($type !== self::TYPE_DEFAULT)
+        {
+            if ($type !== self::TYPE_USER)
+            {
+                Html::addCssClass($options, 'dropdown-extended');
+            }
+
+            Html::addCssClass($options, 'dropdown-' . $type);
+
+            if (Metronic::HEADER_DROPDOWN_DARK === Metronic::getComponent()->headerDropdown)
+            {
+                Html::addCssClass($options, 'dropdown-dark');
+            }
+        }
+
+        if (isset($item['active']))
+        {
             $active = ArrayHelper::remove($item, 'active', false);
-        } else {
+        }
+        else
+        {
             $active = $this->isItemActive($item);
         }
 
-        if ($active) {
+        if ($active)
+        {
             Html::addCssClass($options, 'active');
         }
 
-        if ($items !== null) {
-            $linkOptions['data-toggle'] = 'dropdown';
-            $linkOptions['data-hover'] = 'dropdown';
-            $linkOptions['data-close-others'] = 'true';
-            Html::addCssClass($options, 'dropdown');
-            Html::addCssClass($linkOptions, 'dropdown-toggle');
+        return Html::tag('li', sprintf('%s%s', $this->_getLinkTag($item), $this->_getDropdownTag($item)), $options);
+    }
 
-            if (is_array($items)) {
-                $items = Dropdown::widget([
+    /**
+     * Retrieves link tag
+     * @param array $item given item
+     * @return string link
+     */
+    private function _getLinkTag($item)
+    {
+        $type = ArrayHelper::getValue($item, 'type', self::TYPE_DEFAULT);
+
+        if ($type !== self::TYPE_DEFAULT)
+        {
+            $label = $item['label'];
+        }
+        else
+        {
+            $label = $this->encodeLabels ? Html::encode($item['label']) : $item['label'];
+        }
+
+        $icon = ArrayHelper::getValue($item, 'icon', null);
+
+        if ($icon)
+        {
+            $label = Html::tag('i', '', ['alt' => $label, 'class' => $icon]);
+        }
+
+        $label .= ArrayHelper::getValue($item, 'badge', '');
+
+        $linkOptions = ArrayHelper::getValue($item, 'linkOptions', []);
+
+        $linkOptions['data-toggle'] = 'dropdown';
+        $linkOptions['data-hover'] = 'dropdown';
+        $linkOptions['data-close-others'] = 'true';
+
+        Html::addCssClass($linkOptions, 'dropdown-toggle');
+
+        return Html::a($label, Url::toRoute(ArrayHelper::getValue($item, 'url', '#')), $linkOptions);
+    }
+
+    /**
+     * Retrieves items tag
+     * @param array $item given parent item
+     * @return Dropdown widget
+     */
+    private function _getDropdownTag($item)
+    {
+        $type = ArrayHelper::getValue($item, 'type', self::TYPE_DEFAULT);
+
+        $items = ArrayHelper::getValue($item, 'items', null);
+
+        if ($items !== null && is_array($items))
+        {
+            if ($type === self::TYPE_DEFAULT || $type === self::TYPE_USER)
+            {
+                $options = ['class' => 'dropdown-menu-default'];
+            }
+            else
+            {
+                $options = ['class' => sprintf('%s %s', 'dropdown-menu-default extended', $type)];
+            }
+
+            $items = Dropdown::widget([
                         'title' => ArrayHelper::getValue($item, 'title', ''),
                         'more' => ArrayHelper::getValue($item, 'more', []),
                         'scroller' => ArrayHelper::getValue($item, 'scroller', []),
                         'items' => $items,
                         'encodeLabels' => $this->encodeLabels,
                         'clientOptions' => false,
-                        'options' => $type !== 'user' ? ['class' => 'extended'] : [],
-                    ]);
-            }
+                        'options' => $options,
+            ]);
         }
 
-        return Html::tag('li', Html::a($label, $url, $linkOptions) . $items, $options);
+        return $items;
     }
 
     /**
@@ -154,9 +238,9 @@ class Nav extends \yii\bootstrap\Nav
     public static function userItem($label, $photo)
     {
         $lines = [];
-        $lines[] = Html::img($photo, ['alt' => $label]);
-        $lines[] = Html::tag('span', $label, ['class' => 'username']);
-        $lines[] = Html::tag('i', '', ['class' => 'fa fa-angle-down']);
+        $lines[] = Html::tag('span', $label, ['class' => 'username username-hide-on-mobile']);
+        $lines[] = Html::img($photo, ['alt' => $label, 'class' => 'img-circle']);
         return implode("\n", $lines);
     }
+
 }

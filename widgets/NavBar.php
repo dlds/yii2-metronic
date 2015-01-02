@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -36,60 +37,30 @@ use Yii;
  *
  * @see http://twitter.github.io/bootstrap/components.html#navbar
  */
-class NavBar extends \yii\bootstrap\NavBar
-{
+class NavBar extends \yii\bootstrap\NavBar {
+
     /**
      * @var string the url to logo of the brand.
      */
     public $brandLogoUrl;
 
     /**
-     * Renders toggle button
-     * @return string the rendering result
-     */
-    protected function renderToggleButton()
-    {
-        return Html::tag(
-            'a',
-            Html::img(Metronic::getAssetsUrl($this->view) . '/img/menu-toggler.png'),
-            [
-                'href' => '#',
-                'class' => 'navbar-toggle',
-                'data-toggle' => 'collapse',
-                'data-target' => '.navbar-collapse'
-            ]
-        );
-    }
-
-    /**
-     * Renders Brand
-     * @return string the rendering result
-     */
-    protected function renderBrand()
-    {
-        if ($this->brandLogoUrl) {
-            $content = Html::img($this->brandLogoUrl, ['class' => 'img-responsive','alt' => $this->brandLabel]);
-        } else {
-            $content = $this->brandLabel;
-        }
-        Html::addCssClass($this->brandOptions, 'navbar-brand');
-        $this->brandOptions['href'] = $this->brandUrl;
-        return Html::tag('a', $content, $this->brandOptions);
-    }
-
-    /**
      * Initializes the widget.
      */
     public function init()
     {
-        if (!isset($this->options['id'])) {
+        if (!isset($this->options['id']))
+        {
             $this->options['id'] = $this->getId();
         }
-        Html::addCssClass($this->options, 'mega-menu');
+
         echo Html::beginTag('div', $this->options);
-        echo Html::beginTag('div', ['class' => 'header-inner']);
+        echo Html::beginTag('div', ['class' => 'page-header-inner']);
+
+        echo Html::beginTag('div', ['class' => 'page-logo']);
         echo $this->renderBrand();
         echo $this->renderToggleButton();
+        echo Html::endTag('div');
     }
 
     /**
@@ -99,6 +70,35 @@ class NavBar extends \yii\bootstrap\NavBar
     {
         echo Html::endTag('div');
         echo Html::endTag('div');
-        echo Html::tag('div', '', ['class' => 'clearfix']);
     }
+
+    /**
+     * Renders toggle button
+     * @return string the rendering result
+     */
+    protected function renderToggleButton()
+    {
+        return Html::tag('div', '', ['class' => 'menu-toggler sidebar-toggler']);
+    }
+
+    /**
+     * Renders Brand
+     * @return string the rendering result
+     */
+    protected function renderBrand()
+    {
+        if ($this->brandLogoUrl)
+        {
+            $content = Html::img($this->brandLogoUrl, ['class' => 'logo-default', 'alt' => $this->brandLabel]);
+        }
+        else
+        {
+            $content = $this->brandLabel;
+        }
+
+        $this->brandOptions['href'] = $this->brandUrl;
+
+        return Html::tag('a', $content, $this->brandOptions);
+    }
+
 }

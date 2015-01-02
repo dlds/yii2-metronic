@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -36,19 +37,51 @@ use yii\helpers\Html;
  * ]);
  * ```
  *
- **/
-class ButtonDropdown extends \yii\bootstrap\ButtonDropdown
-{
+ * */
+class ButtonDropdown extends \yii\bootstrap\ButtonDropdown {
+
     /**
      * @var array The configuration array for [[Button]].
      */
     public $button = [];
+
+    /**
+     * @var bool Indicates whether the dropdown shoud expand on hover.
+     */
+    public $hover = false;
+
+    /**
+     * Inits ButtonDropdown
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->options['data-toggle'] = 'dropdown';
+
+        if ($this->hover === true)
+        {
+            $this->options['data-hover'] = 'dropdown';
+        }
+
+        if ($this->encodeLabel)
+        {
+            $this->label = Html::encode($this->label);
+        }
+
+        $this->options['data-close-others'] = 'true';
+
+        Html::addCssClass($this->options, 'btn');
+
+        Html::addCssClass($this->options, 'dropdown-toggle');
+    }
+
     /**
      * Renders the widget.
      */
     public function run()
     {
-        echo Html::tag('li', $this->renderButton() . "\n" . $this->renderDropdown(), ['class' => 'btn-group']);
+        echo Html::tag('div', sprintf('%s%s', $this->renderButton(), $this->renderDropdown()), ['class' => 'btn-group']);
     }
 
     /**
@@ -57,37 +90,44 @@ class ButtonDropdown extends \yii\bootstrap\ButtonDropdown
      */
     protected function renderButton()
     {
-        Html::addCssClass($this->options, 'btn');
-        $label = $this->label;
-        if ($this->encodeLabel) {
-            $label = Html::encode($label);
+        $label = Html::tag('span', $this->label, ['class' => 'hidden-sm hidden-xs']);
+
+        if ($this->split)
+        {
+            $leftBtn = Button::widget($a = ArrayHelper::merge($this->button, [
+                                'label' => $label,
+                                'encodeLabel' => false,
+                                'tagName' => $this->tagName,
+            ]));
+
+
+            $rightBtn = Button::widget(ArrayHelper::merge($this->button, [
+                                'label' => '<i class="fa fa-angle-down"></i>',
+                                'encodeLabel' => false,
+                                'options' => $this->options,
+                                'tagName' => $this->tagName,
+            ]));
         }
-        if ($this->split) {
-            $options = $this->options;
-            $this->options['data-toggle'] = 'dropdown';
-            Html::addCssClass($this->options, 'dropdown-toggle');
-            $splitButton = Button::widget([
-                    'label' => '<i class="fa fa-angle-down"></i>',
-                    'encodeLabel' => false,
-                    'options' => $this->button,
-                ]);
-        } else {
+        else
+        {
             $label .= ' <i class="fa fa-angle-down"></i>';
-            $options = $this->options;
-            if (!isset($options['href'])) {
-                $options['href'] = '#';
+
+            if (!isset($this->options['href']))
+            {
+                $this->options['href'] = '#';
             }
-            Html::addCssClass($options, 'dropdown-toggle');
-            $options['data-toggle'] = 'dropdown';
-            $splitButton = '';
+
+            $leftBtn = Button::widget(ArrayHelper::merge($this->button, [
+                                'label' => $label,
+                                'encodeLabel' => false,
+                                'options' => $this->options,
+                                'tagName' => $this->tagName,
+            ]));
+
+            $rightBtn = '';
         }
 
-        return Button::widget(ArrayHelper::merge($this->button, [
-                'tagName' => $this->tagName,
-                'label' => $label,
-                'options' => $options,
-                'encodeLabel' => false,
-            ])) . "\n" . $splitButton;
+        return sprintf('%s%s', $leftBtn, $rightBtn);
     }
 
     /**
@@ -100,4 +140,5 @@ class ButtonDropdown extends \yii\bootstrap\ButtonDropdown
         $config['clientOptions'] = false;
         return Dropdown::widget($config);
     }
+
 }

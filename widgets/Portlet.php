@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -52,8 +53,8 @@ use yii\helpers\Html;
  * @author icron.org <arbuscula@gmail.com>
  * @since 1.0
  */
-class Portlet extends Widget
-{
+class Portlet extends Widget {
+
     //types of the portlet
     const TYPE_BOX = 'box';
     const TYPE_SOLID = 'solid';
@@ -72,33 +73,40 @@ class Portlet extends Widget
     const TOOL_MODAL = 'modal';
     const TOOL_RELOAD = 'reload';
     const TOOL_CLOSE = 'remove';
+
     /**
      * @var string The portlet title
      */
     public $title;
+
     /**
      * @var string The portlet icon
      */
     public $icon;
+
     /**
      * @var string The portlet type
      * Valid values are 'box', 'solid', ''
      */
     public $type = self::TYPE_BOX;
+
     /**
      * @var string The portlet color
      * Valid values are 'light-blue', 'blue', 'red', 'yellow', 'green', 'purple', 'light-grey', 'grey'
      */
     public $color = self::COLOR_BLUE;
+
     /**
      * @var array List of actions, where each element must be specified as a string.
      */
     public $actions = [];
+
     /**
      * @var array The portlet tools
      * Valid values are 'collapse', 'modal', 'reload', 'remove'
      */
     public $tools = [];
+
     /**
      * @var array Scroller options
      * is an array of the following structure:
@@ -116,18 +124,22 @@ class Portlet extends Widget
      * ```
      */
     public $scroller = [];
+
     /**
      * @var bool Whether the portlet should be bordered
      */
     public $bordered = false;
+
     /**
      * @var array The HTML attributes for the widget container
      */
     public $options = [];
+
     /**
      * @var array The HTML attributes for the widget body container
      */
     public $bodyOptions = [];
+
     /**
      * @var array The HTML attributes for the widget body container
      */
@@ -143,14 +155,17 @@ class Portlet extends Widget
         echo Html::beginTag('div', $this->options);
         Html::addCssClass($this->headerOptions, 'portlet-title');
         echo Html::beginTag('div', $this->headerOptions);
-        $icon = ($this->icon) ? Html::tag('i', '', ['class' => 'fa ' . $this->icon])  : '';
+        $icon = ($this->icon) ? Html::tag('i', '', ['class' => 'fa ' . $this->icon]) : '';
         echo Html::tag('div', $icon . ' ' . $this->title, ['class' => 'caption']);
 
-        if (!empty($this->tools)) {
+        if (!empty($this->tools))
+        {
             $tools = [];
-            foreach ($this->tools as $tool) {
+            foreach ($this->tools as $tool)
+            {
                 $class = '';
-                switch ($tool) {
+                switch ($tool)
+                {
                     case self::TOOL_CLOSE :
                         $class = 'remove';
                         break;
@@ -168,24 +183,25 @@ class Portlet extends Widget
             echo Html::tag('div', implode("\n", $tools), ['class' => 'tools']);
         }
 
-        if (!empty($this->actions)) {
+        if (!empty($this->actions))
+        {
             echo Html::tag('div', implode("\n", $this->actions), ['class' => 'actions']);
         }
         echo Html::endTag('div');
         Html::addCssClass($this->bodyOptions, 'portlet-body');
         echo Html::beginTag('div', $this->bodyOptions);
-        if (!empty($this->scroller)) {
-            if (!isset($this->scroller['height'])) {
+        
+        if (!empty($this->scroller))
+        {
+            if (!isset($this->scroller['height']))
+            {
                 throw new InvalidConfigException("The 'height' option of the scroller is required.");
             }
             $options = ArrayHelper::getValue($this->scroller, 'options', []);
             echo Html::beginTag(
-                'div',
-                ArrayHelper::merge(
-                    ['class' => 'scroller', 'data-always-visible' => '1', 'data-rail-visible' => '0'],
-                    $options,
-                    ['style' => 'height:' . $this->scroller['height'] . 'px;']
-                )
+                    'div', ArrayHelper::merge(
+                            ['class' => 'scroller', 'data-always-visible' => '1', 'data-rail-visible' => '0'], $options, ['style' => 'height:' . $this->scroller['height'] . 'px;']
+                    )
             );
         }
     }
@@ -195,14 +211,19 @@ class Portlet extends Widget
      */
     public function run()
     {
-        if (!empty($this->scroller)) {
+        if (!empty($this->scroller))
+        {
             echo Html::endTag('div');
             $footer = ArrayHelper::getValue($this->scroller, 'footer', '');
-            if (!empty($footer)) {
+            if (!empty($footer))
+            {
                 echo Html::beginTag('div', ['class' => 'scroller-footer']);
-                if (is_array($footer)) {
+                if (is_array($footer))
+                {
                     echo Html::tag('div', Link::widget($footer), ['class' => 'pull-right']);
-                } elseif (is_string($footer)) {
+                }
+                elseif (is_string($footer))
+                {
                     echo $footer;
                 }
                 echo Html::endTag('div');
@@ -210,8 +231,10 @@ class Portlet extends Widget
         }
         echo Html::endTag('div'); // End portlet body
         echo Html::endTag('div'); // End portlet div
+        
         $loader = Html::img(Metronic::getAssetsUrl($this->view) . '/img/loading-spinner-grey.gif');
         $this->clientOptions['loader'] = ArrayHelper::getValue($this->clientOptions, 'loader', $loader);
         $this->registerPlugin('portlet');
     }
+
 }

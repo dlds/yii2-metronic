@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -63,26 +64,30 @@ use yii\widgets\ActiveForm as CoreActiveForm;
  * ```
  *
  */
-class Menu extends \yii\widgets\Menu
-{
+class Menu extends \yii\widgets\Menu {
+
     /**
      * @var boolean whether to activate parent menu items when one of the corresponding child menu items is active.
      * The activated parent menu items will also have its CSS classes appended with [[activeCssClass]].
      */
     public $activateParents = true;
+
     /**
      * @var string the CSS class that will be assigned to the first item in the main menu or each submenu.
      */
     public $firstItemCssClass = 'start';
+
     /**
      * @var string the CSS class that will be assigned to the last item in the main menu or each submenu.
      */
     public $lastItemCssClass = 'last';
+
     /**
      * @var string the template used to render a list of sub-menus.
      * In this template, the token `{items}` will be replaced with the renderer sub-menu items.
      */
     public $submenuTemplate = "\n<ul class='sub-menu'>\n{items}\n</ul>\n";
+
     /**
      * @var string the template used to render the body of a menu which is a link.
      * In this template, the token `{url}` will be replaced with the corresponding link URL;
@@ -91,28 +96,8 @@ class Menu extends \yii\widgets\Menu
      * The token `{arrow}` will be replaced with the corresponding link arrow.
      * This property will be overridden by the `template` option set in individual menu items via [[items]].
      */
-    public $linkTemplate = '<a href="{url}">{icon}{label}{arrow}{badge}</a>';
-    /**
-     * @var array Search options
-     * is an array of the following structure:
-     * ```php
-     * [
-     *   // required, whether search box is visible
-     *   'visible' => true,
-     *   // optional, ActiveForm options
-     *   'form' => [],
-     *   // optional, input options with default values
-     *   'input' => [
-     *     'name' => 'search',
-     *     'value' => '',
-     *     'options' => [
-     *       'placeholder' => 'Search...',
-     *     ]
-     *   ],
-     * ]
-     * ```
-     */
-    public $search = ['visible' => true];
+    public $linkTemplate = '<a href="{url}">{icon}{label}{badge}{arrow}</a>';
+
     /**
      * @var bool Indicates whether menu is visible.
      */
@@ -124,10 +109,8 @@ class Menu extends \yii\widgets\Menu
     public function init()
     {
         Metronic::registerThemeAsset($this->getView());
-        Html::addCssClass($this->options, 'page-sidebar-menu');
-        if (!$this->visible || Metronic::getComponent()->layoutOption == Metronic::LAYOUT_FULL_WIDTH) {
-            Html::addCssClass($this->options, 'visible-sm visible-xs');
-        }
+
+        $this->_initOptions();
     }
 
     /**
@@ -135,50 +118,13 @@ class Menu extends \yii\widgets\Menu
      */
     public function run()
     {
+        echo Html::beginTag('div', ['class' => 'page-sidebar-wrapper']);
         echo Html::beginTag('div', ['class' => 'page-sidebar navbar-collapse collapse']);
-        if ($this->route === null && Yii::$app->controller !== null) {
-            $this->route = Yii::$app->controller->getRoute();
-        }
-        if ($this->params === null) {
-            $this->params = $_GET;
-        }
-        $items = $this->normalizeItems($this->items, $hasActiveChild);
-        $options = $this->options;
-        $tag = ArrayHelper::remove($options, 'tag', 'ul');
-        $data = [Html::tag('li', Html::tag('div', '', ['class' => 'sidebar-toggler hidden-phone']))];
 
-        if (!isset($this->search['visible'])) {
-            throw new InvalidConfigException("The 'visible' option of search is required.");
-        }
-        $data[] = Html::tag('li', $this->renderSearch());
-        $data[] = $this->renderItems($items);
-        echo Html::tag($tag, implode("\n", $data), $options);
+        parent::run();
+
         echo Html::endTag('div');
-    }
-
-    /**
-     * Renders search box
-     * @return string the rendering result
-     */
-    public function renderSearch()
-    {
-        $defaultFormOptions = ['options' => ['class' => 'sidebar-search']];
-        $defaultInputOptions = ['name' => 'search', 'value' => '', 'options' => ['placeholder' => 'Search...']];
-        $formOptions = ArrayHelper::merge(ArrayHelper::getValue($this->search, 'form', []), $defaultFormOptions);
-        $inputOptions = ArrayHelper::merge(ArrayHelper::getValue($this->search, 'input', []), $defaultInputOptions);
-        ob_start();
-        ob_implicit_flush(false);
-        CoreActiveForm::begin($formOptions);
-        echo '<div class="form-container">';
-        echo '<div class="input-box">';
-        echo '<a href="#" class="remove"></a>';
-        echo Html::input('text', $inputOptions['name'],  $inputOptions['value'], $inputOptions['options']);
-        echo '<input type="button" class="submit">';
-        echo '</div>';
-        echo '</div>';
-        CoreActiveForm::end();
-
-        return ob_get_clean();
+        echo Html::endTag('div');
     }
 
     /**
@@ -191,23 +137,31 @@ class Menu extends \yii\widgets\Menu
     {
         $n = count($items);
         $lines = [];
-        foreach ($items as $i => $item) {
+        foreach ($items as $i => $item)
+        {
             $options = array_merge($this->itemOptions, ArrayHelper::getValue($item, 'options', []));
             $tag = ArrayHelper::remove($options, 'tag', 'li');
             $class = [];
-            if ($item['active']) {
+            if ($item['active'])
+            {
                 $class[] = $this->activeCssClass;
             }
-            if ($i === 0 && $this->firstItemCssClass !== null) {
+            if ($i === 0 && $this->firstItemCssClass !== null)
+            {
                 $class[] = $this->firstItemCssClass;
             }
-            if ($i === $n - 1 && $this->lastItemCssClass !== null) {
+            if ($i === $n - 1 && $this->lastItemCssClass !== null)
+            {
                 $class[] = $this->lastItemCssClass;
             }
-            if (!empty($class)) {
-                if (empty($options['class'])) {
+            if (!empty($class))
+            {
+                if (empty($options['class']))
+                {
                     $options['class'] = implode(' ', $class);
-                } else {
+                }
+                else
+                {
                     $options['class'] .= ' ' . implode(' ', $class);
                 }
             }
@@ -215,7 +169,8 @@ class Menu extends \yii\widgets\Menu
             // set parent flag
             $item['level'] = $level;
             $menu = $this->renderItem($item);
-            if (!empty($item['items'])) {
+            if (!empty($item['items']))
+            {
                 $menu .= strtr($this->submenuTemplate, [
                     '{items}' => $this->renderItems($item['items'], $level + 1),
                 ]);
@@ -233,33 +188,122 @@ class Menu extends \yii\widgets\Menu
      */
     protected function renderItem($item)
     {
-        $icon = isset($item['icon']) ? Html::tag('i', '', ['class' => $item['icon']]) : '';
-        $label = ($item['level'] == 1) ?
-            Html::tag('span', $item['label'], ['class' => 'title']) : (' ' . $item['label']);
-        $arrow = !empty($item['items']) ?
-            Html::tag('span', '', ['class' => 'arrow' . ($item['active'] ? ' open' : '')]) : '';
-
-        if ($item['active'] && $item['level'] == 1) {
-            $arrow = Html::tag('div', '', ['class' => 'selected']) . $arrow;
-        }
-        $badge =  ArrayHelper::getValue($item, 'badge', '');
-        if (isset($item['url'])) {
-            $template = ArrayHelper::getValue($item, 'template', $this->linkTemplate);
-            return strtr($template, [
-                '{url}' => Url::toRoute($item['url']),
-                '{label}' => $label,
-                '{icon}' => $icon,
-                '{arrow}' => $arrow,
-                '{badge}' => $badge,
-            ]);
-        } else {
-            $template = ArrayHelper::getValue($item, 'template', $this->labelTemplate);
-            return strtr($template, [
-                '{label}' => $label,
-                '{icon}' => $icon,
-                '{arrow}' => $arrow,
-                '{badge}' => $badge,
-            ]);
-        }
+        return strtr(ArrayHelper::getValue($item, 'template', $this->linkTemplate), [
+            '{url}' => $this->_pullItemUrl($item),
+            '{label}' => $this->_pullItemLabel($item),
+            '{icon}' => $this->_pullItemIcon($item),
+            '{arrow}' => $this->_pullItemArrow($item),
+            '{badge}' => $this->_pullItemBadge($item),
+        ]);
     }
+
+    /**
+     * Pulls out item url
+     * @param array $item given item
+     * @return string item url
+     */
+    private function _pullItemUrl($item)
+    {
+        $url = ArrayHelper::getValue($item, 'url', '#');
+
+        if ('#' === $url)
+        {
+            return 'javascript:;';
+        }
+
+        return Url::toRoute($item['url']);
+    }
+
+    /**
+     * Pulls out item label
+     * @param array $item given item
+     * @return string item label
+     */
+    private function _pullItemLabel($item)
+    {
+        $label = ArrayHelper::getValue($item, 'label', '');
+
+        $level = ArrayHelper::getValue($item, 'level', 1);
+
+        if (1 == $level)
+        {
+            return Html::tag('span', $label, ['class' => 'title']);
+        }
+
+        return sprintf(' %s', $label);
+    }
+
+    /**
+     * Pulls out item icon
+     * @param array $item given item
+     * @return string item icon
+     */
+    private function _pullItemIcon($item)
+    {
+        $icon = ArrayHelper::getValue($item, 'icon', null);
+
+        if ($icon)
+        {
+            return Html::tag('i', '', ['class' => $icon]);
+        }
+
+        return '';
+    }
+
+    /**
+     * Pulls out item arrow
+     * @param array $item given item
+     * @return string item arrow
+     */
+    private function _pullItemArrow($item)
+    {
+        $active = ArrayHelper::getValue($item, 'active', false);
+
+        $level = ArrayHelper::getValue($item, 'level', 1);
+
+        $items = ArrayHelper::getValue($item, 'items', []);
+
+        if (!empty($items))
+        {
+            $arrow = Html::tag('span', '', ['class' => 'arrow' . ($active ? ' open' : '')]);
+
+            if ($active && 1 == $level)
+            {
+                $arrow = Html::tag('div', '', ['class' => 'selected']) . $arrow;
+            }
+
+            return $arrow;
+        }
+
+        return '';
+    }
+
+    /**
+     * Pulls out item badge
+     * @param array $item given item
+     * @return string item badge
+     */
+    private function _pullItemBadge($item)
+    {
+        return ArrayHelper::getValue($item, 'badge', '');
+    }
+
+    /**
+     * Inits options
+     */
+    private function _initOptions()
+    {
+        Html::addCssClass($this->options, 'page-sidebar-menu');
+
+        if (Metronic::SIDEBAR_MENU_HOVER === Metronic::getComponent()->sidebarMenu)
+        {
+            Html::addCssClass($this->options, 'page-sidebar-menu-hover-submenu');
+        }
+
+        $this->options['data-slide-speed'] = 200;
+        $this->options['data-auto-scroll'] = 'true';
+        $this->options['data-keep-expanded'] = 'false';
+        $this->options['data-height'] = 261;
+    }
+
 }
