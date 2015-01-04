@@ -14,7 +14,7 @@ use yii\base\InvalidConfigException;
 use dlds\metronic\bundles\ThemeAsset;
 
 /**
- * This is the class Metronic Component
+ * This is the class of Metronic Component
  */
 class Metronic extends \yii\base\Component {
 
