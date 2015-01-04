@@ -265,14 +265,7 @@ class Menu extends \yii\widgets\Menu {
 
         if (!empty($items))
         {
-            $arrow = Html::tag('span', '', ['class' => 'arrow' . ($active ? ' open' : '')]);
-
-            if ($active && 1 == $level)
-            {
-                $arrow = Html::tag('div', '', ['class' => 'selected']) . $arrow;
-            }
-
-            return $arrow;
+            return Html::tag('span', '', ['class' => 'arrow' . ($active ? ' open' : '')]);
         }
 
         return '';

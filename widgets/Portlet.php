@@ -55,20 +55,15 @@ use yii\helpers\Html;
  */
 class Portlet extends Widget {
 
-    //types of the portlet
-    const TYPE_BOX = 'box';
-    const TYPE_SOLID = 'solid';
+    /**
+     * Types
+     */
+    const TYPE_LIGHT = 'light';
     const TYPE_NONE = '';
-    // color scheme
-    const COLOR_LIGHT_BLUE = 'light-blue';
-    const COLOR_BLUE = 'blue';
-    const COLOR_RED = 'red';
-    const COLOR_YELLOW = 'yellow';
-    const COLOR_GREEN = 'green';
-    const COLOR_PURPLE = 'purple';
-    const COLOR_LIGHT_GRAY = 'light-grey';
-    const COLOR_GRAY = 'grey';
-    //tools
+
+    /**
+     * Tools
+     */
     const TOOL_MINIMIZE = 'collapse';
     const TOOL_MODAL = 'modal';
     const TOOL_RELOAD = 'reload';
@@ -80,6 +75,11 @@ class Portlet extends Widget {
     public $title;
 
     /**
+     * @var string The portlet title helper
+     */
+    public $helper;
+
+    /**
      * @var string The portlet icon
      */
     public $icon;
@@ -88,13 +88,13 @@ class Portlet extends Widget {
      * @var string The portlet type
      * Valid values are 'box', 'solid', ''
      */
-    public $type = self::TYPE_BOX;
+    public $type = self::TYPE_LIGHT;
 
     /**
      * @var string The portlet color
      * Valid values are 'light-blue', 'blue', 'red', 'yellow', 'green', 'purple', 'light-grey', 'grey'
      */
-    public $color = self::COLOR_BLUE;
+    public $color = '';
 
     /**
      * @var array List of actions, where each element must be specified as a string.
@@ -151,13 +151,71 @@ class Portlet extends Widget {
     public function init()
     {
         parent::init();
-        Html::addCssClass($this->options, 'portlet ' . $this->color . ' ' . $this->type);
-        echo Html::beginTag('div', $this->options);
-        Html::addCssClass($this->headerOptions, 'portlet-title');
-        echo Html::beginTag('div', $this->headerOptions);
-        $icon = ($this->icon) ? Html::tag('i', '', ['class' => 'fa ' . $this->icon]) : '';
-        echo Html::tag('div', $icon . ' ' . $this->title, ['class' => 'caption']);
 
+        Html::addCssClass($this->options, sprintf('portlet %s', $this->type));
+        echo Html::beginTag('div', $this->options);
+
+        $this->_renderTitle();
+
+        Html::addCssClass($this->bodyOptions, 'portlet-body');
+        echo Html::beginTag('div', $this->bodyOptions);
+
+        $this->_renderScrollerBegin();
+    }
+
+    /**
+     * Renders the widget.
+     */
+    public function run()
+    {
+        $this->_renderScrollerEnd();
+
+        echo Html::endTag('div'); // End portlet body
+        echo Html::endTag('div'); // End portlet div
+
+        //$loader = Html::img(Metronic::getAssetsUrl($this->view) . '/img/loading-spinner-grey.gif');
+        //$this->clientOptions['loader'] = ArrayHelper::getValue($this->clientOptions, 'loader', $loader);
+
+        //$this->registerPlugin('portlet');
+    }
+
+    /**
+     * Renders portlet title
+     */
+    private function _renderTitle()
+    {
+        Html::addCssClass($this->headerOptions, 'portlet-title');
+
+        echo Html::beginTag('div', $this->headerOptions);
+
+        echo Html::beginTag('div', ['class' => 'caption']);
+
+        if ($this->icon)
+        {
+            echo Html::tag('i', '', ['class' => $this->pushFontColor($this->icon)]);
+        }
+
+        echo Html::tag('span', $this->title, ['class' => $this->pushFontColor('caption-subject bold uppercase')]);
+
+        if ($this->helper)
+        {
+            echo Html::tag('span', $this->helper, ['class' => 'caption-helper']);
+        }
+
+        echo Html::endTag('div');
+
+        $this->_renderTools();
+
+        $this->_renderActions();
+
+        echo Html::endTag('div');
+    }
+
+    /**
+     * Renders portlet tools
+     */
+    private function _renderTools()
+    {
         if (!empty($this->tools))
         {
             $tools = [];
@@ -180,17 +238,28 @@ class Portlet extends Widget {
                 }
                 $tools[] = Html::tag('a', '', ['class' => $class, 'href' => '']);
             }
+
             echo Html::tag('div', implode("\n", $tools), ['class' => 'tools']);
         }
+    }
 
+    /**
+     * Renders portlet actions
+     */
+    private function _renderActions()
+    {
         if (!empty($this->actions))
         {
             echo Html::tag('div', implode("\n", $this->actions), ['class' => 'actions']);
         }
-        echo Html::endTag('div');
-        Html::addCssClass($this->bodyOptions, 'portlet-body');
-        echo Html::beginTag('div', $this->bodyOptions);
-        
+    }
+
+    /**
+     * Renders scroller begin
+     * @throws InvalidConfigException
+     */
+    private function _renderScrollerBegin()
+    {
         if (!empty($this->scroller))
         {
             if (!isset($this->scroller['height']))
@@ -207,9 +276,9 @@ class Portlet extends Widget {
     }
 
     /**
-     * Renders the widget.
+     * Renders scroller end
      */
-    public function run()
+    private function _renderScrollerEnd()
     {
         if (!empty($this->scroller))
         {
@@ -229,12 +298,34 @@ class Portlet extends Widget {
                 echo Html::endTag('div');
             }
         }
-        echo Html::endTag('div'); // End portlet body
-        echo Html::endTag('div'); // End portlet div
-        
-        $loader = Html::img(Metronic::getAssetsUrl($this->view) . '/img/loading-spinner-grey.gif');
-        $this->clientOptions['loader'] = ArrayHelper::getValue($this->clientOptions, 'loader', $loader);
-        $this->registerPlugin('portlet');
+    }
+
+    /**
+     * Retrieves font color
+     */
+    protected function getFontColor()
+    {
+        if ($this->color)
+        {
+            return sprintf('font-%s', $this->color);
+        }
+
+        return '';
+    }
+
+    /**
+     * Pushes font color to given string
+     */
+    protected function pushFontColor($string)
+    {
+        $color = $this->getFontColor();
+
+        if ($color)
+        {
+            return sprintf('%s %s', $string, $color);
+        }
+
+        return $string;
     }
 
 }

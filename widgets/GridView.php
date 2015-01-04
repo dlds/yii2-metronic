@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -6,33 +7,40 @@
 
 namespace dlds\metronic\widgets;
 
-use Yii;
-use yii\base\Formatter;
-use yii\base\InvalidConfigException;
-use yii\grid\DataColumn;
 use yii\helpers\Html;
+use dlds\metronic\bundles\GridViewAsset;
 
-class GridView extends \yii\grid\GridView
-{
+class GridView extends \yii\grid\GridView {
+
     const FILTER_POS_OFF = 'off';
+
     /**
      * @var bool indicates whether the gridView is responsive.
      */
-    public $responsive = true;
+    public $responsive = false;
+
     /**
      * @var array the HTML attributes for the grid table element
      */
     public $tableOptions = ['class' => 'table table-striped table-bordered table-hover dataTable'];
+
     /**
      * @var array the HTML attributes for the table header row
      */
     public $headerRowOptions = ['class' => 'heading'];
+
+    /**
+     * @var string grid view layout
+     */
+    public $layout = "{items}\n{summary}\n{pager}";
 
     public function init()
     {
         parent::init();
         $this->initVisible();
         $this->initSortable();
+
+        //GridViewAsset::register($this->view);
     }
 
     /**
@@ -41,15 +49,21 @@ class GridView extends \yii\grid\GridView
     public function renderItems()
     {
         $content = array_filter([
-                $this->renderCaption(),
-                $this->renderColumnGroup(),
-                $this->showHeader ? $this->renderTableHeader() : false,
-                $this->showFooter ? $this->renderTableFooter() : false,
-                $this->renderTableBody(),
-            ]);
+            $this->renderCaption(),
+            $this->renderColumnGroup(),
+            $this->showHeader ? $this->renderTableHeader() : false,
+            $this->showFooter ? $this->renderTableFooter() : false,
+            $this->renderTableBody(),
+        ]);
+
         $table = Html::tag('table', implode("\n", $content), $this->tableOptions);
-        if ($this->responsive) {
+        if ($this->responsive)
+        {
             $table = Html::tag('div', $table, ['class' => 'table-responsive']);
+        }
+        else
+        {
+            $table = Html::tag('div', $table, ['class' => 'table-scrollable']);
         }
 
         return $table;
@@ -58,11 +72,14 @@ class GridView extends \yii\grid\GridView
     protected function initVisible()
     {
         $columns = $this->getStorageColumns();
-        if (empty($columns)) {
+        if (empty($columns))
+        {
             return;
         }
-        foreach ($this->columns as $i => $column) {
-            if (array_search($i, $columns) === false) {
+        foreach ($this->columns as $i => $column)
+        {
+            if (array_search($i, $columns) === false)
+            {
                 unset($this->columns[$i]);
             }
         }
@@ -71,20 +88,21 @@ class GridView extends \yii\grid\GridView
     protected function initSortable()
     {
         $positions = $this->getStorageColumns();
-        if (empty($positions)) {
+        if (empty($positions))
+        {
             return;
         }
         uksort(
-            $this->columns,
-            function ($a, $b) use ($positions) {
-                $aIndex = array_search($a, $positions);
-                $bIndex = array_search($b, $positions);
-                if ($aIndex == $bIndex) {
-                    return 0;
-                }
-
-                return ($aIndex < $bIndex) ? -1 : 1;
+                $this->columns, function ($a, $b) use ($positions) {
+            $aIndex = array_search($a, $positions);
+            $bIndex = array_search($b, $positions);
+            if ($aIndex == $bIndex)
+            {
+                return 0;
             }
+
+            return ($aIndex < $bIndex) ? -1 : 1;
+        }
         );
     }
 
@@ -92,4 +110,5 @@ class GridView extends \yii\grid\GridView
     {
         return [];
     }
+
 }

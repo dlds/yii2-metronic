@@ -47,12 +47,12 @@ class Breadcrumbs extends \yii\widgets\Breadcrumbs
      * @var string the template used to render each inactive item in the breadcrumbs. The token `{link}`
      * will be replaced with the actual HTML link for each inactive item.
      */
-    public $itemTemplate = "<li>{link}<i class=\"fa fa-angle-right\"></i></li>\n";
+    public $itemTemplate = "<li>{link}<i class=\"fa fa-circle\"></i></li>\n";
     /**
      * @var string the template used to render each active item in the breadcrumbs. The token `{link}`
      * will be replaced with the actual HTML link for each active item.
      */
-    public $activeItemTemplate = "<li>{link}<i class=\"fa fa-angle-right\"></i></li>\n";
+    public $activeItemTemplate = "<li>{link}</li>\n";
     /**
      * @var array|string
      */
@@ -61,7 +61,7 @@ class Breadcrumbs extends \yii\widgets\Breadcrumbs
     public function init()
     {
         parent::init();
-        Html::addCssClass($this->options, 'page-breadcrumb breadcrumb');
+        Html::addCssClass($this->options, 'page-breadcrumb');
     }
 
 

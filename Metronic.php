@@ -92,6 +92,67 @@ class Metronic extends \yii\base\Component {
     const PARAM_THEME = '{theme}';
 
     /**
+     * UI Colors blue
+     */
+    const UI_COLOR_BLUE = 'blue';
+    const UI_COLOR_BLUE_HOKI = 'blue-hoki';
+    const UI_COLOR_BLUE_STEEL = 'blue-steel';
+    const UI_COLOR_BLUE_MADISON = 'blue-madison';
+    const UI_COLOR_BLUE_CHAMBRAY = 'blue-chambray';
+    const UI_COLOR_BLUE_EBONYCLAY = 'blue-ebonyclay';
+    
+    /**
+     * UI Colors green
+     */
+    const UI_COLOR_GREEN = 'green';
+    const UI_COLOR_GREEN_MEADOW = 'green-meadow';
+    const UI_COLOR_GREEN_SEAGREEN = 'green-seagreen';
+    const UI_COLOR_GREEN_TORQUOISE = 'green-torquoise';
+    const UI_COLOR_GREEN_JUNGLE = 'green-jungle';
+    const UI_COLOR_GREEN_HAZE = 'green-haze';
+    
+    /**
+     * UI Colors red
+     */
+    const UI_COLOR_RED = 'red';
+    const UI_COLOR_RED_PINK = 'red-pink';
+    const UI_COLOR_RED_SUNGLO = 'red-sunglo';
+    const UI_COLOR_RED_INTENSE = 'red-intense';
+    const UI_COLOR_RED_THUNDERBIRD = 'red-thunderbird';
+    const UI_COLOR_RED_FLAMINGO = 'red-flamingo';
+    const UI_COLOR_RED_HAZE = 'red-haze';
+
+    /**
+     * UI Colors yellow
+     */
+    const UI_COLOR_YELLOW = 'yellow';
+    const UI_COLOR_YELLOW_GOLD = 'yellow-gold';
+    const UI_COLOR_YELLOW_CASABLANCA = 'yellow-casablanca';
+    const UI_COLOR_YELLOW_CRUSTA = 'yellow-crusta';
+    const UI_COLOR_YELLOW_LEMON = 'yellow-lemon';
+    const UI_COLOR_YELLOW_SAFFRON = 'yellow-saffron';
+    
+    /**
+     * UI Colors purple
+     */
+    const UI_COLOR_PURPLE = 'purple';
+    const UI_COLOR_PURPLE_PLUM = 'purple-plum';
+    const UI_COLOR_PURPLE_MEDIUM = 'purple-medium';
+    const UI_COLOR_PURPLE_STUDIO = 'purple-studio';
+    const UI_COLOR_PURPLE_WISTERIA = 'purple-wisteria';
+    const UI_COLOR_PURPLE_SEANCE = 'purple-seance';
+    
+    /**
+     * UI Colors grey
+     */
+    const UI_COLOR_GREY = 'grey';
+    const UI_COLOR_GREY_CASCADE = 'grey-cascade';
+    const UI_COLOR_GREY_SILVER = 'grey-silver';
+    const UI_COLOR_GREY_STEEL = 'grey-steel';
+    const UI_COLOR_GREY_CARARRA = 'grey-cararra';
+    const UI_COLOR_GREY_GALLERY = 'grey-gallery';
+    
+    /**
      * @var string version
      */
     public $version = self::VERSION_4;

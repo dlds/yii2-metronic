@@ -33,6 +33,7 @@ class Button extends \yii\bootstrap\Button {
     /**
      *  Button bootstrap types
      */
+    const TYPE_DEFAULT = '';
     const TYPE_PRIMARY = 'primary';
     const TYPE_INFO = 'info';
     const TYPE_SUCCESS = 'success';
@@ -40,19 +41,7 @@ class Button extends \yii\bootstrap\Button {
     const TYPE_DANGER = 'danger';
     const TYPE_INVERSE = 'inverse';
     const TYPE_LINK = 'link';
-
-    /**
-     * Button metronic types
-     */
-    const TYPE_M_DEFAULT = 'default';
-    const TYPE_M_RED = 'red';
-    const TYPE_M_RED_HAZE = 'red-haze';
-    const TYPE_M_BLUE = 'blue';
-    const TYPE_M_GREEN = 'green';
-    const TYPE_M_GREEN_HAZE = 'green-haze';
-    const TYPE_M_YELLOW = 'yellow';
-    const TYPE_M_PURPLE = 'purple';
-    const TYPE_M_DARK = 'dark';
+    const TYPE_CIRCLE = 'circle';
 
     /**
      * Button sizes
@@ -78,7 +67,12 @@ class Button extends \yii\bootstrap\Button {
      * Valid values for metronic styles are 'default', 'red', 'blue', 'green', 'yellow', 'purple', 'dark'.
      * Valid values for bootstrap styles are 'primary', 'info', 'success', 'warning', 'danger', 'inverse', 'link'.
      */
-    public $type = self::TYPE_M_DEFAULT;
+    public $type = self::TYPE_DEFAULT;
+
+    /**
+     * @var string color
+     */
+    public $color = 'btn-default';
 
     /**
      * @var string The button icon.
@@ -105,35 +99,7 @@ class Button extends \yii\bootstrap\Button {
      * @var bool Indicates whether the dropdown shoud expand on hover.
      */
     public $hover = false;
-
-    /**
-     * @var array bootstrap types
-     */
-    private $_bootstrapTypes = [
-        self::TYPE_PRIMARY,
-        self::TYPE_INFO,
-        self::TYPE_SUCCESS,
-        self::TYPE_WARNING,
-        self::TYPE_DANGER,
-        self::TYPE_INVERSE,
-        self::TYPE_LINK,
-    ];
-
-    /**
-     * @var array metronic types
-     */
-    private $_metronicTypes = [
-        self::TYPE_M_DEFAULT,
-        self::TYPE_M_RED,
-        self::TYPE_M_RED_HAZE,
-        self::TYPE_M_BLUE,
-        self::TYPE_M_GREEN,
-        self::TYPE_M_GREEN_HAZE,
-        self::TYPE_M_YELLOW,
-        self::TYPE_M_PURPLE,
-        self::TYPE_M_DARK,
-    ];
-
+    
     /**
      * @var array sizes
      */
@@ -150,18 +116,12 @@ class Button extends \yii\bootstrap\Button {
     {
         parent::init();
 
-        if (in_array($this->type, $this->_bootstrapTypes))
+        if (static::TYPE_DEFAULT !== $this->type)
         {
-            Html::addCssClass($this->options, 'btn-' . $this->type);
+            Html::addCssClass($this->options, sprintf('btn-%s', $this->type));
         }
-        elseif (in_array($this->type, $this->_metronicTypes))
-        {
-            Html::addCssClass($this->options, $this->type);
-        }
-        else
-        {
-            throw new InvalidConfigException("The button type is invalid.");
-        }
+
+        Html::addCssClass($this->options, $this->color);
 
         if (in_array($this->size, $this->_sizes))
         {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -23,8 +24,8 @@ use yii\helpers\Html;
  * ]);
  * ```
  */
-class Link extends Widget
-{
+class Link extends Widget {
+
     // Icon position
     const ICON_POSITION_LEFT = 'left';
     const ICON_POSITION_RIGHT = 'right';
@@ -33,18 +34,22 @@ class Link extends Widget
      * @var string The button label
      */
     public $label;
+
     /**
      * @var bool Whether the label should be HTML-encoded
      */
     public $encodeLabel = true;
+
     /**
      * @var string The link url
      */
     public $url = '#';
+
     /**
      * @var string The button icon
      */
     public $icon = 'm-icon-swapright m-icon-gray';
+
     /**
      * @var string Icon position
      * Valid values are 'left', 'right'
@@ -52,16 +57,23 @@ class Link extends Widget
     public $iconPosition = self::ICON_POSITION_RIGHT;
 
     /**
+     * Label options
+     */
+    public $labelOptions;
+
+    /**
      * Initializes the widget.
      * @throws InvalidConfigException
      */
     public function init()
     {
-        if ($this->label === null) {
+        if ($this->label === null)
+        {
             throw new InvalidConfigException("The 'label' option is required.");
         }
 
-        if ($this->url === null) {
+        if ($this->url === null)
+        {
             $this->url = '#';
         }
     }
@@ -72,11 +84,17 @@ class Link extends Widget
     public function run()
     {
         $icon = ($this->icon === null) ? '' : Html::tag('i', '', ['class' => $this->icon]);
-        if (strcasecmp($this->iconPosition, self::ICON_POSITION_LEFT) === 0) {
-            $label = $icon . ' ' . Html::encode($this->label);
-        } else {
-            $label = Html::encode($this->label) . ' ' .  $icon;
+        $label = Html::tag('span', Html::encode($this->label), $this->labelOptions);
+
+        if (strcasecmp($this->iconPosition, self::ICON_POSITION_LEFT) === 0)
+        {
+            $content = sprintf('%s %s', $icon, $label);
         }
-        echo Html::a($label, $this->url, $this->options);
+        else
+        {
+            $content = sprintf('%s %s', $label, $icon);
+        }
+        echo Html::a($content, $this->url, $this->options);
     }
+
 }
