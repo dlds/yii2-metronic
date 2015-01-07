@@ -4,7 +4,7 @@
  * @license http://www.digitaldeals/license/
  */
 
-namespace  dlds\metronic\widgets;
+namespace  dlds\metronic\bundles;
 
 use yii\web\AssetBundle;
 
@@ -19,6 +19,6 @@ class SpinnerAsset extends AssetBundle
     ];
 
     public $depends = [
-        'dlds\metronic\CoreAsset',
+        'dlds\metronic\bundles\CoreAsset',
     ];
 }

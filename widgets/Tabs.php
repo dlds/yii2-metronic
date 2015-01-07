@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -47,15 +48,13 @@ use yii\helpers\Html;
  * ```
  *
  */
-class Tabs extends \yii\bootstrap\Tabs
-{
+class Tabs extends \yii\bootstrap\Tabs {
 
     // Tab placements.
     const PLACEMENT_ABOVE = 'above';
     const PLACEMENT_BELOW = 'below';
     const PLACEMENT_LEFT = 'left';
     const PLACEMENT_RIGHT = 'right';
-
     // Tab type
     const NAV_TYPE_TABS = 'nav-tabs';
     const NAV_TYPE_PILLS = 'nav-pills';
@@ -70,12 +69,13 @@ class Tabs extends \yii\bootstrap\Tabs
      * @var string the placement of the tabs.
      * Valid values are 'above', 'below', 'left' and 'right'.
      */
-    public $placement = self::PLACEMENT_BELOW;
+    public $placement = self::PLACEMENT_ABOVE;
 
     /**
      * @var bool Indicates whether tabs is styled for Metronic.
      */
     public $styled = true;
+
     /**
      * @var bool Indicates whether tabs is justified.
      */
@@ -86,7 +86,8 @@ class Tabs extends \yii\bootstrap\Tabs
      */
     public function init()
     {
-        if ($this->justified) {
+        if ($this->justified)
+        {
             Html::addCssClass($this->options, 'nav-justified');
         }
 
@@ -100,13 +101,17 @@ class Tabs extends \yii\bootstrap\Tabs
     public function run()
     {
         $classWrap = ['tabs-' . $this->placement];
-        if ($this->styled) {
+        if ($this->styled)
+        {
             $classWrap[] = 'tabbable-custom';
-            if ($this->justified) {
+            if ($this->justified)
+            {
                 $classWrap[] = 'nav-justified';
             }
-        } else {
-            $classWrap[]= 'tabbable';
+        }
+        else
+        {
+            $classWrap[] = 'tabbable';
         }
         echo Html::beginTag('div', ['class' => implode(' ', $classWrap)]);
         parent::run();
@@ -122,38 +127,54 @@ class Tabs extends \yii\bootstrap\Tabs
     {
         $headers = [];
         $panes = [];
-        foreach ($this->items as $n => $item) {
-            if (!isset($item['label'])) {
+
+        if (!$this->hasActiveTab() && !empty($this->items))
+        {
+            $this->items[0]['active'] = true;
+        }
+
+        foreach ($this->items as $n => $item)
+        {
+            if (!isset($item['label']))
+            {
                 throw new InvalidConfigException("The 'label' option is required.");
             }
             $label = $this->encodeLabels ? Html::encode($item['label']) : $item['label'];
             $headerOptions = array_merge($this->headerOptions, ArrayHelper::getValue($item, 'headerOptions', []));
 
-            if (isset($item['items'])) {
-                if ($this->styled) {
+            if (isset($item['items']))
+            {
+                if ($this->styled)
+                {
                     throw new InvalidConfigException("The 'styled' not support dropdown items. Please, set 'styled' to false.");
                 }
                 $label .= ' <b class="caret"></b>';
                 Html::addCssClass($headerOptions, 'dropdown');
 
-                if ($this->renderDropdown($item['items'], $panes)) {
+                if ($this->renderDropdown($item['items'], $panes))
+                {
                     Html::addCssClass($headerOptions, 'active');
                 }
 
                 $header = Html::a($label, "#", ['class' => 'dropdown-toggle', 'data-toggle' => 'dropdown']) . "\n"
-                    . Dropdown::widget(['items' => $item['items'], 'clientOptions' => false]);
-            } elseif (isset($item['content'])) {
+                        . Dropdown::widget(['items' => $item['items'], 'clientOptions' => false]);
+            }
+            elseif (isset($item['content']))
+            {
                 $options = array_merge($this->itemOptions, ArrayHelper::getValue($item, 'options', []));
                 $options['id'] = ArrayHelper::getValue($options, 'id', $this->options['id'] . '-tab' . $n);
 
                 Html::addCssClass($options, 'tab-pane');
-                if (ArrayHelper::remove($item, 'active')) {
+                if (ArrayHelper::remove($item, 'active'))
+                {
                     Html::addCssClass($options, 'active');
                     Html::addCssClass($headerOptions, 'active');
                 }
                 $header = Html::a($label, '#' . $options['id'], ['data-toggle' => 'tab']);
                 $panes[] = Html::tag('div', $item['content'], $options);
-            } else {
+            }
+            else
+            {
                 throw new InvalidConfigException("Either the 'content' or 'items' option must be set.");
             }
 
@@ -163,6 +184,7 @@ class Tabs extends \yii\bootstrap\Tabs
         $headers = Html::tag('ul', implode("\n", $headers), $this->options);
         $panes = Html::tag('div', implode("\n", $panes), ['class' => 'tab-content']);
 
-        return  ($this->placement == self::PLACEMENT_BELOW) ? ($panes . "\n" . $headers) : ($headers . "\n" . $panes);
+        return ($this->placement == self::PLACEMENT_BELOW) ? ($panes . "\n" . $headers) : ($headers . "\n" . $panes);
     }
+
 }

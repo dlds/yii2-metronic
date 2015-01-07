@@ -1,28 +1,33 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
  */
 
-namespace  dlds\metronic\bundles;
+namespace dlds\metronic\bundles;
 
 use yii\web\AssetBundle;
 
 /**
  * SpinnerAsset for spinner widget.
  */
-class NotificationAsset extends AssetBundle
-{
+class GridViewSortableAsset extends AssetBundle {
+
     public $sourcePath = '@dlds/metronic/assets';
+
+    /**
+     * @var array JS
+     */
     public $js = [
-        'plugins/bootstrap-toastr/toastr.min.js',
+        'global/scripts/sortable.gridview.js',
     ];
 
-    public $css = [
-        'plugins/bootstrap-toastr/toastr.min.css',
-    ];
-
+    /**
+     * @var array depends
+     */
     public $depends = [
-        'dlds\metronic\bundles\CoreAsset',
+        'yii\jui\JuiAsset',
     ];
+
 }

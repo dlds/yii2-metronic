@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
  */
-
 
 namespace dlds\metronic\widgets;
 
@@ -13,8 +13,8 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\widgets\ActiveFormAsset;
 
-class ActiveForm extends \yii\widgets\ActiveForm
-{
+class ActiveForm extends \yii\widgets\ActiveForm {
+
     // Buttons align
     const BUTTONS_ALIGN_LEFT = 'left';
     const BUTTONS_ALIGN_RIGHT = 'right';
@@ -25,23 +25,28 @@ class ActiveForm extends \yii\widgets\ActiveForm
     const TYPE_HORIZONTAL = 'horizontal';
     const TYPE_VERTICAL = 'vertical';
     const TYPE_INLINE = 'inline';
+
     /**
      * @var bool Indicates whether form rows is separated.
      */
     public $separated = false;
+
     /**
      * @var bool Indicates whether form rows is stripped.
      */
     public $stripped = false;
+
     /**
      * @var bool Indicates whether form rows is bordered.
      */
     public $bordered = false;
+
     /**
      * @var string ActiveForm type.
      * Valid values are 'horizontal', 'vertical', 'inline'
      */
     public $type = self::TYPE_VERTICAL;
+
     /**
      * @var array the [[ActiveForm]] buttons.
      * Note that if are empty option 'items', then will not generated element is wrapped buttons.
@@ -63,6 +68,7 @@ class ActiveForm extends \yii\widgets\ActiveForm
      * ```
      */
     public $buttons = [];
+
     /**
      * @var array the default configuration used by [[field()]] when creating a new field object.
      */
@@ -73,51 +79,62 @@ class ActiveForm extends \yii\widgets\ActiveForm
      * In case 'true' widget renders 'div' instead 'form'.
      */
     public $fake = false;
+
     /**
      * Initializes the widget.
      * This renders the form open tag.
      */
     public function init()
     {
-        if (!isset($this->options['id'])) {
+        if (!isset($this->options['id']))
+        {
             $this->options['id'] = $this->getId();
         }
 
-        switch ($this->type) {
+        switch ($this->type)
+        {
             case self::TYPE_HORIZONTAL:
-                if ($this->stripped) {
+                if ($this->stripped)
+                {
                     Html::addCssClass($this->options, 'form-row-stripped');
                 }
-                if ($this->separated) {
+                if ($this->separated)
+                {
                     Html::addCssClass($this->options, 'form-row-seperated');
                 }
-                if ($this->bordered) {
+                if ($this->bordered)
+                {
                     Html::addCssClass($this->options, 'form-bordered');
                 }
                 Html::addCssClass($this->options, 'form-horizontal');
                 $this->fieldConfig = ArrayHelper::merge([
-                        'labelOptions' => ['class' => 'col-md-3 control-label'],
-                        'template' => "{label}\n" . Html::tag('div', "{input}\n{error}\n{hint}", ['class' => 'col-md-9']),
-                    ], $this->fieldConfig);
+                            'labelOptions' => ['class' => 'col-md-3 control-label'],
+                            'template' => "{label}\n" . Html::tag('div', "{input}\n{error}\n{hint}", ['class' => 'col-md-9']),
+                                ], $this->fieldConfig);
                 break;
             case self::TYPE_INLINE:
                 Html::addCssClass($this->options, 'form-inline');
                 $this->fieldConfig = ArrayHelper::merge([
-                        'labelOptions' => ['class' => 'sr-only'],
-                    ], $this->fieldConfig);
+                            'labelOptions' => ['class' => 'sr-only'],
+                                ], $this->fieldConfig);
                 break;
         }
-        if (!isset($this->fieldConfig['class'])) {
+        if (!isset($this->fieldConfig['class']))
+        {
             $this->fieldConfig['class'] = ActiveField::className();
         }
-        if ($this->fake) {
+        if ($this->fake)
+        {
             echo Html::beginTag('div', $this->options);
-        } else {
+        }
+        else
+        {
             echo Html::beginForm($this->action, $this->method, $this->options);
         }
         echo $this->renderActions(self::BUTTONS_POSITION_TOP);
         echo Html::beginTag('div', ['class' => 'form-body']);
     }
+
     /**
      * Runs the widget.
      * This registers the necessary javascript code and renders the form close tag.
@@ -126,7 +143,8 @@ class ActiveForm extends \yii\widgets\ActiveForm
     {
         echo Html::endTag('div');
         echo $this->renderActions(self::BUTTONS_POSITION_BOTTOM);
-        if (!empty($this->attributes)) {
+        if (!empty($this->attributes))
+        {
             $id = $this->options['id'];
             $options = Json::encode($this->getClientOptions());
             $attributes = Json::encode($this->attributes);
@@ -134,9 +152,12 @@ class ActiveForm extends \yii\widgets\ActiveForm
             ActiveFormAsset::register($view);
             $view->registerJs("jQuery('#$id').yiiActiveForm($attributes, $options);");
         }
-        if ($this->fake) {
+        if ($this->fake)
+        {
             echo Html::endTag('div');
-        } else {
+        }
+        else
+        {
             echo Html::endForm();
         }
     }
@@ -152,29 +173,35 @@ class ActiveForm extends \yii\widgets\ActiveForm
      * @return ActiveField the created ActiveField object
      * @see fieldConfig
      */
-    public function field($model, $attribute, $options = []) {
+    public function field($model, $attribute, $options = [])
+    {
         return parent::field($model, $attribute, $options);
     }
 
     protected function renderActions($currentPosition)
     {
         $position = ArrayHelper::getValue($this->buttons, 'position', self::BUTTONS_POSITION_BOTTOM);
-        if (!empty($this->buttons['items']) && $position == $currentPosition) {
+        if (!empty($this->buttons['items']) && $position == $currentPosition)
+        {
             $actionsOptions = ArrayHelper::getValue($this->buttons, 'options', []);
             Html::addCssClass($actionsOptions, 'form-actions');
-            if ($position == self::BUTTONS_POSITION_TOP) {
+            if ($position == self::BUTTONS_POSITION_TOP)
+            {
                 Html::addCssClass($actionsOptions, 'top');
             }
-            if (isset($this->buttons['align']) && $this->buttons['align'] == self::BUTTONS_ALIGN_RIGHT) {
+            if (isset($this->buttons['align']) && $this->buttons['align'] == self::BUTTONS_ALIGN_RIGHT)
+            {
                 Html::addCssClass($actionsOptions, 'right');
             }
             $rowOptions = [];
             $buttons = implode("\n", $this->buttons['items']);
-            switch ($this->type) {
+            switch ($this->type)
+            {
                 case self::TYPE_HORIZONTAL:
                     Html::addCssClass($actionsOptions, 'fluid');
                     preg_match('#col-md-(\d+)#', $this->fieldConfig['labelOptions']['class'], $matches);
-                    if (isset($matches[1])) {
+                    if (isset($matches[1]))
+                    {
                         $offset = $matches[1];
                         Html::addCssClass($rowOptions, 'col-md-offset-' . $offset);
                         Html::addCssClass($rowOptions, 'col-md-' . 12 - $offset);
@@ -188,4 +215,5 @@ class ActiveForm extends \yii\widgets\ActiveForm
 
         return '';
     }
+
 }

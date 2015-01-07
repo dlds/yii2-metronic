@@ -8,7 +8,9 @@
 namespace dlds\metronic\widgets;
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use dlds\metronic\bundles\GridViewAsset;
+use dlds\metronic\bundles\GridViewSortableAsset;
 
 class GridView extends \yii\grid\GridView {
 
@@ -34,10 +36,20 @@ class GridView extends \yii\grid\GridView {
      */
     public $layout = "{items}\n{summary}\n{pager}";
 
+    /**
+     * @var boolean indicates if grid is sortable
+     */
+    public $sortable = false;
+
+    /**
+     * Inits widget
+     */
     public function init()
     {
         parent::init();
+
         $this->initVisible();
+
         $this->initSortable();
 
         //GridViewAsset::register($this->view);
@@ -85,25 +97,19 @@ class GridView extends \yii\grid\GridView {
         }
     }
 
+    /**
+     * Inits sortable behavior on gridview
+     */
     protected function initSortable()
     {
-        $positions = $this->getStorageColumns();
-        if (empty($positions))
+        if ($this->sortable)
         {
-            return;
-        }
-        uksort(
-                $this->columns, function ($a, $b) use ($positions) {
-            $aIndex = array_search($a, $positions);
-            $bIndex = array_search($b, $positions);
-            if ($aIndex == $bIndex)
-            {
-                return 0;
-            }
+            $this->sortable = Url::toRoute($this->sortable);
 
-            return ($aIndex < $bIndex) ? -1 : 1;
+            $view = $this->getView();
+            $view->registerJs("jQuery('#{$this->id}').SortableGridView('{$this->sortable}');");
+            GridViewSortableAsset::register($view);
         }
-        );
     }
 
     protected function getStorageColumns()
