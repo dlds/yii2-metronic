@@ -17,9 +17,11 @@ var App = function () {
         elements.addClass('error');
     }
 
-    var init = function () {
+    return {
+        init: function () {
+            initTabsErrors();
+        }
+    };
 
-        initTabsErrors();
-    }
 
-}
+}();

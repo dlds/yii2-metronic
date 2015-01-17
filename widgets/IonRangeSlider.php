@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -10,6 +11,7 @@ use Yii;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\View;
+use dlds\metronic\bundles\IonRangeSliderAsset;
 
 /**
  *  IonRangeSlider renders ionRangeSlider widget.
@@ -33,8 +35,8 @@ use yii\web\View;
  * ```
  * @see https://github.com/IonDen/ion.rangeSlider
  */
-class IonRangeSlider extends InputWidget
-{
+class IonRangeSlider extends InputWidget {
+
     /**
      * @var string separator values
      */
@@ -45,18 +47,23 @@ class IonRangeSlider extends InputWidget
      */
     public function run()
     {
-        if ($this->hasModel()) {
+        if ($this->hasModel())
+        {
             $values = explode($this->separator, $this->model->{$this->attribute});
-            if (count($values) == 2) {
-                $this->clientOptions['from'] = (int)$values[0];
-                $this->clientOptions['to'] = (int)$values[1];
+            if (count($values) == 2)
+            {
+                $this->clientOptions['from'] = (int) $values[0];
+                $this->clientOptions['to'] = (int) $values[1];
             }
             echo Html::activeTextInput($this->model, $this->attribute, $this->options);
-        } else {
+        }
+        else
+        {
             $values = explode($this->separator, $this->value);
-            if (count($values) == 2) {
-                $this->clientOptions['from'] = (int)$values[0];
-                $this->clientOptions['to'] = (int)$values[1];
+            if (count($values) == 2)
+            {
+                $this->clientOptions['from'] = (int) $values[0];
+                $this->clientOptions['to'] = (int) $values[1];
             }
             echo Html::textInput($this->name, $this->value, $this->options);
         }

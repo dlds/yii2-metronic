@@ -23,6 +23,7 @@ class ThemeAsset extends AssetBundle {
      */
     public $depends = [
         'dlds\metronic\bundles\CoreAsset',
+        'dlds\metronic\bundles\StyleBasedAsset',
     ];
 
     /**
@@ -39,8 +40,8 @@ class ThemeAsset extends AssetBundle {
      */
     public $js = [
         'scripts/layout.js',
+        'scripts/app.js',
         'scripts/init.js',
-        //'scripts/app.js',
     ];
 
     /**

@@ -8,8 +8,6 @@
 namespace dlds\metronic\bundles;
 
 use yii\web\AssetBundle;
-use yii\helpers\ArrayHelper;
-use dlds\metronic\Metronic;
 
 class CoreAsset extends AssetBundle {
 
@@ -33,7 +31,6 @@ class CoreAsset extends AssetBundle {
         'global/plugins/simple-line-icons/simple-line-icons.min.css',
         'global/plugins/uniform/css/uniform.default.css',
         'global/plugins/bootstrap-switch/css/bootstrap-switch.min.css',
-        'global/css/plugins.css',
     ];
 
     /**
@@ -58,35 +55,4 @@ class CoreAsset extends AssetBundle {
             'plugins/excanvas.min.js' => 'if lt IE 9',
         ],
     ];
-
-    /**
-     * @var array style based css
-     */
-    private $styleBasedCss = [
-        Metronic::STYLE_SQUARE => [
-            'global/css/components.css',
-        ],
-        Metronic::STYLE_ROUNDED => [
-            'global/css/components-rounded.css',
-        ],
-    ];
-
-    /**
-     * Inits bundle
-     */
-    public function init()
-    {
-        $this->_handleStyleBased();
-
-        return parent::init();
-    }
-
-    /**
-     * Handles style based files
-     */
-    private function _handleStyleBased()
-    {
-        $this->css = ArrayHelper::merge($this->css, $this->styleBasedCss[Metronic::getComponent()->style]);
-    }
-
 }
