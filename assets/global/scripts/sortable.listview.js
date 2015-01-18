@@ -5,15 +5,14 @@
         });
         return ui;
     };
-    $.fn.SortableListView = function (action) {
-        console.log('ahoj');
+    $.fn.SortableListView = function (action, options) {
         var widget = this;
-        var list = $('tbody', this);
-        list.sortable({
-            items: 'div',
+        widget.sortable({
+            //placeholder: options && options.placeholder || 'sortable-placeholder',
+            items: '.sortable-item',
             update: function () {
                 var data = [];
-                $('div', list).each(function () {
+                $('.sortable-item', widget).each(function () {
                     data.push(JSON.stringify($(this).data('key')));
                 });
                 $.ajax({

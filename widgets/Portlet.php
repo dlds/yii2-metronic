@@ -97,6 +97,11 @@ class Portlet extends Widget {
     public $color = '';
 
     /**
+     * @var string The portlet background color
+     */
+    public $background = '';
+
+    /**
      * @var array List of actions, where each element must be specified as a string.
      */
     public $actions = [];
@@ -152,7 +157,7 @@ class Portlet extends Widget {
     {
         parent::init();
 
-        Html::addCssClass($this->options, sprintf('portlet %s', $this->type));
+        Html::addCssClass($this->options, trim(sprintf('portlet %s %s', $this->type, $this->background)));
         echo Html::beginTag('div', $this->options);
 
         $this->_renderTitle();
@@ -172,10 +177,8 @@ class Portlet extends Widget {
 
         echo Html::endTag('div'); // End portlet body
         echo Html::endTag('div'); // End portlet div
-
         //$loader = Html::img(Metronic::getAssetsUrl($this->view) . '/img/loading-spinner-grey.gif');
         //$this->clientOptions['loader'] = ArrayHelper::getValue($this->clientOptions, 'loader', $loader);
-
         //$this->registerPlugin('portlet');
     }
 
@@ -184,31 +187,34 @@ class Portlet extends Widget {
      */
     private function _renderTitle()
     {
-        Html::addCssClass($this->headerOptions, 'portlet-title');
-
-        echo Html::beginTag('div', $this->headerOptions);
-
-        echo Html::beginTag('div', ['class' => 'caption']);
-
-        if ($this->icon)
+        if (false !== $this->title)
         {
-            echo Html::tag('i', '', ['class' => $this->pushFontColor($this->icon)]);
+            Html::addCssClass($this->headerOptions, 'portlet-title');
+
+            echo Html::beginTag('div', $this->headerOptions);
+
+            echo Html::beginTag('div', ['class' => 'caption']);
+
+            if ($this->icon)
+            {
+                echo Html::tag('i', '', ['class' => $this->pushFontColor($this->icon)]);
+            }
+
+            echo Html::tag('span', $this->title, ['class' => $this->pushFontColor('caption-subject bold uppercase')]);
+
+            if ($this->helper)
+            {
+                echo Html::tag('span', $this->helper, ['class' => 'caption-helper']);
+            }
+
+            echo Html::endTag('div');
+
+            $this->_renderTools();
+
+            $this->_renderActions();
+
+            echo Html::endTag('div');
         }
-
-        echo Html::tag('span', $this->title, ['class' => $this->pushFontColor('caption-subject bold uppercase')]);
-
-        if ($this->helper)
-        {
-            echo Html::tag('span', $this->helper, ['class' => 'caption-helper']);
-        }
-
-        echo Html::endTag('div');
-
-        $this->_renderTools();
-
-        $this->_renderActions();
-
-        echo Html::endTag('div');
     }
 
     /**
