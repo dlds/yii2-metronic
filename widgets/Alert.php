@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -40,39 +41,36 @@ use yii\helpers\Html;
  * Alert::end();
  * ```
  */
-class Alert extends \yii\bootstrap\Alert
-{
+class Alert extends \yii\bootstrap\Alert {
+
     // type
     const TYPE_SUCCESS = 'success';
     const TYPE_INFO = 'info';
     const TYPE_WARNING = 'warning';
     const TYPE_DANGER = 'danger';
+
     /**
      * @var string the note type.
      * Valid values  are 'success', 'info', 'warning', 'danger'.
      */
-	public $type = self::TYPE_SUCCESS;
+    public $type = self::TYPE_SUCCESS;
+
     /**
      * @var boolean when set, alert has a larger block size.
      */
     public $block = true;
-    /**
-     * @var boolean when set, alert will fade out using transitions when closed.
-     */
-    public $fade = true;
 
     /**
      * Initializes the widget.
      */
     public function init()
     {
-        Html::addCssClass($this->options, 'alert-'.$this->type);
-        if ($this->block) {
+        Html::addCssClass($this->options, 'alert-' . $this->type);
+        if ($this->block)
+        {
             Html::addCssClass($this->options, 'alert-block');
-        }
-        if ($this->fade) {
-            Html::addCssClass($this->options, 'fade in');
         }
         parent::init();
     }
+
 }
