@@ -9,6 +9,7 @@ namespace dlds\metronic\widgets;
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use dlds\metronic\bundles\GridViewAsset;
 use dlds\metronic\bundles\GridViewSortableAsset;
 
@@ -102,12 +103,16 @@ class GridView extends \yii\grid\GridView {
      */
     protected function initSortable()
     {
-        if ($this->sortable)
+        $route = ArrayHelper::getValue($this->sortable, 'url', false);
+
+        if ($route)
         {
-            $this->sortable = Url::toRoute($this->sortable);
+            $url = Url::toRoute($route);
+
+            $options = json_encode(ArrayHelper::getValue($this->sortable, 'options', []));
 
             $view = $this->getView();
-            $view->registerJs("jQuery('#{$this->id}').SortableGridView('{$this->sortable}');");
+            $view->registerJs("jQuery('#{$this->id}').SortableGridView('{$url}', {$options});");
             GridViewSortableAsset::register($view);
         }
     }

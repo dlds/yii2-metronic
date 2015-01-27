@@ -15,13 +15,13 @@ class ModalAsset extends AssetBundle
 {
     public $sourcePath = '@dlds/metronic/assets';
     public $js = [
-        'plugins/bootstrap-modal/js/bootstrap-modalmanager.js',
-        'plugins/bootstrap-modal/js/bootstrap-modal.js',
+        'global/plugins/bootstrap-modal/js/bootstrap-modalmanager.js',
+        'global/plugins/bootstrap-modal/js/bootstrap-modal.js',
     ];
 
     public  $css = [
-        'plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css',
-        'plugins/bootstrap-modal/css/bootstrap-modal.css',
+        'global/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css',
+        'global/plugins/bootstrap-modal/css/bootstrap-modal.css',
     ];
 
     public $depends = [

@@ -19,8 +19,8 @@ class ListView extends \yii\widgets\ListView {
     /**
      * @var boolean indicates if grid is sortable
      */
-    public $sortable = false;
-    
+    public $sortable = [];
+
     /**
      * @var string pjax container
      */
@@ -41,9 +41,11 @@ class ListView extends \yii\widgets\ListView {
      */
     protected function initSortable()
     {
-        if ($this->sortable)
+        $route = ArrayHelper::getValue($this->sortable, 'url', false);
+        
+        if ($route)
         {
-            $this->sortable = Url::toRoute($this->sortable);
+            $url = Url::toRoute($route);
 
             if (ArrayHelper::keyExists('class', $this->itemOptions))
             {
@@ -54,9 +56,11 @@ class ListView extends \yii\widgets\ListView {
                 $this->itemOptions['class'] = self::SORTABLE_ITEM_CLASS;
             }
 
+            $options = json_encode(ArrayHelper::getValue($this->sortable, 'options', []));
+            
             $view = $this->getView();
-            $view->registerJs("jQuery('#{$this->id}').SortableListView('{$this->sortable}');");
-            $view->registerJs("jQuery('#{$this->id}').on('sortableSuccess', function() {jQuery.pjax.reload(".json_encode($this->clientOptions).")})", \yii\web\View::POS_END);
+            $view->registerJs("jQuery('#{$this->id}').SortableListView('{$url}', {$options});");
+            $view->registerJs("jQuery('#{$this->id}').on('sortableSuccess', function() {jQuery.pjax.reload(" . json_encode($this->clientOptions) . ")})", \yii\web\View::POS_END);
             ListViewSortableAsset::register($view);
         }
     }

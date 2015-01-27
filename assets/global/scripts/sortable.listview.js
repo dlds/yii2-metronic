@@ -7,7 +7,8 @@
     };
     $.fn.SortableListView = function (action, options) {
         var widget = this;
-        widget.sortable({
+
+        var config = $.extend(options, {
             //placeholder: options && options.placeholder || 'sortable-placeholder',
             items: '.sortable-item',
             update: function () {
@@ -30,6 +31,8 @@
                 });
             },
             helper: fixHelper
-        }).disableSelection();
+        });
+
+        widget.sortable(config);
     };
 })(jQuery);
