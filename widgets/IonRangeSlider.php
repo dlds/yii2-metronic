@@ -38,6 +38,11 @@ use dlds\metronic\bundles\IonRangeSliderAsset;
 class IonRangeSlider extends InputWidget {
 
     /**
+     * Types
+     */
+    const TYPE_SINGLE = 'single';
+    const TYPE_DOUBLE = 'double';
+    /**
      * @var string separator values
      */
     public $separator = ';';
