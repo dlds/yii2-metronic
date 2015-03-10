@@ -114,7 +114,7 @@ class Tabs extends \yii\bootstrap\Tabs {
             $classWrap[] = 'tabbable';
         }
         echo Html::beginTag('div', ['class' => implode(' ', $classWrap)]);
-        parent::run();
+        echo parent::run();
         echo Html::endTag('div');
     }
 
