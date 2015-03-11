@@ -105,7 +105,7 @@ class Modal extends Widget {
         echo "\n" . Html::endTag('div');
 
         ModalAsset::register($this->view);
-        $this->registerPlugin('spinner');
+        //$this->registerPlugin('spinner');
     }
 
     /**
