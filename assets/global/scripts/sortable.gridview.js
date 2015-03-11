@@ -1,18 +1,24 @@
 (function ($) {
+    var options = {
+        items: 'tr',
+    };
+
     var fixHelper = function (e, ui) {
         ui.children().each(function () {
             $(this).width($(this).width());
         });
         return ui;
     };
-    $.fn.SortableGridView = function (action) {
+    $.fn.SortableGridView = function (action, _options) {
         var widget = this;
         var grid = $('tbody', this);
+        options = $.extend(options, _options);
+        
         grid.sortable({
-            items: 'tr',
+            items: options.items,
             update: function () {
                 var data = [];
-                $('tr', grid).each(function () {
+                $(options.items, grid).each(function () {
                     data.push(JSON.stringify($(this).data('key')));
                 });
                 $.ajax({
