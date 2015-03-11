@@ -1,7 +1,4 @@
 (function ($) {
-    var options = {
-        items: 'tr',
-    };
 
     var fixHelper = function (e, ui) {
         ui.children().each(function () {
@@ -12,8 +9,12 @@
     $.fn.SortableGridView = function (action, _options) {
         var widget = this;
         var grid = $('tbody', this);
+        var options = {
+            items: 'tr',
+        };
+
         options = $.extend(options, _options);
-        
+
         grid.sortable({
             items: options.items,
             update: function () {
