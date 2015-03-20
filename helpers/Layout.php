@@ -58,6 +58,11 @@ class Layout {
             Html::addCssClass($options, 'page-sidebar-fixed');
         }
 
+        if (Metronic::FOOTER_FIXED === Metronic::getComponent()->footerOption)
+        {
+            Html::addCssClass($options, 'page-footer-fixed');
+        }
+
         return $options;
     }
 
