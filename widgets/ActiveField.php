@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -9,12 +10,13 @@ namespace dlds\metronic\widgets;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
-class ActiveField extends \yii\widgets\ActiveField
-{
+class ActiveField extends \yii\widgets\ActiveField {
+
     /**
      * @var ActiveForm the form that this field is associated with.
      */
     public $form;
+
     // icon position
     const ICON_POSITION_LEFT = 'left';
     const ICON_POSITION_RIGHT = 'right';
@@ -27,6 +29,7 @@ class ActiveField extends \yii\widgets\ActiveField
     {
         return Html::endTag(isset($this->options['tag']) ? $this->options['tag'] : 'div') . "\n";
     }
+
     /**
      * Generates a icon for input.
      * @param array $options icon options.
@@ -42,9 +45,11 @@ class ActiveField extends \yii\widgets\ActiveField
     public function icon($options = [])
     {
         $icon = ArrayHelper::remove($options, 'icon', null);
-        if($icon) {
+        if ($icon)
+        {
             $position = ArrayHelper::remove($options, 'position', self::ICON_POSITION_LEFT);
-            if ($position != self::ICON_POSITION_RIGHT) {
+            if ($position != self::ICON_POSITION_RIGHT)
+            {
                 $position = '';
             }
             $this->parts['{input}'] = Html::tag('i', '', ['class' => $icon]) . "\n" . $this->parts['{input}'];
@@ -53,6 +58,7 @@ class ActiveField extends \yii\widgets\ActiveField
 
         return $this;
     }
+
     /**
      * Generates a groupAddon for input.
      * GroupAddon similar to [[icon()]].
@@ -69,12 +75,16 @@ class ActiveField extends \yii\widgets\ActiveField
     public function groupAddon($options = [])
     {
         $icon = ArrayHelper::remove($options, 'icon', null);
-        if($icon) {
+        if ($icon)
+        {
             $addon = Html::tag('span', Html::tag('i', '', ['class' => $icon]), ['class' => 'input-group-addon']);
             $position = ArrayHelper::remove($options, 'position', self::ICON_POSITION_LEFT);
-            if ($position == self::ICON_POSITION_RIGHT) {
+            if ($position == self::ICON_POSITION_RIGHT)
+            {
                 $this->parts['{input}'] .= "\n" . $addon;
-            } else {
+            }
+            else
+            {
                 $this->parts['{input}'] = $addon . "\n" . $this->parts['{input}'];
             }
             $this->parts['{input}'] = Html::tag('div', $this->parts['{input}'], ['class' => 'input-group']);
@@ -118,9 +128,10 @@ class ActiveField extends \yii\widgets\ActiveField
      */
     public function dateRangePicker($options = [])
     {
-        if ($this->form->type == ActiveForm::TYPE_VERTICAL) {
-           //$options = array_merge($options, ['options' => ['style' => 'display:table-cell;']]);
-           $options = array_merge($options, ['options' => ['class' => 'show']]);
+        if ($this->form->type == ActiveForm::TYPE_VERTICAL)
+        {
+            //$options = array_merge($options, ['options' => ['style' => 'display:table-cell;']]);
+            $options = array_merge($options, ['options' => ['class' => 'show']]);
         }
         $this->parts['{input}'] = DateRangePicker::widget(array_merge($options, ['model' => $this->model, 'attribute' => $this->attribute]));
 
@@ -134,10 +145,10 @@ class ActiveField extends \yii\widgets\ActiveField
      */
     public function datePicker($options = [])
     {
-        /*if ($this->form->type == ActiveForm::TYPE_VERTICAL) {
-            //$options = array_merge($options, ['options' => ['style' => 'display:table-cell;']]);
-            $options = array_merge($options, ['options' => ['class' => 'show']]);
-        }*/
+        /* if ($this->form->type == ActiveForm::TYPE_VERTICAL) {
+          //$options = array_merge($options, ['options' => ['style' => 'display:table-cell;']]);
+          $options = array_merge($options, ['options' => ['class' => 'show']]);
+          } */
         $this->parts['{input}'] = DatePicker::widget(array_merge($options, ['model' => $this->model, 'attribute' => $this->attribute]));
 
         return $this;
@@ -173,4 +184,5 @@ class ActiveField extends \yii\widgets\ActiveField
 
         return $this;
     }
+
 }

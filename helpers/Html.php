@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals/license/
@@ -6,11 +7,13 @@
 
 namespace yii\helpers;
 
+use dlds\metronic\bundles\Select2Asset;
+
 /**
  * Html helper
  */
-class Html extends BaseHtml
-{
+class Html extends \yii\helpers\BaseHtml {
+
     /**
      * Generates a link tag that refers to an external CSS file.
      * @param array|string $url the URL of the external CSS file. This parameter will be processed by [[\yii\helpers\Url::to()]].
@@ -23,13 +26,17 @@ class Html extends BaseHtml
      */
     public static function cssFile($url, $options = [])
     {
-        if (!isset($options['rel'])) {
+        if (!isset($options['rel']))
+        {
             $options['rel'] = 'stylesheet';
         }
         $options['href'] = Url::to($url);
-        if (!empty($options['conditions'])) {
-            foreach ($options['conditions'] as $file => $condition) {
-                if (strpos($url, $file) !== false) {
+        if (!empty($options['conditions']))
+        {
+            foreach ($options['conditions'] as $file => $condition)
+            {
+                if (strpos($url, $file) !== false)
+                {
                     unset($options['conditions']);
                     return static::conditionalComment(static::tag('link', '', $options), $condition);
                 }
@@ -53,9 +60,12 @@ class Html extends BaseHtml
     public static function jsFile($url, $options = [])
     {
         $options['src'] = Url::to($url);
-        if (!empty($options['conditions'])) {
-            foreach ($options['conditions'] as $file => $condition) {
-                if (strpos($url, $file) !== false) {
+        if (!empty($options['conditions']))
+        {
+            foreach ($options['conditions'] as $file => $condition)
+            {
+                if (strpos($url, $file) !== false)
+                {
                     unset($options['conditions']);
                     return static::conditionalComment(static::tag('script', '', $options), $condition);
                 }
@@ -82,4 +92,15 @@ class Html extends BaseHtml
 
         return implode("\n", $lines);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public static function dropDownList($name, $selection = null, $items = [], $options = [])
+    {
+        Select2Asset::register(\Yii::$app->view);
+        
+        return parent::dropDownList($name, $selection, $items, $options);
+    }
+
 }

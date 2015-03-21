@@ -100,7 +100,7 @@ class Metronic extends \yii\base\Component {
     const UI_COLOR_BLUE_MADISON = 'blue-madison';
     const UI_COLOR_BLUE_CHAMBRAY = 'blue-chambray';
     const UI_COLOR_BLUE_EBONYCLAY = 'blue-ebonyclay';
-    
+
     /**
      * UI Colors green
      */
@@ -110,7 +110,7 @@ class Metronic extends \yii\base\Component {
     const UI_COLOR_GREEN_TORQUOISE = 'green-torquoise';
     const UI_COLOR_GREEN_JUNGLE = 'green-jungle';
     const UI_COLOR_GREEN_HAZE = 'green-haze';
-    
+
     /**
      * UI Colors red
      */
@@ -131,7 +131,7 @@ class Metronic extends \yii\base\Component {
     const UI_COLOR_YELLOW_CRUSTA = 'yellow-crusta';
     const UI_COLOR_YELLOW_LEMON = 'yellow-lemon';
     const UI_COLOR_YELLOW_SAFFRON = 'yellow-saffron';
-    
+
     /**
      * UI Colors purple
      */
@@ -141,7 +141,7 @@ class Metronic extends \yii\base\Component {
     const UI_COLOR_PURPLE_STUDIO = 'purple-studio';
     const UI_COLOR_PURPLE_WISTERIA = 'purple-wisteria';
     const UI_COLOR_PURPLE_SEANCE = 'purple-seance';
-    
+
     /**
      * UI Colors grey
      */
@@ -151,7 +151,12 @@ class Metronic extends \yii\base\Component {
     const UI_COLOR_GREY_STEEL = 'grey-steel';
     const UI_COLOR_GREY_CARARRA = 'grey-cararra';
     const UI_COLOR_GREY_GALLERY = 'grey-gallery';
-    
+
+    /**
+     * Classes paths
+     */
+    const CLASS_HTML = '@vendor/dlds/yii2-metronic/helpers/Html.php';
+
     /**
      * @var string version
      */
@@ -212,12 +217,17 @@ class Metronic extends \yii\base\Component {
      */
     public function init()
     {
+        $htmlClass = \yii\helpers\ArrayHelper::getValue(Yii::$classMap, 'yii\helpers\Html', null);
+
+        if ($htmlClass != self::CLASS_HTML)
+        {
+            throw new InvalidConfigException('Default Yii2 Html helper class is not allowed. For using Metronic theme put Yii::$classMap[\'yii\\helpers\\Html\'] = \'' . self::CLASS_HTML . '\'; into your bootstrap.php');
+        }
+
         if (self::SIDEBAR_FIXED === $this->sidebarOption && self::SIDEBAR_MENU_HOVER === $this->sidebarMenu)
         {
             throw new InvalidConfigException('Hover Sidebar Menu is not compatible with Fixed Sidebar Mode. Select Default Sidebar Mode Instead.');
         }
-
-        Yii::$classMap['yii\helpers\Html'] = __DIR__ . '/helpers/Html.php';
     }
 
     public function parseAssetsParams(&$string)

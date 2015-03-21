@@ -35,7 +35,8 @@ class GridView extends \yii\grid\GridView {
     /**
      * @var string grid view layout
      */
-    public $layout = "{items}\n{summary}\n{pager}";
+    //public $layout = "{items}\n{summary}\n{pager}";
+    public $layout = "{items}\n<div class=\"row\"><div class=\"col-md-5 col-sm-12\">{summary}</div>\n<div class=\"col-md-7 col-sm-12 text-right\">{pager}</div></div>";
 
     /**
      * @var boolean indicates if grid is sortable
@@ -48,6 +49,8 @@ class GridView extends \yii\grid\GridView {
     public function init()
     {
         parent::init();
+
+        $this->initPager();
 
         $this->initVisible();
 
@@ -80,6 +83,28 @@ class GridView extends \yii\grid\GridView {
         }
 
         return $table;
+    }
+
+    /**
+     * Inits pager
+     */
+    protected function initPager()
+    {
+        $this->pager['firstPageLabel'] = Html::tag('i', '', [
+                    'class' => 'fa fa-angle-double-left',
+        ]);
+
+        $this->pager['lastPageLabel'] = Html::tag('i', '', [
+                    'class' => 'fa fa-angle-double-right',
+        ]);
+
+        $this->pager['prevPageLabel'] = Html::tag('i', '', [
+                    'class' => 'fa fa-angle-left',
+        ]);
+
+        $this->pager['nextPageLabel'] = Html::tag('i', '', [
+                    'class' => 'fa fa-angle-right',
+        ]);
     }
 
     protected function initVisible()

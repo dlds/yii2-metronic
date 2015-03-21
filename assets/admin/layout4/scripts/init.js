@@ -6,3 +6,7 @@ jQuery(document).ready(function () {
     Layout.init(); // init layout
     App.init();
 });
+
+jQuery(document).ajaxComplete(function (event, xhr, settings) {
+    Metronic.initAjax();
+});
