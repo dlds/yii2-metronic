@@ -14,6 +14,8 @@ use dlds\metronic\bundles\Select2Asset;
  */
 class Html extends \yii\helpers\BaseHtml {
 
+    const CLASS_SELECT2ME = 'select2me';
+
     /**
      * Generates a link tag that refers to an external CSS file.
      * @param array|string $url the URL of the external CSS file. This parameter will be processed by [[\yii\helpers\Url::to()]].
@@ -99,8 +101,22 @@ class Html extends \yii\helpers\BaseHtml {
     public static function dropDownList($name, $selection = null, $items = [], $options = [])
     {
         Select2Asset::register(\Yii::$app->view);
-        
+
+        self::addCssClass($options, self::CLASS_SELECT2ME);
+
         return parent::dropDownList($name, $selection, $items, $options);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function activeDropDownList($model, $attribute, $items, $options = [])
+    {
+        Select2Asset::register(\Yii::$app->view);
+
+        self::addCssClass($options, self::CLASS_SELECT2ME);
+
+        return parent::activeDropDownList($model, $attribute, $items, $options);
     }
 
 }

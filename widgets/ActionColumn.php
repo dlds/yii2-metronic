@@ -112,9 +112,7 @@ class ActionColumn extends \yii\grid\ActionColumn {
             return parent::renderFilterCellContent();
         }
 
-        return Html::dropDownList($this->grid->dataProvider->pagination->pageSizeParam, $this->grid->dataProvider->pagination->pageSize, $this->pageSizeOptions, [
-                    'class' => 'select2me',
-        ]);
+        return Html::dropDownList($this->grid->dataProvider->pagination->pageSizeParam, $this->grid->dataProvider->pagination->pageSize, $this->pageSizeOptions);
     }
 
 }
