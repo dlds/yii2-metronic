@@ -93,7 +93,14 @@ class ActionColumn extends \yii\grid\ActionColumn {
      */
     protected function renderHeaderCellContent()
     {
-        return Html::a('<span class="' . $this->resetButtonIcon . '"></span>', [\Yii::$app->controller->getRoute()], [
+        $route = \Yii::$app->controller->getRoute();
+
+        if (!\yii\helpers\StringHelper::startsWith($route, '/'))
+        {
+            $route = '/' . $route;
+        }
+
+        return Html::a('<span class="' . $this->resetButtonIcon . '"></span>', [$route], [
                     'title' => \Yii::t('yii', 'Reset filter'),
                     'data-pjax' => '0',
         ]);
