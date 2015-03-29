@@ -53,6 +53,21 @@ class ActionColumn extends \yii\grid\ActionColumn {
     public $pageSizeOptions = [20 => 20, 50 => 50];
 
     /**
+     * @var string btn view class
+     */
+    public $btnViewClass = 'action-view';
+
+    /**
+     * @var string btn update class
+     */
+    public $btnUpdateClass = 'action-update';
+
+    /**
+     * @var string btn delete class
+     */
+    public $btnDeleteClass = 'action-delete';
+
+    /**
      * Initializes the default button rendering callbacks.
      */
     protected function initDefaultButtons()
@@ -63,6 +78,7 @@ class ActionColumn extends \yii\grid\ActionColumn {
                 return Html::a('<span class="' . $this->viewButtonIcon . '"></span>', $url, [
                             'title' => \Yii::t('yii', 'View'),
                             'data-pjax' => '0',
+                            'class' => $this->btnViewClass,
                 ]);
             };
         }
@@ -72,6 +88,7 @@ class ActionColumn extends \yii\grid\ActionColumn {
                 return Html::a('<span class="' . $this->updateButtonIcon . '"></span>', $url, [
                             'title' => \Yii::t('yii', 'Update'),
                             'data-pjax' => '0',
+                            'class' => $this->btnUpdateClass,
                 ]);
             };
         }
@@ -83,6 +100,7 @@ class ActionColumn extends \yii\grid\ActionColumn {
                             'data-confirm' => \Yii::t('yii', 'Are you sure you want to delete this item?'),
                             'data-method' => 'post',
                             'data-pjax' => '0',
+                            'class' => $this->btnDeleteClass,
                 ]);
             };
         }
