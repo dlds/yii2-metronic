@@ -7,6 +7,6 @@ jQuery(document).ready(function () {
     App.init();
 });
 
-jQuery(document).ajaxComplete(function (event, xhr, settings) {
+jQuery('.portlet').ajaxComplete(function (event, xhr, settings) {
     Metronic.initAjax();
 });

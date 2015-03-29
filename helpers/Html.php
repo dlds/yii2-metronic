@@ -7,6 +7,7 @@
 
 namespace yii\helpers;
 
+use yii\helpers\ArrayHelper;
 use dlds\metronic\bundles\Select2Asset;
 
 /**
@@ -14,8 +15,11 @@ use dlds\metronic\bundles\Select2Asset;
  */
 class Html extends \yii\helpers\BaseHtml {
 
+    /**
+     * Clases names
+     */
     const CLASS_SELECT2ME = 'select2me';
-
+    
     /**
      * Generates a link tag that refers to an external CSS file.
      * @param array|string $url the URL of the external CSS file. This parameter will be processed by [[\yii\helpers\Url::to()]].
@@ -104,6 +108,8 @@ class Html extends \yii\helpers\BaseHtml {
 
         self::addCssClass($options, self::CLASS_SELECT2ME);
 
+        self::addData($options, 'placeholder', '-');
+
         return parent::dropDownList($name, $selection, $items, $options);
     }
 
@@ -116,7 +122,25 @@ class Html extends \yii\helpers\BaseHtml {
 
         self::addCssClass($options, self::CLASS_SELECT2ME);
 
+        self::addData($options, 'placeholder', '-');
+
         return parent::activeDropDownList($model, $attribute, $items, $options);
+    }
+
+    /**
+     * Adds data attribute to element options
+     * @param type $key
+     * @param type $value
+     * @param type $replace
+     */
+    protected static function addData(&$options, $key, $value, $replace = false)
+    {
+        $placeholder = ArrayHelper::getValue($options, sprintf('data.%s', $key), null);
+
+        if (null === $placeholder || $replace)
+        {
+            $options['data'][$key] = $value;
+        }
     }
 
 }
