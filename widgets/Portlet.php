@@ -200,7 +200,7 @@ class Portlet extends Widget {
                 echo Html::tag('i', '', ['class' => $this->pushFontColor($this->icon)]);
             }
 
-            echo Html::tag('span', $this->title, ['class' => $this->pushFontColor('caption-subject bold uppercase')]);
+            echo Html::tag('span', $this->title, ['class' => $this->pushFontColor('caption-subject')]);
 
             if ($this->helper)
             {

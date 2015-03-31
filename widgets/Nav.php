@@ -49,7 +49,8 @@ class Nav extends \yii\bootstrap\Nav {
     /**
      * Positions
      */
-    const POS_LEFT = '';
+    const POS_DEFAULT = '';
+    const POS_LEFT = 'pull-left';
     const POS_RIGHT = 'pull-right';
 
     /**
@@ -60,6 +61,17 @@ class Nav extends \yii\bootstrap\Nav {
     const TYPE_INBOX = 'inbox';
     const TYPE_TASKS = 'tasks';
     const TYPE_USER = 'user';
+
+    /**
+     * Navbars
+     */
+    const NAVBAR_DEFAULT = 'navbar-nav';
+    const NAVBAR_NONE = '';
+
+    /**
+     * Items
+     */
+    const ITEM_DIVIDER = 'divider';
 
     /**
      * @var array list of items in the nav widget. Each array element represents a single
@@ -83,7 +95,7 @@ class Nav extends \yii\bootstrap\Nav {
     /**
      * @var string the nav position
      */
-    public $position = self::POS_RIGHT;
+    public $position = self::POS_DEFAULT;
 
     /**
      * @var string type
@@ -91,11 +103,16 @@ class Nav extends \yii\bootstrap\Nav {
     public $type = self::TYPE_DEFAULT;
 
     /**
+     * @var string navbar holder
+     */
+    public $navbar = self::NAVBAR_DEFAULT;
+
+    /**
      * Initializes the widget.
      */
     public function init()
     {
-        Html::addCssClass($this->options, 'navbar-nav');
+        Html::addCssClass($this->options, $this->navbar);
         Html::addCssClass($this->options, $this->position);
         parent::init();
     }
@@ -111,6 +128,11 @@ class Nav extends \yii\bootstrap\Nav {
         if (is_string($item))
         {
             return $item;
+        }
+
+        if (in_array(self::ITEM_DIVIDER, $item, true))
+        {
+            return Html::tag('li', '', ['class' => self::ITEM_DIVIDER]);
         }
 
         if (!isset($item['label']) && !isset($item['icon']))
