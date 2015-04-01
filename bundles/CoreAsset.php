@@ -37,6 +37,8 @@ class CoreAsset extends AssetBundle {
      * @var array js assets
      */
     public $js = [
+        //'global/plugins/jquery-migrate-1.2.1.min.js',
+        'global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js',
         'global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js',
         'global/plugins/jquery-slimscroll/jquery.slimscroll.min.js',
         'global/plugins/jquery.blockui.min.js',
