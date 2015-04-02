@@ -29,6 +29,8 @@ class Font {
     const FA_VIDEO_CAM = 'fa-video-camera';
     const FA_PICTURE_O = 'fa-picture-o';
     const FA_DOLLAR = 'fa-dollar';
+    const FA_UNLOCK = 'fa-unlock';
+    const FA_LOCK = 'fa-lock';
 
     /**
      * Retrieves icon based on given type
