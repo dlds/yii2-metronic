@@ -10,27 +10,9 @@ namespace dlds\metronic\widgets;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
-use dlds\metronic\bundles\GridViewAsset;
 use dlds\metronic\bundles\GridViewSortableAsset;
 
-class GridView extends \yii\grid\GridView {
-
-    const FILTER_POS_OFF = 'off';
-
-    /**
-     * @var bool indicates whether the gridView is responsive.
-     */
-    public $responsive = false;
-
-    /**
-     * @var array the HTML attributes for the grid table element
-     */
-    public $tableOptions = ['class' => 'table table-striped table-bordered table-hover dataTable'];
-
-    /**
-     * @var array the HTML attributes for the table header row
-     */
-    public $headerRowOptions = ['class' => 'heading'];
+class GridView extends \kartik\grid\GridView {
 
     /**
      * @var string grid view layout
