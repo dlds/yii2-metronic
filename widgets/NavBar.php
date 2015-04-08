@@ -45,6 +45,11 @@ class NavBar extends \yii\bootstrap\NavBar {
     public $brandLogoUrl;
 
     /**
+     * @var string the url to logo of the brand.
+     */
+    public $brandWrapperOptions;
+    
+    /**
      * Initializes the widget.
      */
     public function init()
@@ -57,7 +62,8 @@ class NavBar extends \yii\bootstrap\NavBar {
         echo Html::beginTag('div', $this->options);
         echo Html::beginTag('div', ['class' => 'page-header-inner']);
 
-        echo Html::beginTag('div', ['class' => 'page-logo']);
+        Html::addCssClass($this->brandWrapperOptions, 'page-logo');
+        echo Html::beginTag('div', $this->brandWrapperOptions);
         echo $this->renderBrand();
         echo $this->renderToggleButton();
         echo Html::endTag('div');

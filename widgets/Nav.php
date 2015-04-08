@@ -212,6 +212,13 @@ class Nav extends \yii\bootstrap\Nav {
 
         Html::addCssClass($linkOptions, 'dropdown-toggle');
 
+        $url = ArrayHelper::getValue($item, 'url', false);
+
+        if (!$url)
+        {
+            return Html::a($label, 'javascript:;', $linkOptions);
+        }
+        
         return Html::a($label, Url::toRoute(ArrayHelper::getValue($item, 'url', '#')), $linkOptions);
     }
 

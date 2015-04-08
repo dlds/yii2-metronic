@@ -21,13 +21,13 @@ class Layout {
      * @param boolean $asString if return as string
      * @return type
      */
-    public static function getHtmlOptions($tag, $asString = false)
+    public static function getHtmlOptions($tag, $options = [], $asString = false)
     {
         $callback = sprintf('static::_%sOptions', strtolower($tag));
 
-        $options = call_user_func($callback, []);
+        $htmlOptions = call_user_func($callback, $options);
 
-        return $asString ? Html::renderTagAttributes($options) : $options;
+        return $asString ? Html::renderTagAttributes($htmlOptions) : $htmlOptions;
     }
 
     /**
