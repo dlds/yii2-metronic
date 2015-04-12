@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals.cz/license/
@@ -68,6 +67,11 @@ class ActionColumn extends \yii\grid\ActionColumn {
     public $btnDeleteClass = 'action-delete';
 
     /**
+     * @var mixed filter reset route
+     */
+    public $routeFilterReset = null;
+
+    /**
      * Initializes the default button rendering callbacks.
      */
     protected function initDefaultButtons()
@@ -75,32 +79,32 @@ class ActionColumn extends \yii\grid\ActionColumn {
         if (!isset($this->buttons['view']))
         {
             $this->buttons['view'] = function ($url, $model, $key) {
-                return Html::a('<span class="' . $this->viewButtonIcon . '"></span>', $url, [
-                            'title' => \Yii::t('yii', 'View'),
-                            'data-pjax' => '0',
-                            'class' => $this->btnViewClass,
+                return Html::a('<span class="'.$this->viewButtonIcon.'"></span>', $url, [
+                        'title' => \Yii::t('yii', 'View'),
+                        'data-pjax' => '0',
+                        'class' => $this->btnViewClass,
                 ]);
             };
         }
         if (!isset($this->buttons['update']))
         {
             $this->buttons['update'] = function ($url, $model, $key) {
-                return Html::a('<span class="' . $this->updateButtonIcon . '"></span>', $url, [
-                            'title' => \Yii::t('yii', 'Update'),
-                            'data-pjax' => '0',
-                            'class' => $this->btnUpdateClass,
+                return Html::a('<span class="'.$this->updateButtonIcon.'"></span>', $url, [
+                        'title' => \Yii::t('yii', 'Update'),
+                        'data-pjax' => '0',
+                        'class' => $this->btnUpdateClass,
                 ]);
             };
         }
         if (!isset($this->buttons['delete']))
         {
             $this->buttons['delete'] = function ($url, $model, $key) {
-                return Html::a('<span class="' . $this->deleteButtonIcon . '"></span>', $url, [
-                            'title' => \Yii::t('yii', 'Delete'),
-                            'data-confirm' => \Yii::t('yii', 'Are you sure you want to delete this item?'),
-                            'data-method' => 'post',
-                            'data-pjax' => '0',
-                            'class' => $this->btnDeleteClass,
+                return Html::a('<span class="'.$this->deleteButtonIcon.'"></span>', $url, [
+                        'title' => \Yii::t('yii', 'Delete'),
+                        'data-confirm' => \Yii::t('yii', 'Are you sure you want to delete this item?'),
+                        'data-method' => 'post',
+                        'data-pjax' => '0',
+                        'class' => $this->btnDeleteClass,
                 ]);
             };
         }
@@ -111,16 +115,21 @@ class ActionColumn extends \yii\grid\ActionColumn {
      */
     protected function renderHeaderCellContent()
     {
-        $route = \Yii::$app->controller->getRoute();
-
-        if (!\yii\helpers\StringHelper::startsWith($route, '/'))
+        if (!$this->routeFilterReset)
         {
-            $route = '/' . $route;
+            $route = \Yii::$app->controller->getRoute();
+
+            if (!\yii\helpers\StringHelper::startsWith($route, '/'))
+            {
+                $route = '/'.$route;
+            }
+
+            $this->routeFilterReset = [$route];
         }
 
-        return Html::a('<span class="' . $this->resetButtonIcon . '"></span>', [$route], [
-                    'title' => \Yii::t('yii', 'Reset filter'),
-                    'data-pjax' => '0',
+        return Html::a('<span class="'.$this->resetButtonIcon.'"></span>', $this->routeFilterReset, [
+                'title' => \Yii::t('yii', 'Reset filter'),
+                'data-pjax' => '0',
         ]);
     }
 
@@ -139,5 +148,4 @@ class ActionColumn extends \yii\grid\ActionColumn {
 
         return Html::dropDownList($this->grid->dataProvider->pagination->pageSizeParam, $this->grid->dataProvider->pagination->pageSize, $this->pageSizeOptions);
     }
-
 }
