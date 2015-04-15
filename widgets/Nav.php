@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals.cz/license/
@@ -98,9 +97,9 @@ class Nav extends \yii\bootstrap\Nav {
     public $position = self::POS_DEFAULT;
 
     /**
-     * @var string type
+     * @var string dropdownType
      */
-    public $type = self::TYPE_DEFAULT;
+    public $dropdownType = self::TYPE_DEFAULT;
 
     /**
      * @var string navbar holder
@@ -135,24 +134,31 @@ class Nav extends \yii\bootstrap\Nav {
             return Html::tag('li', '', ['class' => self::ITEM_DIVIDER]);
         }
 
+        $items = ArrayHelper::getValue($item, 'items');
+        
+        if ($items === null)
+        {
+            return parent::renderItem($item);
+        }
+
         if (!isset($item['label']) && !isset($item['icon']))
         {
             throw new InvalidConfigException("The 'label' option is required.");
         }
-
-        $type = ArrayHelper::getValue($item, 'type', self::TYPE_DEFAULT);
+        
+        $dropdownType = ArrayHelper::getValue($item, 'dropdownType', self::TYPE_DEFAULT);
         $options = ArrayHelper::getValue($item, 'options', []);
 
         Html::addCssClass($options, 'dropdown');
 
-        if ($type !== self::TYPE_DEFAULT)
+        if ($dropdownType !== self::TYPE_DEFAULT)
         {
-            if ($type !== self::TYPE_USER)
+            if ($dropdownType !== self::TYPE_USER)
             {
                 Html::addCssClass($options, 'dropdown-extended');
             }
 
-            Html::addCssClass($options, 'dropdown-' . $type);
+            Html::addCssClass($options, 'dropdown-'.$dropdownType);
 
             if (Metronic::HEADER_DROPDOWN_DARK === Metronic::getComponent()->headerDropdown)
             {
@@ -184,9 +190,9 @@ class Nav extends \yii\bootstrap\Nav {
      */
     private function _getLinkTag($item)
     {
-        $type = ArrayHelper::getValue($item, 'type', self::TYPE_DEFAULT);
+        $dropdownType = ArrayHelper::getValue($item, 'dropdownType', self::TYPE_DEFAULT);
 
-        if ($type !== self::TYPE_DEFAULT)
+        if ($dropdownType !== self::TYPE_DEFAULT)
         {
             $label = $item['label'];
         }
@@ -218,7 +224,7 @@ class Nav extends \yii\bootstrap\Nav {
         {
             return Html::a($label, 'javascript:;', $linkOptions);
         }
-        
+
         return Html::a($label, Url::toRoute(ArrayHelper::getValue($item, 'url', '#')), $linkOptions);
     }
 
@@ -229,29 +235,29 @@ class Nav extends \yii\bootstrap\Nav {
      */
     private function _getDropdownTag($item)
     {
-        $type = ArrayHelper::getValue($item, 'type', self::TYPE_DEFAULT);
+        $dropdownType = ArrayHelper::getValue($item, 'dropdownType', self::TYPE_DEFAULT);
 
         $items = ArrayHelper::getValue($item, 'items', null);
 
         if ($items !== null && is_array($items))
         {
-            if ($type === self::TYPE_DEFAULT || $type === self::TYPE_USER)
+            if ($dropdownType === self::TYPE_DEFAULT || $dropdownType === self::TYPE_USER)
             {
                 $options = ['class' => 'dropdown-menu-default'];
             }
             else
             {
-                $options = ['class' => sprintf('%s %s', 'dropdown-menu-default extended', $type)];
+                $options = ['class' => sprintf('%s %s', 'dropdown-menu-default extended', $dropdownType)];
             }
 
             $items = Dropdown::widget([
-                        'title' => ArrayHelper::getValue($item, 'title', ''),
-                        'more' => ArrayHelper::getValue($item, 'more', []),
-                        'scroller' => ArrayHelper::getValue($item, 'scroller', []),
-                        'items' => $items,
-                        'encodeLabels' => $this->encodeLabels,
-                        'clientOptions' => false,
-                        'options' => $options,
+                    'title' => ArrayHelper::getValue($item, 'title', ''),
+                    'more' => ArrayHelper::getValue($item, 'more', []),
+                    'scroller' => ArrayHelper::getValue($item, 'scroller', []),
+                    'items' => $items,
+                    'encodeLabels' => $this->encodeLabels,
+                    'clientOptions' => false,
+                    'options' => $options,
             ]);
         }
 
@@ -271,5 +277,4 @@ class Nav extends \yii\bootstrap\Nav {
         $lines[] = Html::img($photo, ['alt' => $label, 'class' => 'img-circle']);
         return implode("\n", $lines);
     }
-
 }
