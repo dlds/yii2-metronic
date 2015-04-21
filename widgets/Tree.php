@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals.cz/license/
@@ -69,6 +68,11 @@ class Tree extends InputWidget {
     public $contentClass = '';
 
     /**
+     * @var string nestable level attr (depth)
+     */
+    public $levelAttr = 'level';
+
+    /**
      * @var array default tree config
      */
     protected $defaultTreeOptions = [
@@ -97,17 +101,18 @@ class Tree extends InputWidget {
     public function run()
     {
         $builder = \dlds\metronic\builders\TreeBuilder::instance($this->items, array(
-                    'treeTag' => $this->listTag,
-                    'itemTag' => $this->itemTag,
-                    'treeHtmlOptions' => function() {
-                        return $this->getTreeOptions();
-                    },
-                    'itemHtmlOptions' => function($id) {
-                        return $this->getItemOptions($id);
-                    },
-                    'contentHtmlOptions' => function() {
-                        return $this->getContentOptions();
-                    },
+                'treeTag' => $this->listTag,
+                'itemTag' => $this->itemTag,
+                'levelAttr' => $this->levelAttr,
+                'treeHtmlOptions' => function() {
+                    return $this->getTreeOptions();
+                },
+                'itemHtmlOptions' => function($id) {
+                    return $this->getItemOptions($id);
+                },
+                'contentHtmlOptions' => function() {
+                    return $this->getContentOptions();
+                },
         ));
 
         echo $this->renderTree($builder->build());
@@ -189,7 +194,10 @@ class Tree extends InputWidget {
 
         $html .= Html::endTag('div');
 
-        $html .= $this->renderHiddenField();
+        if ($this->checkable)
+        {
+            $html .= $this->renderHiddenField();
+        }
 
         return $html;
     }
@@ -215,14 +223,14 @@ class Tree extends InputWidget {
         if ($this->checkable)
         {
             $this->defaultTreeOptions = ArrayHelper::merge($this->defaultTreeOptions, [
-                        'plugins' => [
-                            'checkbox'
-                        ],
-                        'checkbox' => [
-                            'keep_selected_style' => false,
-                            'three_state' => false,
-                            'cascade' => ''
-                        ]
+                    'plugins' => [
+                        'checkbox'
+                    ],
+                    'checkbox' => [
+                        'keep_selected_style' => false,
+                        'three_state' => false,
+                        'cascade' => ''
+                    ]
             ]);
         }
 
@@ -237,7 +245,10 @@ class Tree extends InputWidget {
     protected function registerAdditionalJs()
     {
         $view = $this->getView();
-        $view->registerJs("jQuery('#{$this->id}').on('changed.jstree', function (e, data) {
+
+        if ($this->checkable)
+        {
+            $view->registerJs("jQuery('#{$this->id}').on('changed.jstree', function (e, data) {
             var i, j, r = [];
 
             for (i = 0, j = data.selected.length; i < j; i++) {
@@ -246,6 +257,7 @@ class Tree extends InputWidget {
 
             jQuery('#{$this->getHiddenFieldId()}').val(r.join(','));
         });");
+        }
 
         $view->registerJs("jQuery('#{$this->id}').on('select_node.jstree', function (e, data) {
             var \$this = $(this);
@@ -270,7 +282,5 @@ class Tree extends InputWidget {
     {
         return strtolower(sprintf('%s-%s', $this->model->formName(), $this->attribute));
     }
-
 }
-
 ?>
