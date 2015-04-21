@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals.cz/license/
@@ -46,25 +45,29 @@ class GridView extends \kartik\grid\GridView {
      */
     public function renderItems()
     {
-        $content = array_filter([
-            $this->renderCaption(),
-            $this->renderColumnGroup(),
-            $this->showHeader ? $this->renderTableHeader() : false,
-            $this->showFooter ? $this->renderTableFooter() : false,
-            $this->renderTableBody(),
-        ]);
+        /*
+          $content = array_filter([
+          $this->renderCaption(),
+          $this->renderColumnGroup(),
+          $this->showHeader ? $this->renderTableHeader() : false,
+          $this->showFooter ? $this->renderTableFooter() : false,
+          $this->renderTableBody(),
+          ]);
 
-        $table = Html::tag('table', implode("\n", $content), $this->tableOptions);
-        if ($this->responsive)
-        {
-            $table = Html::tag('div', $table, ['class' => 'table-responsive']);
-        }
-        else
-        {
-            $table = Html::tag('div', $table, ['class' => 'table-scrollable']);
-        }
+          $table = Html::tag('table', implode("\n", $content), $this->tableOptions);
+          if ($this->responsive)
+          {
+          $table = Html::tag('div', $table, ['class' => 'table-responsive']);
+          }
+          else
+          {
+          $table = Html::tag('div', $table, ['class' => 'table-scrollable']);
+          }
 
-        return $table;
+          return $table;
+         *
+         */
+        return parent::renderItems();
     }
 
     /**
@@ -73,19 +76,19 @@ class GridView extends \kartik\grid\GridView {
     protected function initPager()
     {
         $this->pager['firstPageLabel'] = Html::tag('i', '', [
-                    'class' => 'fa fa-angle-double-left',
+                'class' => 'fa fa-angle-double-left',
         ]);
 
         $this->pager['lastPageLabel'] = Html::tag('i', '', [
-                    'class' => 'fa fa-angle-double-right',
+                'class' => 'fa fa-angle-double-right',
         ]);
 
         $this->pager['prevPageLabel'] = Html::tag('i', '', [
-                    'class' => 'fa fa-angle-left',
+                'class' => 'fa fa-angle-left',
         ]);
 
         $this->pager['nextPageLabel'] = Html::tag('i', '', [
-                    'class' => 'fa fa-angle-right',
+                'class' => 'fa fa-angle-right',
         ]);
     }
 
@@ -128,5 +131,4 @@ class GridView extends \kartik\grid\GridView {
     {
         return [];
     }
-
 }
