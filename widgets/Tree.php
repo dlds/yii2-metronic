@@ -73,6 +73,11 @@ class Tree extends InputWidget {
     public $levelAttr = 'level';
 
     /**
+     * @var \Closure callback for generating content
+     */
+    public $contentCallback;
+
+    /**
      * @var array default tree config
      */
     protected $defaultTreeOptions = [
@@ -104,6 +109,7 @@ class Tree extends InputWidget {
                 'treeTag' => $this->listTag,
                 'itemTag' => $this->itemTag,
                 'levelAttr' => $this->levelAttr,
+                'contentCallback' => $this->contentCallback,
                 'treeHtmlOptions' => function() {
                     return $this->getTreeOptions();
                 },

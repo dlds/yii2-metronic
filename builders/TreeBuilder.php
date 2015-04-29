@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals.cz/license/
@@ -45,6 +44,11 @@ class TreeBuilder {
      * @var Closure function generates content html options
      */
     public $contentHtmlOptions;
+
+    /**
+     * @var \Closure callback for generating contentF
+     */
+    public $contentCallback;
 
     /**
      * @var array given items to traverse
@@ -134,7 +138,15 @@ class TreeBuilder {
 
             $html .= $this->renderItemOpen($model->primaryKey);
 
-            $html .= $this->renderContent($model);
+            if (is_callable($this->contentCallback))
+            {
+                $html .= $this->renderContent(call_user_func($this->contentCallback, $model, $level));
+            }
+            else
+            {
+                $html .= $this->renderContent($model);
+            }
+
 
             $level = $model->{$this->levelAttr};
         }
@@ -216,5 +228,4 @@ class TreeBuilder {
 
         return (array) $property;
     }
-
 }
