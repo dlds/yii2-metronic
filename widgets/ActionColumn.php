@@ -29,7 +29,7 @@ class ActionColumn extends \yii\grid\ActionColumn {
     /**
      * @var string the icon for the view button.
      */
-    public $viewButtonIcon = 'icon-search';
+    public $viewButtonIcon = 'icon-eye';
 
     /**
      * @var string the icon for the update button.
