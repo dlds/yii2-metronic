@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @link http://www.digitaldeals.cz/
  * @copyright Copyright (c) 2014 Digital Deals s.r.o. 
@@ -22,6 +21,11 @@ class Metronic extends \yii\base\Component {
      * @var AssetBundle
      */
     public static $assetsBundle;
+
+    /**
+     * Assets link
+     */
+    const ASSETS_LINK = __DIR__.'/assets';
 
     /**
      * Theme
@@ -208,6 +212,11 @@ class Metronic extends \yii\base\Component {
     public $footerOption = self::FOOTER_DEFAULT;
 
     /**
+     * @var array resources paths
+     */
+    public $resources;
+
+    /**
      * @var string Component name used in the application
      */
     public static $componentName = 'metronic';
@@ -221,12 +230,22 @@ class Metronic extends \yii\base\Component {
 
         if ($htmlClass != self::CLASS_HTML)
         {
-            throw new InvalidConfigException('Default Yii2 Html helper class is not allowed. For using Metronic theme put Yii::$classMap[\'yii\\helpers\\Html\'] = \'' . self::CLASS_HTML . '\'; into your bootstrap.php');
+            throw new InvalidConfigException('Default Yii2 Html helper class is not allowed. For using Metronic theme put Yii::$classMap[\'yii\\helpers\\Html\'] = \''.self::CLASS_HTML.'\'; into your bootstrap.php');
         }
 
         if (self::SIDEBAR_FIXED === $this->sidebarOption && self::SIDEBAR_MENU_HOVER === $this->sidebarMenu)
         {
             throw new InvalidConfigException('Hover Sidebar Menu is not compatible with Fixed Sidebar Mode. Select Default Sidebar Mode Instead.');
+        }
+
+        if (!$this->resources)
+        {
+            throw new InvalidConfigException('You have to specify resources locations to be able to create symbolic links. Specify "admin" and "global" theme folder locations.');
+        }
+
+        if (!is_link(self::ASSETS_LINK))
+        {
+            symlink($this->resources, self::ASSETS_LINK);
         }
     }
 
@@ -272,5 +291,4 @@ class Metronic extends \yii\base\Component {
     {
         return static::$assetsBundle = ThemeAsset::register($view);
     }
-
 }
