@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 Digital Deals s.r.o.
- * @license http://www.digitaldeals.cz/license/
+ * @copyright Copyright (c) 2014 icron.org
+ * @license http://yii2metronic.icron.org/license.html
  */
-
 
 namespace dlds\metronic\widgets;
 

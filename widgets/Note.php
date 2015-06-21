@@ -1,12 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 Digital Deals s.r.o.
- * @license http://www.digitaldeals.cz/license/
+ * @copyright Copyright (c) 2014 icron.org
+ * @license http://yii2metronic.icron.org/license.html
  */
 
 namespace dlds\metronic\widgets;
-use yii\helpers\Html;
 
+use yii\helpers\Html;
 
 /**
  * Note renders a metronic button.
@@ -28,21 +28,23 @@ use yii\helpers\Html;
  * Note::end();
  * ```
  */
-class Note extends  Widget
-{
-    const  TYPE_DANGER = 'danger';
-    const  TYPE_INFO = 'info';
-    const  TYPE_SUCCESS = 'success';
-    const  TYPE_WARNING = 'warning';
+class Note extends Widget {
+
+    const TYPE_DANGER = 'danger';
+    const TYPE_INFO = 'info';
+    const TYPE_SUCCESS = 'success';
+    const TYPE_WARNING = 'warning';
 
     /**
      * @var string the note title
      */
     public $title;
+
     /**
      * @var string the note body
      */
     public $body;
+
     /**
      * @var string the note type.
      * Valid values  are 'danger', 'info', 'success', 'warning'.
@@ -55,7 +57,7 @@ class Note extends  Widget
     public function init()
     {
         parent::init();
-        Html::addCssClass($this->options, 'note note-' . $this->type);
+        Html::addCssClass($this->options, 'note note-'.$this->type);
         echo Html::beginTag('div', $this->options);
         echo $this->renderTitle();
     }
