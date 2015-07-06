@@ -1,7 +1,8 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 icron.org
- * @license http://yii2metronic.icron.org/license.html
+ * @link http://www.digitaldeals.cz/
+ * @copyright Copyright (c) 2014 Digital Deals s.r.o. 
+ * @license http://www.digitaldeals.cz/license/
  */
 
 namespace dlds\metronic;
@@ -242,7 +243,7 @@ class Metronic extends \yii\base\Component {
             throw new InvalidConfigException('You have to specify resources locations to be able to create symbolic links. Specify "admin" and "global" theme folder locations.');
         }
 
-        if (!is_link(self::ASSETS_LINK))
+        if (!is_link(self::ASSETS_LINK) && !is_dir(self::ASSETS_LINK))
         {
             symlink($this->resources, self::ASSETS_LINK);
         }
