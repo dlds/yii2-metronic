@@ -9,7 +9,7 @@ namespace dlds\metronic\bundles;
 
 use yii\web\AssetBundle;
 
-class GridViewAsset extends AssetBundle {
+class ListViewAsset extends AssetBundle {
 
     /**
      * @var string source path
