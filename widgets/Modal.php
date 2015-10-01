@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @copyright Copyright (c) 2014 icron.org
  * @license http://yii2metronic.icron.org/license.html
@@ -43,6 +42,11 @@ class Modal extends Widget {
      * @var string the title in the modal window.
      */
     public $title;
+
+    /**
+     * @var string the subtitle in the modal window.
+     */
+    public $subtitle;
 
     /**
      * @var string the footer content in the modal window.
@@ -89,10 +93,10 @@ class Modal extends Widget {
 
         $this->initOptions();
 
-        echo $this->renderToggleButton() . "\n";
-        echo Html::beginTag('div', $this->options) . "\n";
-        echo $this->renderHeader() . "\n";
-        echo $this->renderBodyBegin() . "\n";
+        echo $this->renderToggleButton()."\n";
+        echo Html::beginTag('div', $this->options)."\n";
+        echo $this->renderHeader()."\n";
+        echo $this->renderBodyBegin()."\n";
     }
 
     /**
@@ -100,9 +104,9 @@ class Modal extends Widget {
      */
     public function run()
     {
-        echo "\n" . $this->renderBodyEnd();
-        echo "\n" . $this->renderFooter();
-        echo "\n" . Html::endTag('div');
+        echo "\n".$this->renderBodyEnd();
+        echo "\n".$this->renderFooter();
+        echo "\n".Html::endTag('div');
 
         ModalAsset::register($this->view);
         //$this->registerPlugin('spinner');
@@ -114,14 +118,28 @@ class Modal extends Widget {
      */
     protected function renderHeader()
     {
+        $html = '';
+
         $button = $this->renderCloseButton();
+
         if ($button !== null)
         {
-            $this->title = $button . "\n" . Html::tag('h4', $this->title, ['class' => 'modal-title']);
+            $html = $button;
         }
+
         if ($this->title !== null)
         {
-            return Html::tag('div', "\n" . $this->title . "\n", ['class' => 'modal-header']);
+            $html .= Html::tag('h4', $this->title, ['class' => 'modal-title']);
+        }
+
+        if ($this->subtitle !== null)
+        {
+            $html .= Html::tag('p', $this->subtitle, ['class' => 'modal-subtitle']);
+        }
+
+        if ($html)
+        {
+            return Html::tag('div', "\n".$html."\n", ['class' => 'modal-header']);
         }
         else
         {
@@ -155,7 +173,7 @@ class Modal extends Widget {
     {
         if ($this->footer !== null)
         {
-            return Html::tag('div', "\n" . $this->footer . "\n", ['class' => 'modal-footer']);
+            return Html::tag('div', "\n".$this->footer."\n", ['class' => 'modal-footer']);
         }
         else
         {
@@ -210,7 +228,7 @@ class Modal extends Widget {
         $this->options = array_merge([
             'class' => 'fade',
             'tabindex' => -1,
-                ], $this->options);
+            ], $this->options);
         Html::addCssClass($this->options, 'modal');
         if ($this->fullWidth)
         {
@@ -231,19 +249,18 @@ class Modal extends Widget {
                 'data-dismiss' => 'modal',
                 'aria-hidden' => 'true',
                 'class' => 'close',
-                    ], $this->closeButton);
+                ], $this->closeButton);
         }
 
         if (!empty($this->toggleButton))
         {
             $this->toggleButton = array_merge([
                 'options' => ['data-toggle' => 'modal'],
-                    ], $this->toggleButton);
+                ], $this->toggleButton);
             if (!isset($this->toggleButton['options']['data-target']) && !isset($this->toggleButton['options']['href']))
             {
-                $this->toggleButton['options']['data-target'] = '#' . $this->options['id'];
+                $this->toggleButton['options']['data-target'] = '#'.$this->options['id'];
             }
         }
     }
-
 }
