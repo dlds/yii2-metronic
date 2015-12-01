@@ -73,6 +73,11 @@ class Nav extends \yii\bootstrap\Nav {
     const ITEM_DIVIDER = 'divider';
 
     /**
+     * Tags
+     */
+    const TAG_LINK = 'a';
+
+    /**
      * @var array list of items in the nav widget. Each array element represents a single
      * menu item which can be either a string or an array with the following structure:
      *
@@ -135,7 +140,7 @@ class Nav extends \yii\bootstrap\Nav {
         }
 
         $items = ArrayHelper::getValue($item, 'items');
-        
+
         if ($items === null)
         {
             return parent::renderItem($item);
@@ -145,7 +150,7 @@ class Nav extends \yii\bootstrap\Nav {
         {
             throw new InvalidConfigException("The 'label' option is required.");
         }
-        
+
         $dropdownType = ArrayHelper::getValue($item, 'dropdownType', self::TYPE_DEFAULT);
         $options = ArrayHelper::getValue($item, 'options', []);
 
@@ -218,14 +223,26 @@ class Nav extends \yii\bootstrap\Nav {
 
         Html::addCssClass($linkOptions, 'dropdown-toggle');
 
+        $tag = ArrayHelper::getValue($item, 'tag', 'a');
+
         $url = ArrayHelper::getValue($item, 'url', false);
 
         if (!$url)
         {
-            return Html::a($label, 'javascript:;', $linkOptions);
+            if (self::TAG_LINK == $tag)
+            {
+                $linkOptions['href'] = 'javascript:;';
+            }
+
+            return Html::tag($tag, $label, $linkOptions);
         }
 
-        return Html::a($label, Url::toRoute(ArrayHelper::getValue($item, 'url', '#')), $linkOptions);
+        if (self::TAG_LINK == $tag)
+        {
+            $linkOptions['href'] = Url::toRoute(ArrayHelper::getValue($item, 'url', '#'));
+        }
+
+        return Html::tag($tag, $label, $linkOptions);
     }
 
     /**
