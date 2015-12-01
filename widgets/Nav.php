@@ -267,6 +267,11 @@ class Nav extends \yii\bootstrap\Nav {
                 $options = ['class' => sprintf('%s %s', 'dropdown-menu-default extended', $dropdownType)];
             }
 
+            if ($this->activateItems)
+            {
+                $items = $this->isChildActive($items, $active);
+            }
+
             $items = Dropdown::widget([
                     'title' => ArrayHelper::getValue($item, 'title', ''),
                     'more' => ArrayHelper::getValue($item, 'more', []),
