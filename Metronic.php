@@ -264,7 +264,12 @@ class Metronic extends \yii\base\Component {
      */
     public static function getComponent()
     {
-        return Yii::$app->{static::$componentName};
+        if (isset(Yii::$app->{static::$componentName}))
+        {
+            return Yii::$app->{static::$componentName};
+        }
+
+        return false;
     }
 
     /**

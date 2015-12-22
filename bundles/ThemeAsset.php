@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @link http://www.digitaldeals.cz/
  * @copyright Copyright (c) 2014 Digital Deals s.r.o. 
@@ -61,7 +60,10 @@ class ThemeAsset extends AssetBundle {
      */
     private function _handleSourcePath()
     {
-        Metronic::getComponent()->parseAssetsParams($this->sourcePath);
+        if (Metronic::getComponent())
+        {
+            Metronic::getComponent()->parseAssetsParams($this->sourcePath);
+        }
     }
 
     /**
@@ -69,7 +71,6 @@ class ThemeAsset extends AssetBundle {
      */
     private function _handleDynamicCss()
     {
-        array_walk($this->css, array(Metronic::getComponent(), 'parseAssetsParams'));
+        array_walk($this->css, [Metronic::getComponent(), 'parseAssetsParams']);
     }
-
 }

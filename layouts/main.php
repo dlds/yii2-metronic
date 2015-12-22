@@ -197,7 +197,7 @@ Metronic::registerThemeAsset($this);
         NavBar::end();
         ?>
         <?=
-        (Metronic::getComponent()->layoutOption == Metronic::LAYOUT_BOXED) ?
+        (Metronic::getComponent() && Metronic::getComponent()->layoutOption == Metronic::LAYOUT_BOXED) ?
                 Html::beginTag('div', ['class' => 'container']) : '';
         ?>
         <!-- BEGIN CONTAINER -->
@@ -333,7 +333,7 @@ Metronic::registerThemeAsset($this);
                 </span>
             </div>
         </div>
-        <?= (Metronic::getComponent()->layoutOption == Metronic::LAYOUT_BOXED) ? Html::endTag('div') : ''; ?>
+        <?= (Metronic::getComponent() && Metronic::getComponent()->layoutOption == Metronic::LAYOUT_BOXED) ? Html::endTag('div') : ''; ?>
         <?php $this->endBody() ?>
     </body>
     <!-- END BODY -->

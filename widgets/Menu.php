@@ -288,7 +288,7 @@ class Menu extends \yii\widgets\Menu {
     {
         Html::addCssClass($this->options, 'page-sidebar-menu');
 
-        if (Metronic::SIDEBAR_MENU_HOVER === Metronic::getComponent()->sidebarMenu)
+        if (Metronic::getComponent() && Metronic::SIDEBAR_MENU_HOVER === Metronic::getComponent()->sidebarMenu)
         {
             Html::addCssClass($this->options, 'page-sidebar-menu-hover-submenu');
         }

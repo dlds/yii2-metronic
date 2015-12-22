@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @link http://www.digitaldeals.cz/
  * @copyright Copyright (c) 2014 Digital Deals s.r.o. 
@@ -37,9 +36,9 @@ class StyleBasedAsset extends AssetBundle {
      * @var array js assets
      */
     public $js = [
-            //'scripts/layout.js',
-            //'scripts/app.js',
-            //'scripts/init.js',
+        //'scripts/layout.js',
+        //'scripts/app.js',
+        //'scripts/init.js',
     ];
 
     /**
@@ -69,7 +68,9 @@ class StyleBasedAsset extends AssetBundle {
      */
     private function _handleStyleBased()
     {
-        $this->css = ArrayHelper::merge($this->styleBasedCss[Metronic::getComponent()->style], $this->css);
+        if (Metronic::getComponent())
+        {
+            $this->css = ArrayHelper::merge($this->styleBasedCss[Metronic::getComponent()->style], $this->css);
+        }
     }
-
 }
