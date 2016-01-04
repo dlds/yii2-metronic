@@ -71,6 +71,11 @@ class ThemeAsset extends AssetBundle {
      */
     private function _handleDynamicCss()
     {
-        array_walk($this->css, [Metronic::getComponent(), 'parseAssetsParams']);
+        $component = Metronic::getComponent();
+
+        if ($component)
+        {
+            array_walk($this->css, [$component, 'parseAssetsParams']);
+        }
     }
 }
