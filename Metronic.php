@@ -266,16 +266,12 @@ class Metronic extends \yii\base\Component {
     {
         try
         {
-            $component = Yii::$app->{static::$componentName};
-
-            return $component;
+            return \Yii::$app->get(static::$componentName);
         }
-        catch (\yii\base\UnknownPropertyException $ex)
+        catch (InvalidConfigException $ex)
         {
-            return false;
+            return null;
         }
-
-        return false;
     }
 
     /**
