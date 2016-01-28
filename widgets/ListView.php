@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @copyright Copyright (c) 2014 icron.org
  * @license http://yii2metronic.icron.org/license.html
@@ -42,7 +41,7 @@ class ListView extends \yii\widgets\ListView {
     protected function initSortable()
     {
         $route = ArrayHelper::getValue($this->sortable, 'url', false);
-        
+
         if ($route)
         {
             $url = Url::toRoute($route);
@@ -57,12 +56,18 @@ class ListView extends \yii\widgets\ListView {
             }
 
             $options = json_encode(ArrayHelper::getValue($this->sortable, 'options', []));
-            
+
             $view = $this->getView();
             $view->registerJs("jQuery('#{$this->id}').SortableListView('{$url}', {$options});");
-            $view->registerJs("jQuery('#{$this->id}').on('sortableSuccess', function() {jQuery.pjax.reload(" . json_encode($this->clientOptions) . ")})", \yii\web\View::POS_END);
+
+            $reload = ArrayHelper::getValue($this->sortable, 'reload', true);
+
+            if ($reload)
+            {
+                $view->registerJs("jQuery('#{$this->id}').on('sortableSuccess', function() {jQuery.pjax.reload(".json_encode($this->clientOptions).")})", \yii\web\View::POS_END);
+            }
+
             ListViewSortableAsset::register($view);
         }
     }
-
 }
