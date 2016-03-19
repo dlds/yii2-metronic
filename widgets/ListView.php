@@ -60,11 +60,11 @@ class ListView extends \yii\widgets\ListView {
             $view = $this->getView();
             $view->registerJs("jQuery('#{$this->id}').SortableListView('{$url}', {$options});");
 
-            $reload = ArrayHelper::getValue($this->sortable, 'reload', true);
+            $reload = ArrayHelper::getValue($this->sortable, 'reload', false);
 
             if ($reload)
             {
-                $view->registerJs("jQuery('#{$this->id}').on('sortableSuccess', function() {jQuery.pjax.reload(".json_encode($this->clientOptions).")})", \yii\web\View::POS_END);
+                $view->registerJs("jQuery('#{$this->id}').on('sortableSuccess', $reload)", \yii\web\View::POS_END);
             }
 
             ListViewSortableAsset::register($view);
