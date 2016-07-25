@@ -32,14 +32,6 @@ class StyleBasedAsset extends AssetBundle {
         'global/css/plugins.css',
     ];
 
-    /**
-     * @var array js assets
-     */
-    public $js = [
-        //'scripts/layout.js',
-        //'scripts/app.js',
-        //'scripts/init.js',
-    ];
 
     /**
      * @var array style based css
