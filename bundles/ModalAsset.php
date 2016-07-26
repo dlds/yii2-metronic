@@ -6,14 +6,11 @@
 
 namespace  dlds\metronic\bundles;
 
-use yii\web\AssetBundle;
-
 /**
- * SpinnerAsset for spinner widget.
+ * ModalAsset for modal widget.
  */
-class ModalAsset extends AssetBundle
+class ModalAsset extends BaseAssetBundle
 {
-    public $sourcePath = '@dlds/metronic/assets';
     public $js = [
         'global/plugins/bootstrap-modal/js/bootstrap-modalmanager.js',
         'global/plugins/bootstrap-modal/js/bootstrap-modal.js',

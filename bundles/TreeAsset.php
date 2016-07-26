@@ -7,14 +7,8 @@
 
 namespace dlds\metronic\bundles;
 
-use yii\web\AssetBundle;
 
-class TreeAsset extends AssetBundle {
-
-    /**
-     * @var string source path
-     */
-    public $sourcePath = '@dlds/metronic/assets';
+class TreeAsset extends BaseAssetBundle {
 
     /**
      * @var array CSS
@@ -22,6 +16,7 @@ class TreeAsset extends AssetBundle {
     public $css = [
         'global/plugins/jstree/dist/themes/default/style.min.css',
     ];
+
     public $js = [  
         'global/plugins/jstree/dist/jstree.min.js',
     ];

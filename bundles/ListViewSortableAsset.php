@@ -7,14 +7,10 @@
 
 namespace dlds\metronic\bundles;
 
-use yii\web\AssetBundle;
-
 /**
  * SpinnerAsset for spinner widget.
  */
-class ListViewSortableAsset extends AssetBundle {
-
-    public $sourcePath = '@dlds/metronic/assets';
+class ListViewSortableAsset extends BaseAssetBundle {
 
     /**
      * @var array JS

@@ -6,14 +6,12 @@
 
 namespace  dlds\metronic\bundles;
 
-use yii\web\AssetBundle;
-
 /**
  * SpinnerAsset for spinner widget.
  */
-class SpinnerAsset extends AssetBundle
+class SpinnerAsset extends BaseAssetBundle
 {
-    public $sourcePath = '@dlds/metronic/assets';
+
     public $js = [
         'plugins/fuelux/js/spinner.min.js',
     ];

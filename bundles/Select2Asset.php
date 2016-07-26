@@ -6,14 +6,12 @@
 
 namespace  dlds\metronic\bundles;
 
-use yii\web\AssetBundle;
-
 /**
- * SpinnerAsset for spinner widget.
+ * Select2Asset for select2 widget.
  */
-class Select2Asset extends AssetBundle
+class Select2Asset extends BaseAssetBundle
 {
-    public $sourcePath = '@dlds/metronic/assets';
+
     public $js = [
         'global/plugins/select2/select2.min.js',
     ];

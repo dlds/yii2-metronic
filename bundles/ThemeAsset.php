@@ -8,15 +8,9 @@
 namespace dlds\metronic\bundles;
 
 use Yii;
-use yii\web\AssetBundle;
 use dlds\metronic\Metronic;
 
-class ThemeAsset extends AssetBundle {
-
-    /**
-     * @var string source assets path
-     */
-    public $sourcePath = '@dlds/metronic/assets';
+class ThemeAsset extends BaseAssetBundle {
 
     /**
      * @var array depended bundles
@@ -30,18 +24,18 @@ class ThemeAsset extends AssetBundle {
      * @var array css assets
      */
     public $css = [
-        'admin/{version}/css/layout.css',
-        'admin/{version}/css/themes/{theme}.css',
-        'admin/{version}/css/custom.css',
+        'layouts/{version}/css/layout.css',
+        'layouts/{version}/css/themes/{theme}.css',
+        'layouts/{version}/css/custom.css',
     ];
 
     /**
      * @var array js assets
      */
     public $js = [
-        'global/scripts/metronic.js',
-        'admin/{version}/scripts/layout.js',
-        'admin/{version}/scripts/demo.js',
+        'global/scripts/app.js',
+        'layouts/{version}/scripts/layout.js',
+        'layouts/{version}/scripts/demo.js',
     ];
 
     /**

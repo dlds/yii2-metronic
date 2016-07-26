@@ -34,6 +34,9 @@ class Metronic extends \yii\base\Component {
     const VERSION_2 = 'layout2';
     const VERSION_3 = 'layout3';
     const VERSION_4 = 'layout4';
+    const VERSION_5 = 'layout5';
+    const VERSION_6 = 'layout6';
+    const VERSION_7 = 'layout7';
 
     /**
      * Theme
@@ -46,6 +49,7 @@ class Metronic extends \yii\base\Component {
      */
     const STYLE_SQUARE = 'default';
     const STYLE_ROUNDED = 'rounded';
+    const STYLE_MATERIAL = 'material';
 
     /**
      * Layout
