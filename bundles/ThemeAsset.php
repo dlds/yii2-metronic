@@ -36,6 +36,7 @@ class ThemeAsset extends BaseAssetBundle {
         'global/scripts/app.js',
         'layouts/{version}/scripts/layout.js',
         'layouts/{version}/scripts/demo.js',
+        'layouts/global/scripts/quick-sidebar.js',
     ];
 
     /**
