@@ -7,8 +7,6 @@
 
 namespace dlds\metronic\bundles;
 
-use yii\web\AssetBundle;
-
 class CoreAsset extends BaseAssetBundle {
 
     /**

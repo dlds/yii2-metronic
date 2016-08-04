@@ -13,12 +13,12 @@ class Select2Asset extends BaseAssetBundle
 {
 
     public $js = [
-        'global/plugins/select2/select2.min.js',
+        'global/plugins/select2/js/select2.js',
     ];
 
     public $css = [
-        'global/plugins/select2/select2.css',
-        'global/plugins/select2/select2-bootstrap.css',
+        'global/plugins/select2/css/select2.css',
+        'global/plugins/select2/css/select2-bootstrap.min.css',
     ];
 
 
