@@ -163,7 +163,7 @@ class Metronic extends \yii\base\Component {
     /**
      * Classes paths
      */
-    const CLASS_HTML = '@vendor/d4rkstar/yii2-metronic/helpers/Html.php';
+    const CLASS_HTML = '@vendor/dlds/yii2-metronic/helpers/Html.php';
 
     /**
      * @var string version
