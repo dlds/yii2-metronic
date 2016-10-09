@@ -161,11 +161,6 @@ class Metronic extends \yii\base\Component {
     const UI_COLOR_GREY_GALLERY = 'grey-gallery';
 
     /**
-     * Classes paths
-     */
-    const CLASS_HTML = '@vendor/d4rkstar/yii2-metronic/helpers/Html.php';
-
-    /**
      * @var string version
      */
     public $version = self::VERSION_4;
@@ -226,15 +221,29 @@ class Metronic extends \yii\base\Component {
     public static $componentName = 'metronic';
 
     /**
+     * extract vendor from current class filename and returns
+     * the Html helper file.
+     * @return string
+     */
+    public static function getHtmlHelperClass() {
+        $s = strpos(__FILE__,'vendor/')+7;
+        $e = strpos(__FILE__,'/', $s+1);
+        $vendor = substr(__FILE__, $s, ($e-$s));
+
+        return '@vendor/' . $vendor .'/yii2-metronic/helpers/Html.php';
+
+    }
+
+    /**
      * Inits module
      */
     public function init()
     {
         $htmlClass = \yii\helpers\ArrayHelper::getValue(Yii::$classMap, 'yii\helpers\Html', null);
-
-        if ($htmlClass != self::CLASS_HTML)
+        $metronicHtmlClass = self::getHtmlHelperClass();
+        if ($htmlClass != $metronicHtmlClass)
         {
-            throw new InvalidConfigException('Default Yii2 Html helper class is not allowed. For using Metronic theme put Yii::$classMap[\'yii\\helpers\\Html\'] = \''.self::CLASS_HTML.'\'; into your bootstrap.php');
+            throw new InvalidConfigException('Default Yii2 Html helper class is not allowed. For using Metronic theme put Yii::$classMap[\'yii\\helpers\\Html\'] = \''.$metronicHtmlClass.'\'; into your bootstrap.php');
         }
 
         if (self::SIDEBAR_FIXED === $this->sidebarOption && self::SIDEBAR_MENU_HOVER === $this->sidebarMenu)
