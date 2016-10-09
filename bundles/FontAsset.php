@@ -9,7 +9,7 @@ namespace dlds\metronic\bundles;
 class FontAsset extends BaseAssetBundle
 {
     public $css = [
-        'http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all',
+        'https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all',
         'global/plugins/font-awesome/css/font-awesome.min.css',
     ];
 }
