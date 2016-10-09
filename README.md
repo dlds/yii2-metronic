@@ -1,27 +1,16 @@
 # yii2-metronic
 Yii2 [Metronic theme](http://www.keenthemes.com/) integration. Currently is supported the version 4.6
 
-I've preserved author's copyright and original namespace in the code: I would like to push all the modifications to the original [github repository](https://github.com/dlds/yii2-metronic).
-
 
 Installation
 ------------
 
 The extension is in development and the only way to use this fork is through through [composer](http://getcomposer.org/download/).
 
-Edit your composer.json and add the repository:
-```
-"repositories": [
-        {
-            "type": "vcs",
-            "url":  "git@github.com:d4rkstar/yii2-metronic.git"
-        }
-    ],
-```
 
-After that, install with this composer command:
+So add it to your composer.json with this composer command:
 ```
-php composer.phar require d4rkstar/yii2-metronic dev-master
+php composer.phar require dlds/yii2-metronic dev-master
 ```
 
  
@@ -71,7 +60,7 @@ My vendor folder looks like this:
 * app/
     * [...]
     * vendor/
-        * d4rkstar/
+        * dlds/
             * yii2-metronic/
                 * assets -> symlink to /var/www/project/web/metronic/assets/theme/assets
                 * builders/
