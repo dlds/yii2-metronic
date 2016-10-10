@@ -133,7 +133,7 @@ class Portlet extends Widget {
     /**
      * @var Ribbon[]
      */
-    public $ribbon = [];
+    public $ribbons = [];
 
     /**
      * @var bool Whether the portlet should be bordered
@@ -163,13 +163,13 @@ class Portlet extends Widget {
         parent::init();
 
         Html::addCssClass($this->options, trim(sprintf('portlet %s %s', $this->type, $this->background)));
-        if (count($this->ribbon)>0) {
+        if (count($this->ribbons)>0) {
             Html::addCssClass($this->options, 'mt-element-ribbon portlet-fit');
         }
         echo Html::beginTag('div', $this->options);
 
 
-        if (count($this->ribbon)>0) {
+        if (count($this->ribbons)>0) {
             $this->_renderRibbon();
         }
 
@@ -198,7 +198,7 @@ class Portlet extends Widget {
     private function _renderRibbon()
     {
         /** @var Ribbon $r */
-        foreach($this->ribbon as $r) {
+        foreach($this->ribbons as $r) {
             print $r->run();
         }
     }
