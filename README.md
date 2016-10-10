@@ -14,7 +14,7 @@ php composer.phar require dlds/yii2-metronic dev-master
 ```
 
  
-Then You've to unzip the contents of your metronic Zip theme inside the @webroot/metronic folder. Check [Aliases](http://www.yiiframework.com/doc-2.0/guide-concept-aliases.html).
+Then You've to unzip the contents of your metronic Zip theme inside the ```@webroot/metronic``` folder. Check [Aliases](http://www.yiiframework.com/doc-2.0/guide-concept-aliases.html).
 
 You should have a folder structure like this:
 
@@ -31,7 +31,7 @@ You should have a folder structure like this:
 
 Quick Start
 -----------
-Edit your config/web.php configuration file and add the metronic component:
+Edit your ```config/web.php``` configuration file and add the metronic component:
 
 ```
 'components' => [
@@ -107,7 +107,7 @@ Configuring the layout for your views is the last step.
 
 The metronic component contains a sample layout view. I've not checked it. I'm working on my layout :)
 
-Here is my sample views/layout/main.php:
+Here is my sample ```views/layout/main.php```:
 
 ```
 <?php
@@ -155,6 +155,32 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($asset->sourcePath);
 </body>
 </html>
 <?php $this->endPage() ?>
+```
+
+Metronic theme require that you replace yii\helpers\Html with it's helper. So, you have to add a ```config/bootstrap.php``` with the following content:
+
+```
+<?php
+Yii::$classMap['yii\helpers\Html'] = '@vendor/dlds/yii2-metronic/helpers/Html.php';
+?>
+```
+
+The file bootstrap.php should be loaded before the web application is created. So you need to edit your ```web/index.php``` file 
+and adjust it, and add a require directive. The file content should look like this:
+
+```
+<?php
+
+// comment out the following two lines when deployed to production
+defined('YII_DEBUG') or define('YII_DEBUG', true);
+defined('YII_ENV') or define('YII_ENV', 'dev');
+
+require(__DIR__ . '/../vendor/autoload.php');
+require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
+
+$config = require(__DIR__ . '/../config/web.php');
+require(__DIR__ . '/../config/bootstrap.php');
+(new yii\web\Application($config))->run();
 ```
 
 Things to notice:
