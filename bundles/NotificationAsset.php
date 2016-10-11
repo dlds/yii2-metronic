@@ -14,11 +14,11 @@ class NotificationAsset extends BaseAssetBundle
 {
 
     public $js = [
-        'plugins/bootstrap-toastr/toastr.min.js',
+        'global/plugins/bootstrap-toastr/toastr.min.js',
     ];
 
     public $css = [
-        'plugins/bootstrap-toastr/toastr.min.css',
+        'global/plugins/bootstrap-toastr/toastr.min.css',
     ];
 
     public $depends = [
