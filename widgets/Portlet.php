@@ -131,6 +131,11 @@ class Portlet extends Widget {
     public $scroller = [];
 
     /**
+     * @var Ribbon[]
+     */
+    public $ribbons = [];
+
+    /**
      * @var bool Whether the portlet should be bordered
      */
     public $bordered = false;
@@ -158,7 +163,15 @@ class Portlet extends Widget {
         parent::init();
 
         Html::addCssClass($this->options, trim(sprintf('portlet %s %s', $this->type, $this->background)));
+        if (count($this->ribbons)>0) {
+            Html::addCssClass($this->options, 'mt-element-ribbon portlet-fit');
+        }
         echo Html::beginTag('div', $this->options);
+
+
+        if (count($this->ribbons)>0) {
+            $this->_renderRibbon();
+        }
 
         $this->_renderTitle();
 
@@ -180,6 +193,14 @@ class Portlet extends Widget {
         //$loader = Html::img(Metronic::getAssetsUrl($this->view) . '/img/loading-spinner-grey.gif');
         //$this->clientOptions['loader'] = ArrayHelper::getValue($this->clientOptions, 'loader', $loader);
         //$this->registerPlugin('portlet');
+    }
+
+    private function _renderRibbon()
+    {
+        /** @var Ribbon $r */
+        foreach($this->ribbons as $r) {
+            print $r->run();
+        }
     }
 
     /**

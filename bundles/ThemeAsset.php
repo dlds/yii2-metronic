@@ -7,15 +7,10 @@
 
 namespace dlds\metronic\bundles;
 
-use yii\web\AssetBundle;
+use Yii;
 use dlds\metronic\Metronic;
 
-class ThemeAsset extends AssetBundle {
-
-    /**
-     * @var string source assets path
-     */
-    public $sourcePath = '@dlds/metronic/assets/admin/{version}';
+class ThemeAsset extends BaseAssetBundle {
 
     /**
      * @var array depended bundles
@@ -29,19 +24,25 @@ class ThemeAsset extends AssetBundle {
      * @var array css assets
      */
     public $css = [
-        'css/layout.css',
-        'css/themes/{theme}.css',
-        'css/custom.css',
+        'layouts/{version}/css/layout.css',
+        'layouts/{version}/css/themes/{theme}.css',
+        'layouts/{version}/css/custom.css',
     ];
 
     /**
      * @var array js assets
      */
     public $js = [
-        'scripts/layout.js',
-        'scripts/app.js',
-        'scripts/init.js',
+        'global/scripts/app.js',
+        'layouts/{version}/scripts/layout.js',
+        'layouts/{version}/scripts/demo.js',
+        'layouts/global/scripts/quick-sidebar.js',
     ];
+
+    /**
+     * @var array addons assets
+     */
+    public $addons = [];
 
     /**
      * Inits bundle
@@ -50,7 +51,11 @@ class ThemeAsset extends AssetBundle {
     {
         $this->_handleSourcePath();
 
+        $this->_handleAddons();
+
         $this->_handleDynamicCss();
+
+        $this->_handleDynamicJs();
 
         return parent::init();
     }
@@ -76,6 +81,32 @@ class ThemeAsset extends AssetBundle {
         if ($component)
         {
             array_walk($this->css, [$component, 'parseAssetsParams']);
+        }
+    }
+
+    /**
+     * Parses dynamic js
+     */
+    private function _handleDynamicJs()
+    {
+        $component = Metronic::getComponent();
+
+        if ($component)
+        {
+            array_walk($this->js, [$component, 'parseAssetsParams']);
+        }
+    }
+
+    private function _handleAddons() {
+        $controller = Yii::$app->controller->id .'/'. Yii::$app->controller->action->id;
+        if (array_key_exists($controller, $this->addons)) {
+            $additional = $this->addons[$controller];
+            if (array_key_exists('js',$additional) && is_array($additional['js'])) {
+                $this->js = array_merge($this->js, $additional['js']);
+            }
+            if (array_key_exists('css',$additional) && is_array($additional['css'])) {
+                $this->css = array_merge($this->css, $additional['css']);
+            }
         }
     }
 }

@@ -6,20 +6,19 @@
 
 namespace  dlds\metronic\bundles;
 
-use yii\web\AssetBundle;
 
 /**
- * SpinnerAsset for spinner widget.
+ * NotificationAsset for notification widget.
  */
-class NotificationAsset extends AssetBundle
+class NotificationAsset extends BaseAssetBundle
 {
-    public $sourcePath = '@dlds/metronic/assets';
+
     public $js = [
-        'plugins/bootstrap-toastr/toastr.min.js',
+        'global/plugins/bootstrap-toastr/toastr.min.js',
     ];
 
     public $css = [
-        'plugins/bootstrap-toastr/toastr.min.css',
+        'global/plugins/bootstrap-toastr/toastr.min.css',
     ];
 
     public $depends = [

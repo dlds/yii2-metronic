@@ -38,6 +38,11 @@ class Layout {
     {
         Html::addCssClass($options, 'page-sidebar-closed-hide-logo');
 
+        if (Metronic::getComponent() && Metronic::STYLE_MATERIAL === Metronic::getComponent()->style)
+        {
+            Html::addCssClass($options, 'page-md');
+        }
+
         if (Metronic::getComponent() && Metronic::LAYOUT_BOXED === Metronic::getComponent()->layoutOption)
         {
             Html::addCssClass($options, 'page-boxed');
