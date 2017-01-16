@@ -7,16 +7,10 @@
 
 namespace dlds\metronic\bundles;
 
-use yii\web\AssetBundle;
 use yii\helpers\ArrayHelper;
 use dlds\metronic\Metronic;
 
-class StyleBasedAsset extends AssetBundle {
-
-    /**
-     * @var string source assets path
-     */
-    public $sourcePath = '@dlds/metronic/assets';
+class StyleBasedAsset extends BaseAssetBundle {
 
     /**
      * @var array depended bundles
@@ -28,18 +22,7 @@ class StyleBasedAsset extends AssetBundle {
     /**
      * @var array css assets
      */
-    public $css = [
-        'global/css/plugins.css',
-    ];
-
-    /**
-     * @var array js assets
-     */
-    public $js = [
-        //'scripts/layout.js',
-        //'scripts/app.js',
-        //'scripts/init.js',
-    ];
+    public $css = [ ];
 
     /**
      * @var array style based css
@@ -47,10 +30,16 @@ class StyleBasedAsset extends AssetBundle {
     private $styleBasedCss = [
         Metronic::STYLE_SQUARE => [
             'global/css/components.css',
+            'global/css/plugins.css',
         ],
         Metronic::STYLE_ROUNDED => [
             'global/css/components-rounded.css',
+            'global/css/plugins.css',
         ],
+        Metronic::STYLE_MATERIAL => [
+            'global/css/components-md.css',
+            'global/css/plugins-md.css',
+        ]
     ];
 
     /**
@@ -70,7 +59,8 @@ class StyleBasedAsset extends AssetBundle {
     {
         if (Metronic::getComponent())
         {
-            $this->css = ArrayHelper::merge($this->styleBasedCss[Metronic::getComponent()->style], $this->css);
+            $css = $this->styleBasedCss[Metronic::getComponent()->style];
+            $this->css = ArrayHelper::merge($css, $this->css);
         }
     }
 }

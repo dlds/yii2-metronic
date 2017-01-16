@@ -7,14 +7,12 @@
 
 namespace dlds\metronic\bundles;
 
-use yii\web\AssetBundle;
-
 /**
  * DateRangePickerAsset for dateRangePicker widget.
  */
-class DateRangePickerAsset extends AssetBundle {
+class DateRangePickerAsset extends BaseAssetBundle {
 
-    public $sourcePath = '@dlds/metronic/assets';
+
     public $js = [
         'plugins/bootstrap-daterangepicker/moment.min.js',
         'plugins/bootstrap-daterangepicker/daterangepicker.js',

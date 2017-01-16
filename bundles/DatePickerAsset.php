@@ -7,19 +7,16 @@
 
 namespace dlds\metronic\bundles;
 
-use yii\web\AssetBundle;
+class DatePickerAsset extends BaseAssetBundle {
 
-class DatePickerAsset extends AssetBundle {
-
-    public $sourcePath = '@dlds/metronic/assets';
     public static $extraJs = [];
+
     public $js = [
-        'plugins/bootstrap-daterangepicker/moment.min.js',
-        'plugins/bootstrap-datepicker-extended/js/bootstrap-datepicker.js',
+        'plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
     ];
     public $css = [
-        'plugins/bootstrap-datepicker-extended/css/datepicker.css',
-        'plugins/bootstrap-datepicker-extended/css/datepicker3.css',
+        'plugins/bootstrap-datepicker/css/bootstrap-datepicker.css',
+        'plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css',
     ];
     public $depends = [
         'dlds\metronic\bundles\CoreAsset',
