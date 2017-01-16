@@ -53,7 +53,8 @@ use yii\helpers\Html;
  * @author icron.org <arbuscula@gmail.com>
  * @since 1.0
  */
-class Portlet extends Widget {
+class Portlet extends Widget
+{
 
     /**
      * Types
@@ -151,6 +152,11 @@ class Portlet extends Widget {
     public $headerOptions = [];
 
     /**
+     * @var string tag title name
+     */
+    public $tagTitle = 'h1';
+
+    /**
      * Initializes the widget.
      */
     public function init()
@@ -187,23 +193,20 @@ class Portlet extends Widget {
      */
     private function _renderTitle()
     {
-        if (false !== $this->title)
-        {
+        if (false !== $this->title) {
             Html::addCssClass($this->headerOptions, 'portlet-title');
 
             echo Html::beginTag('div', $this->headerOptions);
 
             echo Html::beginTag('div', ['class' => 'caption']);
 
-            if ($this->icon)
-            {
+            if ($this->icon) {
                 echo Html::tag('i', '', ['class' => $this->pushFontColor($this->icon)]);
             }
 
-            echo Html::tag('span', $this->title, ['class' => $this->pushFontColor('caption-subject')]);
+            echo Html::tag($this->tagTitle, $this->title, ['class' => $this->pushFontColor('caption-subject')]);
 
-            if ($this->helper)
-            {
+            if ($this->helper) {
                 echo Html::tag('span', $this->helper, ['class' => 'caption-helper']);
             }
 
@@ -222,14 +225,11 @@ class Portlet extends Widget {
      */
     private function _renderTools()
     {
-        if (!empty($this->tools))
-        {
+        if (!empty($this->tools)) {
             $tools = [];
-            foreach ($this->tools as $tool)
-            {
+            foreach ($this->tools as $tool) {
                 $class = '';
-                switch ($tool)
-                {
+                switch ($tool) {
                     case self::TOOL_CLOSE :
                         $class = 'remove';
                         break;
@@ -254,8 +254,7 @@ class Portlet extends Widget {
      */
     private function _renderActions()
     {
-        if (!empty($this->actions))
-        {
+        if (!empty($this->actions)) {
             echo Html::tag('div', implode("\n", $this->actions), ['class' => 'actions']);
         }
     }
@@ -266,17 +265,15 @@ class Portlet extends Widget {
      */
     private function _renderScrollerBegin()
     {
-        if (!empty($this->scroller))
-        {
-            if (!isset($this->scroller['height']))
-            {
+        if (!empty($this->scroller)) {
+            if (!isset($this->scroller['height'])) {
                 throw new InvalidConfigException("The 'height' option of the scroller is required.");
             }
             $options = ArrayHelper::getValue($this->scroller, 'options', []);
             echo Html::beginTag(
-                    'div', ArrayHelper::merge(
-                            ['class' => 'scroller', 'data-always-visible' => '1', 'data-rail-visible' => '0'], $options, ['style' => 'height:' . $this->scroller['height'] . 'px;']
-                    )
+                'div', ArrayHelper::merge(
+                    ['class' => 'scroller', 'data-always-visible' => '1', 'data-rail-visible' => '0'], $options, ['style' => 'height:' . $this->scroller['height'] . 'px;']
+                )
             );
         }
     }
@@ -286,19 +283,14 @@ class Portlet extends Widget {
      */
     private function _renderScrollerEnd()
     {
-        if (!empty($this->scroller))
-        {
+        if (!empty($this->scroller)) {
             echo Html::endTag('div');
             $footer = ArrayHelper::getValue($this->scroller, 'footer', '');
-            if (!empty($footer))
-            {
+            if (!empty($footer)) {
                 echo Html::beginTag('div', ['class' => 'scroller-footer']);
-                if (is_array($footer))
-                {
+                if (is_array($footer)) {
                     echo Html::tag('div', Link::widget($footer), ['class' => 'pull-right']);
-                }
-                elseif (is_string($footer))
-                {
+                } elseif (is_string($footer)) {
                     echo $footer;
                 }
                 echo Html::endTag('div');
@@ -311,8 +303,7 @@ class Portlet extends Widget {
      */
     protected function getFontColor()
     {
-        if ($this->color)
-        {
+        if ($this->color) {
             return sprintf('font-%s', $this->color);
         }
 
@@ -326,8 +317,7 @@ class Portlet extends Widget {
     {
         $color = $this->getFontColor();
 
-        if ($color)
-        {
+        if ($color) {
             return sprintf('%s %s', $string, $color);
         }
 
