@@ -7,8 +7,9 @@
 
 namespace dlds\metronic\bundles;
 
-class GridViewAsset extends BaseAssetBundle {
+use yii\web\AssetBundle;
 
+class ListViewAsset extends BaseAssetBundle {
 
     /**
      * @var array CSS
