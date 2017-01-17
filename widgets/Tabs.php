@@ -151,7 +151,7 @@ class Tabs extends \yii\bootstrap\Tabs {
                 $label .= ' <b class="caret"></b>';
                 Html::addCssClass($headerOptions, 'dropdown');
 
-                if ($this->renderDropdown($item['items'], $panes))
+                if ($this->renderDropdown(count($item['items']), $item['items'], $panes))
                 {
                     Html::addCssClass($headerOptions, 'active');
                 }
