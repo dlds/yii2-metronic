@@ -7,6 +7,7 @@
 
 namespace dlds\metronic;
 
+use dlds\metronic\bundles\IonRangeSliderAsset;
 use Yii;
 use yii\web\AssetBundle;
 use yii\base\InvalidConfigException;
@@ -214,6 +215,9 @@ class Metronic extends \yii\base\Component {
      * @var string Footer display
      */
     public $footerOption = self::FOOTER_DEFAULT;
+
+    /** @var string IonRangeSlider skin */
+    public $ionSliderSkin = IonRangeSliderAsset::SKIN_SIMPLE;
 
     /**
      * @var array resources paths

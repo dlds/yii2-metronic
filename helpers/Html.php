@@ -102,13 +102,15 @@ class Html extends \yii\helpers\BaseHtml {
     /**
      * @inheritdoc
      */
-    public static function dropDownList($name, $selection = null, $items = [], $options = [])
+    public static function dropDownList($name, $selection = null, $items = [], $options = [], $standardSelect=false)
     {
-        Select2Asset::register(\Yii::$app->view);
+        if (!$standardSelect) {
+            Select2Asset::register(\Yii::$app->view);
 
-        self::addCssClass($options, self::CLASS_SELECT2ME);
+            self::addCssClass($options, self::CLASS_SELECT2ME);
 
-        self::addData($options, 'placeholder', '-');
+            self::addData($options, 'placeholder', '-');
+        }
 
         return parent::dropDownList($name, $selection, $items, $options);
     }
@@ -116,13 +118,15 @@ class Html extends \yii\helpers\BaseHtml {
     /**
      * @inheritdoc
      */
-    public static function activeDropDownList($model, $attribute, $items, $options = [])
+    public static function activeDropDownList($model, $attribute, $items, $options = [], $standardSelect=false)
     {
-        Select2Asset::register(\Yii::$app->view);
+        if (!$standardSelect) {
+            Select2Asset::register(\Yii::$app->view);
 
-        self::addCssClass($options, self::CLASS_SELECT2ME);
+            self::addCssClass($options, self::CLASS_SELECT2ME);
 
-        self::addData($options, 'placeholder', '-');
+            self::addData($options, 'placeholder', '-');
+        }
 
         return parent::activeDropDownList($model, $attribute, $items, $options);
     }

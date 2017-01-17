@@ -7,7 +7,7 @@
 namespace dlds\metronic\widgets;
 
 use yii\helpers\Html;
-
+use dlds\metronic\bundles\MultiSelectAsset;
 
 /**
  * MultiSelect renders MultiSelect component.
@@ -55,9 +55,9 @@ class MultiSelect extends InputWidget
     public function run()
     {
         if ($this->hasModel()) {
-            echo Html::activeDropDownList($this->model, $this->attribute, $this->data, $this->options);
+            echo Html::activeDropDownList($this->model, $this->attribute, $this->data, $this->options, true);
         } else {
-            echo Html::dropDownList($this->name, $this->value, $this->data, $this->options);
+            echo Html::dropDownList($this->name, $this->value, $this->data, $this->options, true);
         }
         MultiSelectAsset::register($this->view);
         $this->registerPlugin('multiSelect');

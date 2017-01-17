@@ -59,7 +59,7 @@ class Link extends Widget {
     /**
      * Label options
      */
-    public $labelOptions;
+    public $labelOptions = [];
 
     /**
      * Initializes the widget.

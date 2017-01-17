@@ -72,10 +72,32 @@ class Dropdown extends \yii\bootstrap\Dropdown {
     public $scroller = [];
 
     /**
+     * @var bool if we should use pull-right menu
+     */
+    public $pullRight = false;
+
+    /**
+     * @var bool if this is a drop-up
+     */
+    public $dropUp = false;
+
+    public function init()
+    {
+
+        Html::addCssClass($this->options, 'dropdown-menu-list' );
+        if ($this->dropUp) Html::addCssClass($this->options, 'bottom-up' );
+        if ($this->pullRight) Html::addCssClass($this->options, 'pull-right' );
+        if (count($this->scroller)>0) Html::addCssClass($this->options, 'scroller' );
+
+        parent::init();
+    }
+
+    /**
      * Executes the widget.
      */
     public function run()
     {
+
         echo $this->renderItems($this->items);
     }
 
@@ -100,11 +122,10 @@ class Dropdown extends \yii\bootstrap\Dropdown {
                 throw new InvalidConfigException("The 'height' option of Scroller is required.");
             }
             $lines[] = Html::beginTag('li');
-            $lines[] = Html::beginTag(
-                            'ul', [
-                        'style' => 'height: ' . $this->scroller['height'] . 'px;',
-                        'class' => 'dropdown-menu-list scroller'
-                            ]
+            $lines[] = Html::beginTag('ul', [
+                'style' => 'height: ' . $this->scroller['height'] . 'px;',
+                'class' => $this->options['class']
+                ]
             );
         }
 
