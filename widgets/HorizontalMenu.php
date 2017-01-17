@@ -177,6 +177,12 @@ class HorizontalMenu extends Menu {
         {
             throw new InvalidConfigException("The 'visible' option of search is required.");
         }
+        else
+        {
+            // do not render seacrh box if not visible
+            if ($this->search['visible'])
+                $data[] = Html::tag('li', $this->renderSearch());            
+        } 
         $data[] = Html::tag('li', $this->renderSearch());
         echo Html::tag($tag, implode("\n", $data), $options);
         echo Html::endTag('div');
