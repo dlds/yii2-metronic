@@ -1,14 +1,16 @@
 <?php
 /**
  * @link http://www.digitaldeals.cz/
- * @copyright Copyright (c) 2014 Digital Deals s.r.o. 
+ * @copyright Copyright (c) 2014 Digital Deals s.r.o.
  * @license http://www.digitaldeals.cz/license/
  */
 
 namespace dlds\metronic;
 
 use dlds\metronic\bundles\IonRangeSliderAsset;
+use dlds\metronic\traits\HtmlTrait;
 use Yii;
+use yii\helpers\Html;
 use yii\web\AssetBundle;
 use yii\base\InvalidConfigException;
 use dlds\metronic\bundles\ThemeAsset;
@@ -16,7 +18,8 @@ use dlds\metronic\bundles\ThemeAsset;
 /**
  * This is the class of Metronic Component
  */
-class Metronic extends \yii\base\Component {
+class Metronic extends \yii\base\Component
+{
 
     /**
      * @var AssetBundle
@@ -26,7 +29,7 @@ class Metronic extends \yii\base\Component {
     /**
      * Assets link
      */
-    const ASSETS_LINK = __DIR__.'/assets';
+    const ASSETS_LINK = __DIR__ . '/assets';
 
     /**
      * Theme
@@ -234,33 +237,22 @@ class Metronic extends \yii\base\Component {
      */
     public function init()
     {
-        $htmlClass = \yii\helpers\ArrayHelper::getValue(Yii::$classMap, 'yii\helpers\Html', null);
-
-        if ($htmlClass != self::CLASS_HTML)
-        {
-            throw new InvalidConfigException('Default Yii2 Html helper class is not allowed. For using Metronic theme put Yii::$classMap[\'yii\\helpers\\Html\'] = \''.self::CLASS_HTML.'\'; into your bootstrap.php');
-        }
-
-        if (self::SIDEBAR_FIXED === $this->sidebarOption && self::SIDEBAR_MENU_HOVER === $this->sidebarMenu)
-        {
+        if (self::SIDEBAR_FIXED === $this->sidebarOption && self::SIDEBAR_MENU_HOVER === $this->sidebarMenu) {
             throw new InvalidConfigException('Hover Sidebar Menu is not compatible with Fixed Sidebar Mode. Select Default Sidebar Mode Instead.');
         }
 
-        if (!$this->resources)
-        {
+        if (!$this->resources) {
             throw new InvalidConfigException('You have to specify resources locations to be able to create symbolic links. Specify "admin" and "global" theme folder locations.');
         }
 
-        if (!is_link(self::ASSETS_LINK) && !is_dir(self::ASSETS_LINK))
-        {
+        if (!is_link(self::ASSETS_LINK) && !is_dir(self::ASSETS_LINK)) {
             symlink($this->resources, self::ASSETS_LINK);
         }
     }
 
     public function parseAssetsParams(&$string)
     {
-        if (preg_match('/\{[a-z]+\}/', $string))
-        {
+        if (preg_match('/\{[a-z]+\}/', $string)) {
             $string = str_replace(static::PARAM_VERSION, $this->version, $string);
 
             $string = str_replace(static::PARAM_THEME, $this->theme, $string);
@@ -272,12 +264,9 @@ class Metronic extends \yii\base\Component {
      */
     public static function getComponent()
     {
-        try
-        {
+        try {
             return \Yii::$app->get(static::$componentName);
-        }
-        catch (InvalidConfigException $ex)
-        {
+        } catch (InvalidConfigException $ex) {
             return null;
         }
     }
@@ -289,8 +278,7 @@ class Metronic extends \yii\base\Component {
      */
     public static function getAssetsUrl($view)
     {
-        if (static::$assetsBundle === null)
-        {
+        if (static::$assetsBundle === null) {
             static::$assetsBundle = static::registerThemeAsset($view);
         }
 
