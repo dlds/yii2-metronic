@@ -17,10 +17,12 @@ class DropZone extends Widget
     public $clientEvents = [];
     //Default Values
     public $id = 'myDropzone';
-    public $uploadUrl = '/site/upload';
+    public $uploadUrl = 'site/upload';
     public $dropzoneContainer = 'myDropzone';
     public $previewsContainer = 'previews';
     public $autoDiscover = false;
+    public $model = null;
+    public $attribute = [];
 
     /**
      * Initializes the widget
@@ -54,7 +56,6 @@ class DropZone extends Widget
             $this->options['headers'][\yii\web\Request::CSRF_HEADER] = \Yii::$app->getRequest()->getCsrfToken();
             $this->options['params'][\Yii::$app->getRequest()->csrfParam] = \Yii::$app->getRequest()->getCsrfToken();
         }
-        \Yii::setAlias('@dropzone', dirname(__FILE__));
         $this->registerAssets();
     }
 
