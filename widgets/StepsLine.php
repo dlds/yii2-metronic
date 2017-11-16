@@ -103,6 +103,10 @@ class StepsLine extends Widget
                 $item['itemContent'] = '';
             }
 
+            if (array_key_exists('itemUrl', $item) && empty($item['itemUrl'])){
+                unset($item['itemUrl']);
+            }
+
             switch ($n){
                 case 1:
                     $itemCssColClass .= ' first';
@@ -139,7 +143,14 @@ class StepsLine extends Widget
         $lines[] = Html::beginTag('div', [
             'class' => "{$item['cssClassesCol']} mt-step-col"
         ]);
-        $lines[] = Html::tag('div', $item['itemIcon'], ['class' => "mt-step-number {$this->cssItemIconClasses}"]);
+
+        $iconTag = Html::tag('div', $item['itemIcon'], ['class' => "mt-step-number {$this->cssItemIconClasses}"]);
+
+        if (isset($item['itemUrl'])){
+            $iconTag = Html::a($iconTag, $item['itemUrl']);
+        }
+        
+        $lines[] = $iconTag;
         $lines[] = Html::tag('div', $item['itemTitle'], ['class' => "mt-step-title {$this->cssItemTitleClasses}"]);
         $lines[] = Html::tag('div', $item['itemContent'], ['class' => "mt-step-content {$this->cssItemContentClasses}"]);
         $lines[] = Html::endTag('div');
