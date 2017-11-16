@@ -11,5 +11,14 @@ namespace dlds\metronic\bundles;
 
 class DraggablePortletsAssetBundle extends BaseAssetBundle
 {
+    /**
+     * @var array JS
+     */
+    public $js = [
+        'pages/scripts/portlet-draggable.js'
+    ];
 
+    public $depends = [
+        'dlds\metronic\bundles\CoreAsset',
+    ];
 }

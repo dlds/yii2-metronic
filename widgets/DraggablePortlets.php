@@ -43,7 +43,7 @@ class DraggablePortlets extends Widget
     public function run()
     {
         DraggablePortletsAssetBundle::register($this->view);
-        echo Html::beginTag('div', ['class' => "row {$this->cssRowClasses}"]);
+        echo Html::beginTag('div', ['class' => "row {$this->cssRowClasses}", 'id' => 'sortable_portlets']);
         $this->renderColumns();
         echo Html::endTag('div');
     }
