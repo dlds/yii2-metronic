@@ -176,15 +176,15 @@ class Portlet extends Widget
 
 
         if (count($this->ribbons)>0) {
-            $this->_renderRibbon();
+            $this->renderRibbon();
         }
 
-        $this->_renderTitle();
+        $this->renderTitle();
 
         Html::addCssClass($this->bodyOptions, 'portlet-body');
         echo Html::beginTag('div', $this->bodyOptions);
 
-        $this->_renderScrollerBegin();
+        $this->renderScrollerBegin();
     }
 
     /**
@@ -192,7 +192,7 @@ class Portlet extends Widget
      */
     public function run()
     {
-        $this->_renderScrollerEnd();
+        $this->renderScrollerEnd();
 
         echo Html::endTag('div'); // End portlet body
         echo Html::endTag('div'); // End portlet div
@@ -201,7 +201,7 @@ class Portlet extends Widget
         //$this->registerPlugin('portlet');
     }
 
-    private function _renderRibbon()
+    protected function renderRibbon()
     {
         /** @var Ribbon $r */
         foreach($this->ribbons as $r) {
@@ -212,9 +212,10 @@ class Portlet extends Widget
     /**
      * Renders portlet title
      */
-    private function _renderTitle()
+    protected function renderTitle()
     {
         if (false !== $this->title) {
+
             Html::addCssClass($this->headerOptions, 'portlet-title');
 
             echo Html::beginTag('div', $this->headerOptions);
@@ -233,10 +234,6 @@ class Portlet extends Widget
 
             echo Html::endTag('div');
 
-            $this->_renderTools();
-
-            $this->_renderActions();
-
             echo Html::endTag('div');
         }
     }
@@ -244,7 +241,7 @@ class Portlet extends Widget
     /**
      * Renders portlet tools
      */
-    private function _renderTools()
+    protected function renderTools()
     {
         if (!empty($this->tools)) {
             $tools = [];
@@ -273,7 +270,7 @@ class Portlet extends Widget
     /**
      * Renders portlet actions
      */
-    private function _renderActions()
+    protected function renderActions()
     {
         if (!empty($this->actions)) {
             echo Html::tag('div', implode("\n", $this->actions), ['class' => 'actions']);
@@ -284,7 +281,7 @@ class Portlet extends Widget
      * Renders scroller begin
      * @throws InvalidConfigException
      */
-    private function _renderScrollerBegin()
+    protected function renderScrollerBegin()
     {
         if (!empty($this->scroller)) {
             if (!isset($this->scroller['height'])) {
@@ -302,7 +299,7 @@ class Portlet extends Widget
     /**
      * Renders scroller end
      */
-    private function _renderScrollerEnd()
+    protected function renderScrollerEnd()
     {
         if (!empty($this->scroller)) {
             echo Html::endTag('div');
