@@ -116,6 +116,10 @@ class TreeBuilder {
 
         foreach ($this->_items as $model)
         {
+            if (is_array($model)){
+              $model = (object) $model;
+            }
+
             if ($model->{$this->levelAttr} == $level)
             {
                 $html .= $this->renderItemClose();
@@ -137,6 +141,12 @@ class TreeBuilder {
             }
 
             $html .= $this->renderItemOpen($model->primaryKey);
+
+            $html .= Html::tag('i','', [
+              'class' => 'jstree-icon jstree-ocl',
+              'role' => 'presentation'
+              ]
+            );
 
             if (is_callable($this->contentCallback))
             {

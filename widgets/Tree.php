@@ -194,7 +194,8 @@ class Tree extends InputWidget {
      */
     protected function renderTree($tree)
     {
-        $html = Html::beginTag('div', ['id' => $this->id, 'class' => 'dd']);
+        $this->treeOptions = array_merge(['id' => $this->id], $this->treeOptions);
+        $html = Html::beginTag('div', $this->treeOptions);
 
         $html .= $tree;
 
@@ -286,7 +287,8 @@ class Tree extends InputWidget {
      */
     private function getHiddenFieldId()
     {
-        return strtolower(sprintf('%s-%s', $this->model->formName(), $this->attribute));
+        $formName = $this->model ?  $this->model->formName() : 'jstree-form';
+        return strtolower(sprintf('%s-%s', $formName, $this->attribute));
     }
 }
 ?>
