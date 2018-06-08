@@ -25,6 +25,7 @@ class DatePickerAsset extends BaseAssetBundle {
     public function init()
     {
         $this->js = array_merge($this->js, static::$extraJs);
+         parent::init();
     }
 
 }
