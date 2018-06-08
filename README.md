@@ -1,6 +1,9 @@
 # yii2-metronic
 Yii2 [Metronic theme](http://www.keenthemes.com/) integration. Currently is supported the version 4.6
 
+Requirements
+------------
+To use this extension it is required to buy own license for Metronic theme from https://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
 
 Installation
 ------------
