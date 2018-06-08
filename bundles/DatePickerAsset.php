@@ -15,8 +15,8 @@ class DatePickerAsset extends BaseAssetBundle {
         'global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
     ];
     public $css = [
-        'global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css',
-        'global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css',
+      'global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css',
+      'global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css'
     ];
     public $depends = [
         'dlds\metronic\bundles\CoreAsset',

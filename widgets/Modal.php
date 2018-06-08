@@ -7,6 +7,7 @@
 namespace dlds\metronic\widgets;
 
 use Yii;
+use yii\db\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use dlds\metronic\bundles\ModalAsset;
@@ -38,229 +39,330 @@ use dlds\metronic\bundles\ModalAsset;
  */
 class Modal extends Widget {
 
-    /**
-     * @var string the title in the modal window.
-     */
-    public $title;
+  /**
+   * @var string the title in the modal window.
+   */
+  public $title;
 
-    /**
-     * @var string the subtitle in the modal window.
-     */
-    public $subtitle;
+  /**
+   * @var string the subtitle in the modal window.
+   */
+  public $subtitle;
 
-    /**
-     * @var string the footer content in the modal window.
-     */
-    public $footer;
+  /**
+   * @var string the footer content in the modal window.
+   */
+  public $footer;
 
-    /**
-     * @var array the options for rendering the close button tag.
-     * The close button is displayed in the header of the modal window. Clicking
-     * on the button will hide the modal window. If this is null, no close button will be rendered.
-     *
-     * The following special options are supported:
-     *
-     * - tag: string, the tag name of the button. Defaults to 'button'.
-     * - label: string, the label of the button. Defaults to '&times;'.
-     *
-     * The rest of the options will be rendered as the HTML attributes of the button tag.
-     * Please refer to the [Modal plugin help](http://twitter.github.com/bootstrap/javascript.html#modals)
-     * for the supported HTML attributes.
-     */
-    public $closeButton = [];
+  public $customHeader;
 
-    /**
-     * @var array the configuration array for [[Button]].
-     */
-    public $toggleButton = [];
+  /**
+   * @var array the options for rendering the close button tag.
+   * The close button is displayed in the header of the modal window. Clicking
+   * on the button will hide the modal window. If this is null, no close button
+   *   will be rendered.
+   *
+   * The following special options are supported:
+   *
+   * - tag: string, the tag name of the button. Defaults to 'button'.
+   * - label: string, the label of the button. Defaults to '&times;'.
+   * - onFooter: if set, close Button is rendered on footer.
+   *
+   * The rest of the options will be rendered as the HTML attributes of the
+   *   button tag. Please refer to the [Modal plugin
+   *   help](http://twitter.github.com/bootstrap/javascript.html#modals) for
+   *   the supported HTML attributes.
+   */
+  public $closeButton = [];
 
-    /**
-     * @var bool indicates whether the modal in full screen width.
-     */
-    public $fullWidth = false;
+  /**
+   * @var array the options for rendering the submit button tag in case of a
+   *   form. The submit button is displayed in the header of the modal window.
+   *   Clicking on the button will submit the form of the modal window. If this
+   *   is null, no submit button will be rendered.
+   *
+   * The following special options are supported:
+   *
+   * - tag: string, the tag name of the button. Defaults to 'button'.
+   * - label: string, the label of the button. Defaults to '&times;'.
+   * - onFooter: if set, submit Button is rendered on footer.
+   *
+   * The rest of the options will be rendered as the HTML attributes of the
+   *   button tag. Please refer to the [Modal plugin
+   *   help](http://twitter.github.com/bootstrap/javascript.html#modals) for
+   *   the supported HTML attributes.
+   */
+  public $submitButton = [];
 
-    /**
-     * @var bool indicates whether the modal is stacked.
-     */
-    public $stackable = false;
+  public $additionalButtons = [];
+  /**
+   * @var array the configuration array for [[Button]].
+   */
+  public $toggleButton = [];
 
-    /**
-     * Initializes the widget.
-     */
-    public function init()
-    {
-        parent::init();
+  /**
+   * @var bool indicates whether the modal in full screen width.
+   */
+  public $fullWidth = FALSE;
 
-        $this->initOptions();
+  /**
+   * @var bool indicates whether the modal is stacked.
+   */
+  public $stackable = FALSE;
 
-        echo $this->renderToggleButton()."\n";
-        echo Html::beginTag('div', $this->options)."\n";
-        echo $this->renderHeader()."\n";
-        echo $this->renderBodyBegin()."\n";
+  /**
+   * @var bool set on init
+   */
+  private $closeButtonOnFooter = FALSE;
+
+  /**
+   * @var bool set on init
+   */
+  private $submitButtonOnFooter = FALSE;
+
+  /**
+   * Initializes the widget.
+   */
+  public function init() {
+    parent::init();
+
+    if (isset($this->closeButton['onFooter'])) {
+      $this->closeButtonOnFooter = $this->closeButton['onFooter'] === TRUE;
+      unset($this->closeButton['onFooter']);
     }
 
-    /**
-     * Renders the widget.
-     */
-    public function run()
-    {
-        echo "\n".$this->renderBodyEnd();
-        echo "\n".$this->renderFooter();
-        echo "\n".Html::endTag('div');
-
-        ModalAsset::register($this->view);
-        //$this->registerPlugin('spinner');
+    if (isset($this->submitButton['onFooter'])) {
+      $this->submitButtonOnFooter = $this->submitButton['onFooter'] === TRUE;
+      unset($this->submitButton['onFooter']);
     }
 
-    /**
-     * Renders the header HTML markup of the modal
-     * @return string the rendering result
-     */
-    protected function renderHeader()
-    {
-        $html = '';
+    $this->initOptions();
 
-        $button = $this->renderCloseButton();
+    echo $this->renderToggleButton() . "\n";
+    echo Html::beginTag('div', $this->options) . "\n";
+    echo $this->renderHeader() . "\n";
+    echo $this->renderBodyBegin() . "\n";
+  }
 
-        if ($button !== null)
-        {
-            $html = $button;
-        }
+  /**
+   * Renders the widget.
+   */
+  public function run() {
+    echo "\n" . $this->renderBodyEnd();
+    echo "\n" . $this->renderFooter();
+    echo "\n" . Html::endTag('div');
 
-        if ($this->title !== null)
-        {
-            $html .= Html::tag('h4', $this->title, ['class' => 'modal-title']);
-        }
+    ModalAsset::register($this->view);
+    //$this->registerPlugin('spinner');
+  }
 
-        if ($this->subtitle !== null)
-        {
-            $html .= Html::tag('p', $this->subtitle, ['class' => 'modal-subtitle']);
-        }
+  /**
+   * Renders the header HTML markup of the modal
+   *
+   * @return string the rendering result
+   */
+  protected function renderHeader() {
+    $html = '';
 
-        if ($html)
-        {
-            return Html::tag('div', "\n".$html."\n", ['class' => 'modal-header']);
-        }
-        else
-        {
-            return null;
-        }
+    $button = '';
+    if (!$this->closeButtonOnFooter) {
+      $button .= $this->renderCloseButton();
     }
 
-    /**
-     * Renders the opening tag of the modal body.
-     * @return string the rendering result
-     */
-    protected function renderBodyBegin()
-    {
-        return Html::beginTag('div', ['class' => 'modal-body']);
+    if (!$this->submitButtonOnFooter) {
+      $button .= $this->renderSubmitButton();
     }
 
-    /**
-     * Renders the closing tag of the modal body.
-     * @return string the rendering result
-     */
-    protected function renderBodyEnd()
-    {
-        return Html::endTag('div');
+    $button .= $this->renderAdditionalButtons();
+
+    if (!empty($button)) {
+      $html = $button;
     }
 
-    /**
-     * Renders the HTML markup for the footer of the modal
-     * @return string the rendering result
-     */
-    protected function renderFooter()
-    {
-        if ($this->footer !== null)
-        {
-            return Html::tag('div', "\n".$this->footer."\n", ['class' => 'modal-footer']);
-        }
-        else
-        {
-            return null;
-        }
+    if ($this->title !== NULL && !empty($this->title)) {
+      $html .= Html::tag('h4', $this->title, ['class' => 'modal-title']);
     }
 
-    /**
-     * Renders the toggle button.
-     * @return string the rendering result
-     */
-    protected function renderToggleButton()
-    {
-        if (!empty($this->toggleButton))
-        {
-            return Button::widget($this->toggleButton);
-        }
-        else
-        {
-            return null;
-        }
+    if ($this->subtitle !== NULL && !empty($this->subtitle)) {
+      $html .= Html::tag('p', $this->subtitle, ['class' => 'modal-subtitle']);
     }
 
-    /**
-     * Renders the close button.
-     * @return string the rendering result
-     */
-    protected function renderCloseButton()
-    {
-        if ($this->closeButton !== null)
-        {
-            $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
-            $label = ArrayHelper::remove($this->closeButton, 'label', '&times;');
-            if ($tag === 'button' && !isset($this->closeButton['type']))
-            {
-                $this->closeButton['type'] = 'button';
-            }
-            return Html::tag($tag, $label, $this->closeButton);
-        }
-        else
-        {
-            return null;
-        }
+    $html = Html::tag('div', $html, ['class' => 'row']);
+    $html = Html::tag('div', $html, ['class' => 'col-xs-12']);
+
+    if ( $this->customHeader !== NULL && !empty($this->customHeader)) {
+      $html .= Html::tag( 'div', "\n" . $this->customHeader . "\n", ['class' => 'modal-header']);
     }
 
-    /**
-     * Initializes the widget options.
-     * This method sets the default values for various options.
-     */
-    protected function initOptions()
-    {
-        $this->options = array_merge([
-            'class' => 'fade',
-            'tabindex' => -1,
-            ], $this->options);
-        Html::addCssClass($this->options, 'modal');
-        if ($this->fullWidth)
-        {
-            Html::addCssClass($this->options, 'container');
-        }
-        if ($this->stackable)
-        {
-            $this->options = array_merge($this->options, ['data-focus-on' => 'input:first']);
-        }
-        if ($this->clientOptions !== false)
-        {
-            $this->clientOptions = array_merge(['show' => false], $this->clientOptions);
-        }
-
-        if ($this->closeButton !== null)
-        {
-            $this->closeButton = array_merge([
-                'data-dismiss' => 'modal',
-                'aria-hidden' => 'true',
-                'class' => 'close',
-                ], $this->closeButton);
-        }
-
-        if (!empty($this->toggleButton))
-        {
-            $this->toggleButton = array_merge([
-                'options' => ['data-toggle' => 'modal'],
-                ], $this->toggleButton);
-            if (!isset($this->toggleButton['options']['data-target']) && !isset($this->toggleButton['options']['href']))
-            {
-                $this->toggleButton['options']['data-target'] = '#'.$this->options['id'];
-            }
-        }
+    if ($html) {
+      return Html::tag('div', "\n" . $html . "\n", ['class' => 'modal-header']);
     }
+
+    return NULL;
+  }
+
+  /**
+   * Renders the opening tag of the modal body.
+   *
+   * @return string the rendering result
+   */
+  protected function renderBodyBegin() {
+    return Html::beginTag('div', ['class' => 'modal-body']);
+  }
+
+  /**
+   * Renders the closing tag of the modal body.
+   *
+   * @return string the rendering result
+   */
+  protected function renderBodyEnd() {
+    return Html::endTag('div');
+  }
+
+  /**
+   * Renders the HTML markup for the footer of the modal
+   *
+   * @return string the rendering result
+   */
+  protected function renderFooter() {
+    if ($this->footer == NULL) {
+      $this->footer = '';
+    }
+
+    if ($this->closeButtonOnFooter) {
+      $this->footer .= $this->renderCloseButton();
+    }
+
+    if ($this->submitButtonOnFooter) {
+      $this->footer .= $this->renderSubmitButton();
+    }
+
+    if (!empty($this->footer)) {
+      return Html::tag('div', "\n" . $this->footer . "\n", ['class' => 'modal-footer']);
+    }
+    else {
+      return NULL;
+    }
+  }
+
+  /**
+   * Renders the toggle button.
+   *
+   * @return string the rendering result
+   */
+  protected function renderToggleButton() {
+    if (!empty($this->toggleButton)) {
+      return Button::widget($this->toggleButton);
+    }
+    else {
+      return NULL;
+    }
+  }
+
+  /**
+   * Renders the close button.
+   *
+   * @return string the rendering result
+   */
+  protected function renderCloseButton() {
+    if (!empty($this->closeButton)) {
+      $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
+      $label = ArrayHelper::remove($this->closeButton, 'label', '&times;');
+      if ($tag === 'button' && !isset($this->closeButton['type'])) {
+        $this->closeButton['type'] = 'button';
+      }
+      return Html::tag($tag, $label, $this->closeButton);
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Renders additional buttons.
+   *
+   * @return string the rendering result
+   */
+  protected function renderAdditionalButtons() {
+    if (empty($this->additionalButtons)) {
+      return NULL;
+    }
+
+    $cssContainerClass = 'custom-buttons';
+    if (isset($this->additionalButtons['class'])){
+      $cssContainerClass = $this->additionalButtons['class'];
+      unset($this->additionalButtons['class']);
+    }
+
+    $buttons = '';
+    foreach ($this->additionalButtons as $button){
+      $buttons .= $this->renderAdditionalButton($button);
+    }
+
+    $buttons = Html::tag('div', $buttons, ['class' => $cssContainerClass]);
+
+    return $buttons;
+  }
+
+  protected function renderAdditionalButton($button){
+    if (!isset($button['title'])){
+      throw new Exception(Yii::t('widget', 'Button title must be set.'));
+    }
+
+    if (isset($button['url'])) {
+      return Html::a($button['title'], $button['url'], $button['options'] ?? []);
+    }
+
+    return Html::tag('span', $button['title'], $button['options'] ?? []);
+  }
+
+  /**
+   * Renders the submit button.
+   *
+   * @return string the rendering result
+   */
+  protected function renderSubmitButton() {
+    if (!empty($this->submitButton)) {
+      $tag = ArrayHelper::remove($this->submitButton, 'tag', 'button');
+      $label = ArrayHelper::remove($this->submitButton, 'label', 'Save');
+      if ($tag === 'button' && !isset($this->submitButton['type'])) {
+        $this->closeButton['type'] = 'button';
+      }
+      return Html::tag($tag, $label, $this->submitButton);
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Initializes the widget options.
+   * This method sets the default values for various options.
+   */
+  protected function initOptions() {
+    if ($this->fullWidth) {
+      Html::addCssClass($this->options, 'container');
+    }
+    if ($this->stackable) {
+      $this->options = array_merge($this->options, ['data-focus-on' => 'input:first']);
+    }
+    if ($this->clientOptions !== FALSE) {
+      $this->clientOptions = array_merge(['show' => FALSE], $this->clientOptions);
+    }
+
+    if ($this->closeButton !== NULL) {
+      $this->closeButton = array_merge([
+        'data-dismiss' => 'modal',
+        'aria-hidden'  => 'true',
+        'class'        => 'close',
+      ], $this->closeButton);
+    }
+
+    if (!empty($this->toggleButton)) {
+      $this->toggleButton = array_merge([
+        'options' => ['data-toggle' => 'modal'],
+      ], $this->toggleButton);
+      if (!isset($this->toggleButton['options']['data-target']) && !isset($this->toggleButton['options']['href'])) {
+        $this->toggleButton['options']['data-target'] = '#' . $this->options['id'];
+      }
+    }
+  }
 }
